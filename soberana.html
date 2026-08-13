@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Soberana Dental — Protótipo</title>
+<style>
+:root{
+ --ink:#142d46; --ink2:#0d2032; --teal:#19a79d; --teal2:#0b827a;
+ --gold:#d8b25a; --bg:#f5f7f9; --surface:#fff; --line:#e2e8ed;
+ --text:#18242f; --muted:#73808b; --ok:#268565; --warn:#b47a17; --danger:#bc4a51;
+ --shadow:0 10px 28px rgba(20,45,70,.08); --radius:16px;
+}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text)}
+button,input,textarea,select{font:inherit}.app{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}
+aside{background:linear-gradient(180deg,var(--ink),var(--ink2));color:#fff;position:sticky;top:0;height:100vh;padding:18px 14px;display:flex;flex-direction:column;z-index:30}
+.brand{display:flex;gap:11px;align-items:center;padding:5px 8px 20px}.brandmark{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--teal),var(--gold));display:grid;place-items:center;font-weight:900}
+.brand b{display:block}.brand small{color:#a9bdca}
+.navtitle{font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:#7890a2;padding:14px 10px 6px}
+.navbtn{width:100%;border:0;background:transparent;color:#d8e3ea;border-radius:11px;padding:10px 11px;text-align:left;margin:2px 0;display:flex;gap:10px;align-items:center;cursor:pointer}
+.navbtn:hover,.navbtn.active{background:rgba(255,255,255,.10);color:#fff}.navbtn span{width:22px;text-align:center}.asidefoot{margin-top:auto;border-top:1px solid rgba(255,255,255,.1);padding:14px 9px;font-size:11px;color:#9eb1bf}
+main{min-width:0}.top{height:68px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 22px;position:sticky;top:0;background:rgba(245,247,249,.94);backdrop-filter:blur(12px);z-index:20}
+.top-left{display:flex;align-items:center;gap:12px;min-width:0}.hamb{display:none;border:1px solid var(--line);background:white;border-radius:10px;padding:8px 10px}
+.search{width:min(430px,45vw);position:relative}.search input{width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px 10px 36px;outline:none}.search:before{content:"⌕";position:absolute;left:12px;top:5px;font-size:22px;color:#8b98a3}
+.user{display:flex;align-items:center;gap:9px}.avatar{width:37px;height:37px;border-radius:50%;background:var(--ink);color:white;display:grid;place-items:center;font-size:12px;font-weight:800}.user small{display:block;color:var(--muted)}
+.content{padding:22px;max-width:1560px;margin:auto}.view{display:none}.view.active{display:block}
+.pagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px}.pagehead h1{font-size:26px;margin:0 0 4px}.pagehead p{margin:0;color:var(--muted);font-size:13px}
+.btn{border:1px solid var(--line);background:white;border-radius:11px;padding:10px 13px;font-weight:700;color:var(--text);cursor:pointer}.btn.primary{background:var(--teal);border-color:var(--teal);color:white}.btn.dark{background:var(--ink);border-color:var(--ink);color:white}.btn.sm{padding:7px 9px;font-size:12px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.grid2{display:grid;grid-template-columns:1.45fr 1fr;gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}.pad{padding:17px}
+.kpi small{color:var(--muted)}.kpi strong{display:block;font-size:24px;margin:7px 0}.positive{font-size:11px;color:var(--ok)}.warning{color:var(--warn)}
+.titlebar{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:13px}.titlebar h3{margin:0;font-size:16px}.muted{color:var(--muted)}.tiny{font-size:11px}.small{font-size:12px}
+.timeline{display:grid;gap:0}.event{display:grid;grid-template-columns:58px 5px 1fr auto;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid #eef1f4}.event:last-child{border-bottom:0}.line{height:40px;border-radius:5px;background:var(--teal)}.line.gold{background:var(--gold)}.line.ink{background:var(--ink)}.event b{font-size:13px}.event small{display:block;color:var(--muted);margin-top:2px}.pill{font-size:10px;font-weight:750;padding:5px 8px;border-radius:999px;background:#eaf8f6;color:var(--teal2);white-space:nowrap}.pill.gold{background:#fbf4e2;color:#8b6311}.pill.red{background:#fbecef;color:#a33d45}
+.quick{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.quick button{border:1px solid var(--line);background:#fff;border-radius:13px;padding:14px;text-align:left;min-height:83px}.quick b{display:block;margin:7px 0 2px}.quick span{font-size:11px;color:var(--muted)}
+.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:750px}th,td{padding:12px 14px;border-bottom:1px solid #edf1f3;text-align:left;font-size:12px}th{background:#fafcfd;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.06em}.person{display:flex;gap:9px;align-items:center}.person .avatar{background:#edf3f6;color:var(--ink)}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap}.field{border:1px solid var(--line);border-radius:11px;padding:9px 11px;background:white}
+.patienthero{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center}.bigavatar{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;background:#e9f6f5;color:var(--teal2);font-size:20px;font-weight:800}.patienthero h2{margin:0 0 4px;font-size:20px}.patienthero p{margin:0;color:var(--muted);font-size:12px}
+.tabs{display:flex;gap:5px;border-bottom:1px solid var(--line);overflow:auto;margin-top:14px}.tab{border:0;background:none;padding:11px 12px;color:var(--muted);font-weight:700;white-space:nowrap;border-bottom:2px solid transparent}.tab.active{color:var(--teal2);border-bottom-color:var(--teal)}
+.patientpanel{display:none;padding-top:16px}.patientpanel.active{display:block}.clinical-layout{display:grid;grid-template-columns:1.3fr .8fr;gap:14px}
+.note{border-left:3px solid var(--teal);padding:10px 12px;background:#f7fbfb;border-radius:0 10px 10px 0;margin-bottom:10px}.note time{font-size:10px;color:var(--muted)}.note p{font-size:12px;line-height:1.5;margin:5px 0}
+.anamgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.answer{padding:12px;border:1px solid var(--line);border-radius:12px}.answer b{font-size:12px}.answer span{display:block;color:var(--muted);font-size:11px;margin-top:5px}
+.teeth{display:grid;grid-template-columns:repeat(8,1fr);gap:7px;margin:16px 0}.tooth{aspect-ratio:1;border:1px solid #cbd7de;background:#fff;border-radius:8px;display:grid;place-items:center;font-size:11px;font-weight:800;cursor:pointer}.tooth:hover{border-color:var(--teal)}.tooth.problem{background:#fbe9eb;border-color:#e2aeb2;color:#a33d45}.tooth.plan{background:#fff5dc;border-color:#e3c577;color:#8a651c}.tooth.done{background:#e8f7f3;border-color:#9cd4c7;color:#257861}
+.formgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.formgroup label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px}.formgroup input,.formgroup textarea,.formgroup select{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px;background:white}.formgroup textarea{min-height:90px;resize:vertical}
+.calendar{display:grid;grid-template-columns:72px repeat(5,1fr);border:1px solid var(--line);border-radius:14px;overflow:auto;background:white;min-width:900px}.calcell{min-height:72px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:6px;font-size:10px}.calhead{min-height:auto;background:#fafcfd;font-weight:800;text-align:center;padding:10px}.calhour{background:#fafcfd;color:var(--muted);text-align:right}.appointment{border-radius:8px;background:#e8f7f5;border-left:3px solid var(--teal);padding:6px;font-size:10px}.appointment.gold{background:#fcf5e6;border-left-color:var(--gold)}.appointment.dark{background:#ebf0f4;border-left-color:var(--ink)}
+.bars{height:180px;display:flex;gap:8px;align-items:flex-end;padding-top:12px}.baritem{flex:1;text-align:center;color:var(--muted);font-size:9px}.bar{background:linear-gradient(180deg,var(--teal),#62c9c0);border-radius:7px 7px 2px 2px;margin-bottom:6px;min-height:10px}
+.reportgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.report{padding:16px}.report .icon{width:38px;height:38px;background:#edf7f6;color:var(--teal2);border-radius:11px;display:grid;place-items:center}.report h3{font-size:14px;margin:10px 0 4px}.report p{font-size:11px;color:var(--muted);line-height:1.4}
+.footer{margin-top:20px;background:var(--ink);color:white;border-radius:16px;padding:18px 20px;display:grid;grid-template-columns:1fr 1fr;gap:20px}.footer p{font-size:11px;color:#c4d1d9;line-height:1.5;margin:4px 0}.footer strong{color:white}
+.modalback{display:none;position:fixed;inset:0;background:rgba(5,15,25,.48);z-index:80;align-items:center;justify-content:center;padding:15px}.modalback.open{display:flex}.modal{width:min(620px,100%);max-height:90vh;overflow:auto;background:white;border-radius:18px;box-shadow:0 30px 70px rgba(0,0,0,.25);padding:20px}.modalhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.modalhead h2{margin:0;font-size:19px}.x{border:0;background:#f1f4f6;border-radius:9px;padding:6px 9px}
+.toast{position:fixed;right:18px;bottom:18px;background:var(--ink);color:white;padding:11px 14px;border-radius:11px;box-shadow:var(--shadow);font-size:12px;display:none;z-index:100}.toast.show{display:block}
+.mobilebar{display:none}.overlay{display:none}
+@media(max-width:1050px){.grid4{grid-template-columns:repeat(2,1fr)}.grid2,.clinical-layout{grid-template-columns:1fr}.reportgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:780px){
+ .app{display:block}aside{position:fixed;width:252px;left:-270px;transition:.2s;box-shadow:20px 0 60px rgba(0,0,0,.2)}aside.open{left:0}.overlay.show{display:block;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:25}
+ .hamb{display:block}.top{height:60px;padding:0 12px}.search{width:auto;flex:1}.user .who{display:none}.content{padding:15px 12px 80px}.pagehead h1{font-size:21px}.pagehead p{font-size:12px}
+ .grid3{grid-template-columns:1fr}.patienthero{grid-template-columns:auto 1fr}.patienthero .toolbar{grid-column:1/-1}.anamgrid,.formgrid{grid-template-columns:1fr}.reportgrid{grid-template-columns:1fr}.footer{grid-template-columns:1fr}
+ .mobilebar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;background:white;border-top:1px solid var(--line);z-index:40;padding:5px 3px max(5px,env(safe-area-inset-bottom))}
+ .mobilebar button{border:0;background:none;font-size:9px;color:var(--muted);padding:5px 2px}.mobilebar b{display:block;color:var(--ink);font-size:16px;margin-bottom:2px}
+}
+@media(max-width:520px){.grid4{grid-template-columns:1fr 1fr;gap:8px}.kpi{padding:13px}.kpi strong{font-size:19px}.quick{grid-template-columns:1fr 1fr}.event{grid-template-columns:47px 4px 1fr}.event .pill{display:none}.teeth{gap:4px}.tooth{border-radius:6px}.pagehead .desktop-extra{display:none}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside id="aside">
+ <div class="brand"><div class="brandmark">S</div><div><b>Soberana Dental</b><small>Clínica inteligente</small></div></div>
+ <div class="navtitle">Principal</div>
+ <button class="navbtn active" data-view="dashboard"><span>⌂</span>Dashboard</button>
+ <button class="navbtn" data-view="agenda"><span>◷</span>Agenda</button>
+ <button class="navbtn" data-view="pacientes"><span>♙</span>Pacientes</button>
+ <div class="navtitle">Atendimento</div>
+ <button class="navbtn" data-view="prontuario"><span>▤</span>Prontuário</button>
+ <button class="navbtn" data-view="procedimentos"><span>⚕</span>Procedimentos</button>
+ <button class="navbtn" data-view="cirurgias"><span>✣</span>Cirurgias</button>
+ <div class="navtitle">Gestão</div>
+ <button class="navbtn" data-view="financeiro"><span>R$</span>Financeiro</button>
+ <button class="navbtn" data-view="relatorios"><span>▥</span>Relatórios</button>
+ <button class="navbtn" data-view="config"><span>⚙</span>Configurações</button>
+ <div class="asidefoot">Protótipo navegável<br>Dados completamente fictícios</div>
+</aside>
+<div class="overlay" id="overlay"></div>
+<main>
+<header class="top">
+ <div class="top-left"><button class="hamb" id="hamb">☰</button><div class="search"><input id="globalSearch" placeholder="Buscar paciente, CPF, telefone..."></div></div>
+ <div class="user"><button class="btn sm" onclick="toast('Central de ajuda — protótipo')">?</button><div class="avatar">GM</div><div class="who"><b style="font-size:12px">Dr. Gustavo Martins</b><small>Cirurgião-dentista</small></div></div>
+</header>
+<div class="content">
+
+<section class="view active" id="dashboard">
+ <div class="pagehead"><div><h1>Visão geral</h1><p>Quinta-feira, 13 de agosto de 2026 • Sua clínica em um só lugar.</p></div><button class="btn primary" onclick="openModal('atendimentoModal')">+ Iniciar atendimento</button></div>
+ <div class="grid4">
+  <div class="card pad kpi"><small>Consultas hoje</small><strong>12</strong><span class="positive">9 confirmadas • 3 pendentes</span></div>
+  <div class="card pad kpi"><small>Receita no mês</small><strong>R$ 48,6 mil</strong><span class="positive">↑ 8,4% no período</span></div>
+  <div class="card pad kpi"><small>A receber</small><strong>R$ 12,4 mil</strong><span class="positive warning">R$ 2,1 mil vencidos</span></div>
+  <div class="card pad kpi"><small>Pacientes ativos</small><strong>386</strong><span class="positive">+18 nos últimos 30 dias</span></div>
+ </div>
+ <div class="grid2" style="margin-top:14px">
+  <div class="card pad"><div class="titlebar"><div><h3>Agenda de hoje</h3><span class="tiny muted">Próximos atendimentos</span></div><button class="btn sm" onclick="go('agenda')">Abrir agenda</button></div>
+   <div class="timeline">
+    <div class="event"><b>08:30</b><div class="line"></div><div><b>Mariana Costa</b><small>Profilaxia e avaliação • 40 min</small></div><span class="pill">Confirmado</span></div>
+    <div class="event"><b>09:20</b><div class="line gold"></div><div><b>Henrique Alves</b><small>Retorno pós-operatório • 30 min</small></div><span class="pill gold">Aguardando</span></div>
+    <div class="event"><b>10:00</b><div class="line ink"></div><div><b>Beatriz Lima</b><small>Endodontia • sessão 2/3</small></div><span class="pill">Confirmado</span></div>
+    <div class="event"><b>14:00</b><div class="line gold"></div><div><b>Camila Rocha</b><small>Cirurgia de terceiro molar • 80 min</small></div><span class="pill gold">Pré-op.</span></div>
+   </div>
+  </div>
+  <div class="card pad"><div class="titlebar"><div><h3>Ações rápidas</h3><span class="tiny muted">Rotina clínica</span></div></div>
+   <div class="quick">
+    <button onclick="openModal('pacienteModal')">♙<b>Novo paciente</b><span>Cadastro e contato</span></button>
+    <button onclick="go('prontuario')">▤<b>Abrir prontuário</b><span>Histórico completo</span></button>
+    <button onclick="go('prontuario');setTimeout(()=>selectTab('odontograma'),10)">◉<b>Odontograma</b><span>Planejar tratamento</span></button>
+    <button onclick="go('financeiro')">R$<b>Receber pagamento</b><span>Baixa financeira</span></button>
+   </div>
+  </div>
+ </div>
+ <div class="grid2" style="margin-top:14px">
+  <div class="card pad"><div class="titlebar"><div><h3>Faturamento</h3><span class="tiny muted">Receita recebida nos últimos 7 meses</span></div><button class="btn sm" onclick="go('financeiro')">Ver financeiro</button></div>
+   <div class="bars"><div class="baritem"><div class="bar" style="height:44%"></div>Fev</div><div class="baritem"><div class="bar" style="height:56%"></div>Mar</div><div class="baritem"><div class="bar" style="height:49%"></div>Abr</div><div class="baritem"><div class="bar" style="height:65%"></div>Mai</div><div class="baritem"><div class="bar" style="height:61%"></div>Jun</div><div class="baritem"><div class="bar" style="height:84%"></div>Jul</div><div class="baritem"><div class="bar" style="height:76%"></div>Ago</div></div>
+  </div>
+  <div class="card pad"><div class="titlebar"><h3>Atenção hoje</h3></div>
+   <div class="timeline">
+    <div class="event"><b>4</b><div class="line gold"></div><div><b>Anamneses incompletas</b><small>Consultas próximas</small></div><span class="pill gold">Revisar</span></div>
+    <div class="event"><b>3</b><div class="line"></div><div><b>Retornos pós-operatórios</b><small>Aguardando agendamento</small></div><span class="pill">Agendar</span></div>
+    <div class="event"><b>7</b><div class="line ink"></div><div><b>Planos de tratamento</b><small>Aguardando aceite</small></div><span class="pill">Abrir</span></div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="view" id="agenda">
+ <div class="pagehead"><div><h1>Agenda</h1><p>Organize consultas, retornos, bloqueios e cirurgias.</p></div><div class="toolbar"><button class="btn">Hoje</button><button class="btn primary" onclick="openModal('agendaModal')">+ Novo compromisso</button></div></div>
+ <div class="card pad"><div class="titlebar"><div class="toolbar"><button class="btn sm">‹</button><b>10 a 14 de agosto</b><button class="btn sm">›</button></div><div class="toolbar"><button class="btn sm">Semana</button><button class="btn sm">Dia</button></div></div>
+  <div style="overflow:auto"><div class="calendar">
+   <div class="calcell calhead"></div><div class="calcell calhead">Seg 10</div><div class="calcell calhead">Ter 11</div><div class="calcell calhead">Qua 12</div><div class="calcell calhead">Qui 13</div><div class="calcell calhead">Sex 14</div>
+   <div class="calcell calhour">08:00</div><div class="calcell"><div class="appointment">08:20 Ana Paula<br>Avaliação</div></div><div class="calcell"></div><div class="calcell"><div class="appointment gold">08:30 Rafael<br>Retorno</div></div><div class="calcell"><div class="appointment">08:30 Mariana<br>Profilaxia</div></div><div class="calcell"></div>
+   <div class="calcell calhour">09:00</div><div class="calcell"></div><div class="calcell"><div class="appointment dark">09:10 Joana<br>Endodontia</div></div><div class="calcell"></div><div class="calcell"><div class="appointment gold">09:20 Henrique<br>Pós-op.</div></div><div class="calcell"><div class="appointment">09:00 Felipe<br>Clareamento</div></div>
+   <div class="calcell calhour">10:00</div><div class="calcell"><div class="appointment">10:30 Júlia<br>Restauração</div></div><div class="calcell"></div><div class="calcell"><div class="appointment">10:00 Marta<br>Avaliação</div></div><div class="calcell"><div class="appointment dark">10:00 Beatriz<br>Endodontia</div></div><div class="calcell"></div>
+   <div class="calcell calhour">11:00</div><div class="calcell"></div><div class="calcell"><div class="appointment">11:20 Bruno<br>Profilaxia</div></div><div class="calcell"></div><div class="calcell"><div class="appointment">11:20 Lucas<br>Implante</div></div><div class="calcell"></div>
+   <div class="calcell calhour">14:00</div><div class="calcell"><div class="appointment dark">14:00 Cirurgia<br>Implante</div></div><div class="calcell"></div><div class="calcell"><div class="appointment">14:20 Patrícia<br>Consulta</div></div><div class="calcell"><div class="appointment gold">14:00 Camila<br>Cirurgia 3º molar</div></div><div class="calcell"><div class="appointment">14:30 Diego<br>Avaliação</div></div>
+   <div class="calcell calhour">15:00</div><div class="calcell"></div><div class="calcell"><div class="appointment">15:10 Carla<br>Restauração</div></div><div class="calcell"></div><div class="calcell"></div><div class="calcell"><div class="appointment dark">15:00 Cirurgia<br>Enxerto</div></div>
+  </div></div>
+ </div>
+</section>
+
+<section class="view" id="pacientes">
+ <div class="pagehead"><div><h1>Pacientes</h1><p>Cadastros, situação clínica e relacionamento.</p></div><button class="btn primary" onclick="openModal('pacienteModal')">+ Novo paciente</button></div>
+ <div class="card"><div class="pad toolbar"><input class="field" placeholder="Buscar pacientes..." style="flex:1;min-width:220px"><select class="field"><option>Todos</option><option>Em tratamento</option><option>Orçamento</option><option>Inativos</option></select></div>
+ <div class="tablewrap"><table><thead><tr><th>Paciente</th><th>Contato</th><th>Última consulta</th><th>Tratamento</th><th>Status</th><th>Saldo</th><th></th></tr></thead><tbody>
+  <tr><td><div class="person"><div class="avatar">MC</div><b>Mariana Costa</b></div></td><td>(32) 98888-2100</td><td>Hoje</td><td>Preventivo</td><td><span class="pill">Em dia</span></td><td>R$ 0,00</td><td><button class="btn sm" onclick="go('prontuario')">Abrir</button></td></tr>
+  <tr><td><div class="person"><div class="avatar">BL</div><b>Beatriz Lima</b></div></td><td>(32) 99912-4431</td><td>06/08/2026</td><td>Endodontia</td><td><span class="pill gold">Em tratamento</span></td><td>R$ 780,00</td><td><button class="btn sm" onclick="go('prontuario')">Abrir</button></td></tr>
+  <tr><td><div class="person"><div class="avatar">LF</div><b>Lucas Ferreira</b></div></td><td>(32) 98802-8812</td><td>29/07/2026</td><td>Implante</td><td><span class="pill gold">Orçamento</span></td><td>R$ 3.850,00</td><td><button class="btn sm" onclick="go('prontuario')">Abrir</button></td></tr>
+  <tr><td><div class="person"><div class="avatar">CR</div><b>Camila Rocha</b></div></td><td>(32) 99120-4030</td><td>01/08/2026</td><td>Cirurgia</td><td><span class="pill">Ativa</span></td><td>R$ 450,00</td><td><button class="btn sm" onclick="go('prontuario')">Abrir</button></td></tr>
+ </tbody></table></div></div>
+</section>
+
+<section class="view" id="prontuario">
+ <div class="pagehead"><div><h1>Prontuário eletrônico</h1><p>Uma única visão para conduzir o atendimento.</p></div><button class="btn primary" onclick="toast('Evolução salva no protótipo')">Salvar evolução</button></div>
+ <div class="card pad">
+  <div class="patienthero"><div class="bigavatar">BL</div><div><h2>Beatriz Lima</h2><p>41 anos • (32) 99912-4431 • Última consulta: 06/08/2026</p><div style="margin-top:7px"><span class="pill gold">Em tratamento</span> <span class="pill red">Alergia: dipirona</span></div></div><div class="toolbar"><button class="btn sm" onclick="toast('Contato aberto — protótipo')">Contato</button><button class="btn sm" onclick="go('agenda')">Agendar retorno</button></div></div>
+  <div class="tabs">
+   <button class="tab active" data-tab="resumo">Resumo</button><button class="tab" data-tab="anamnese">Anamnese</button><button class="tab" data-tab="odontograma">Odontograma</button><button class="tab" data-tab="evolucao">Evolução</button><button class="tab" data-tab="arquivos">Arquivos</button><button class="tab" data-tab="financeiro-paciente">Financeiro</button>
+  </div>
+  <div class="patientpanel active" id="tab-resumo"><div class="clinical-layout">
+   <div><div class="titlebar"><h3>Linha do tempo clínica</h3><button class="btn sm" onclick="selectTab('evolucao')">+ Evolução</button></div>
+    <div class="note"><time>06/08/2026 • Dr. Gustavo Martins</time><p><b>Endodontia — sessão 1/3.</b> Acesso coronário, odontometria e preparo químico-mecânico. Paciente evoluiu sem intercorrências.</p></div>
+    <div class="note"><time>29/07/2026 • Dr. Gustavo Martins</time><p><b>Consulta de urgência.</b> Dor espontânea no elemento 36. Testes clínicos compatíveis com pulpite irreversível. Solicitada radiografia.</p></div>
+   </div>
+   <div><h3 style="font-size:15px;margin-top:0">Resumo do caso</h3><div class="answer"><b>Tratamento atual</b><span>Endodontia — elemento 36</span></div><div class="answer" style="margin-top:8px"><b>Próxima etapa</b><span>Instrumentação e medicação intracanal</span></div><div class="answer" style="margin-top:8px"><b>Alertas</b><span>Alergia registrada: dipirona</span></div><div class="answer" style="margin-top:8px"><b>Financeiro</b><span>R$ 780,00 a receber</span></div></div>
+  </div></div>
+  <div class="patientpanel" id="tab-anamnese"><div class="titlebar"><div><h3>Anamnese</h3><span class="tiny muted">Atualizada em 29/07/2026</span></div><button class="btn sm">Editar respostas</button></div><div class="anamgrid">
+   <div class="answer"><b>Está em tratamento médico?</b><span>Não</span></div><div class="answer"><b>Utiliza medicamento contínuo?</b><span>Levotiroxina 50 mcg</span></div><div class="answer"><b>Possui alergias?</b><span>Sim — dipirona</span></div><div class="answer"><b>Diabetes?</b><span>Não</span></div><div class="answer"><b>Hipertensão?</b><span>Não</span></div><div class="answer"><b>Cirurgias anteriores?</b><span>Colecistectomia em 2018</span></div>
+  </div></div>
+  <div class="patientpanel" id="tab-odontograma"><div class="titlebar"><div><h3>Odontograma</h3><span class="tiny muted">Clique em um dente para simular seleção</span></div><div class="toolbar"><span class="pill red">Problema</span><span class="pill gold">Planejado</span><span class="pill">Realizado</span></div></div>
+   <div class="teeth" id="teeth1"></div><div class="teeth" id="teeth2"></div>
+   <div class="card pad" style="box-shadow:none"><b id="toothSelection">Selecione um elemento</b><p class="small muted">Neste espaço entram diagnóstico, faces envolvidas, procedimento planejado, imagens e observações do elemento.</p><button class="btn sm" onclick="openModal('procedimentoModal')">+ Planejar procedimento</button></div>
+  </div>
+  <div class="patientpanel" id="tab-evolucao"><div class="formgrid"><div class="formgroup" style="grid-column:1/-1"><label>Evolução clínica</label><textarea placeholder="Descreva o atendimento realizado, condições observadas, intercorrências e orientações..."></textarea></div><div class="formgroup"><label>Procedimento</label><select><option>Endodontia</option><option>Restauração</option><option>Avaliação</option></select></div><div class="formgroup"><label>Elemento</label><input value="36"></div><div class="formgroup"><label>Próximo retorno</label><input type="date"></div><div class="formgroup"><label>Valor</label><input value="R$ 0,00"></div></div></div>
+  <div class="patientpanel" id="tab-arquivos"><div class="reportgrid"><div class="card report"><div class="icon">RX</div><h3>Radiografias</h3><p>4 arquivos anexados ao prontuário.</p><button class="btn sm">Abrir</button></div><div class="card report"><div class="icon">IMG</div><h3>Fotografias clínicas</h3><p>12 imagens organizadas por atendimento.</p><button class="btn sm">Abrir</button></div><div class="card report"><div class="icon">PDF</div><h3>Documentos e termos</h3><p>3 documentos assinados.</p><button class="btn sm">Abrir</button></div></div></div>
+  <div class="patientpanel" id="tab-financeiro-paciente"><div class="grid3"><div class="card pad kpi"><small>Total contratado</small><strong>R$ 1.950</strong></div><div class="card pad kpi"><small>Pago</small><strong>R$ 1.170</strong></div><div class="card pad kpi"><small>Em aberto</small><strong>R$ 780</strong></div></div><div class="card" style="margin-top:12px;box-shadow:none"><div class="tablewrap"><table><thead><tr><th>Data</th><th>Descrição</th><th>Forma</th><th>Valor</th><th>Status</th></tr></thead><tbody><tr><td>06/08/2026</td><td>Endodontia — entrada</td><td>Pix</td><td>R$ 650</td><td><span class="pill">Pago</span></td></tr><tr><td>20/08/2026</td><td>Endodontia — parcela 2</td><td>Cartão</td><td>R$ 650</td><td><span class="pill gold">A vencer</span></td></tr></tbody></table></div></div></div>
+ </div>
+</section>
+
+<section class="view" id="procedimentos">
+ <div class="pagehead"><div><h1>Procedimentos</h1><p>Catálogo, preços, duração e execução clínica.</p></div><button class="btn primary" onclick="openModal('procedimentoModal')">+ Novo procedimento</button></div>
+ <div class="card"><div class="tablewrap"><table><thead><tr><th>Procedimento</th><th>Categoria</th><th>Duração padrão</th><th>Preço base</th><th>Realizados no mês</th><th></th></tr></thead><tbody>
+  <tr><td><b>Consulta / avaliação</b></td><td>Diagnóstico</td><td>40 min</td><td>R$ 180</td><td>46</td><td><button class="btn sm">Editar</button></td></tr>
+  <tr><td><b>Profilaxia</b></td><td>Preventivo</td><td>40 min</td><td>R$ 220</td><td>28</td><td><button class="btn sm">Editar</button></td></tr>
+  <tr><td><b>Restauração em resina</b></td><td>Dentística</td><td>50 min</td><td>R$ 350</td><td>31</td><td><button class="btn sm">Editar</button></td></tr>
+  <tr><td><b>Tratamento endodôntico</b></td><td>Endodontia</td><td>60 min</td><td>R$ 1.950</td><td>12</td><td><button class="btn sm">Editar</button></td></tr>
+  <tr><td><b>Implante unitário</b></td><td>Implantodontia</td><td>90 min</td><td>R$ 3.850</td><td>7</td><td><button class="btn sm">Editar</button></td></tr>
+ </tbody></table></div></div>
+</section>
+
+<section class="view" id="cirurgias">
+ <div class="pagehead"><div><h1>Cirurgias</h1><p>Pré-operatório, documentação, materiais e acompanhamento.</p></div><button class="btn primary" onclick="openModal('cirurgiaModal')">+ Planejar cirurgia</button></div>
+ <div class="grid3">
+  <div class="card pad"><span class="pill gold">Hoje • 14:00</span><h3>Camila Rocha</h3><p class="small muted">Exodontia de terceiro molar • Elemento 38</p><hr style="border:0;border-top:1px solid var(--line)"><p class="small">✓ Anamnese revisada<br>✓ Termo assinado<br>✓ Radiografia anexada<br>• Confirmar medicação pré-op.</p><button class="btn sm">Abrir planejamento</button></div>
+  <div class="card pad"><span class="pill">18/08 • 09:00</span><h3>Rodrigo Melo</h3><p class="small muted">Implante unitário • Elemento 46</p><hr style="border:0;border-top:1px solid var(--line)"><p class="small">✓ Tomografia anexada<br>✓ Implante selecionado<br>• Termo pendente<br>• Confirmar laboratório</p><button class="btn sm">Abrir planejamento</button></div>
+  <div class="card pad"><span class="pill">21/08 • 15:00</span><h3>Ana Martins</h3><p class="small muted">Enxerto ósseo</p><hr style="border:0;border-top:1px solid var(--line)"><p class="small">✓ Avaliação realizada<br>• Solicitar exames<br>• Separar biomaterial<br>• Confirmar auxiliar</p><button class="btn sm">Abrir planejamento</button></div>
+ </div>
+</section>
+
+<section class="view" id="financeiro">
+ <div class="pagehead"><div><h1>Financeiro</h1><p>Receitas, despesas, recebimentos e desempenho da clínica.</p></div><div class="toolbar"><button class="btn">Exportar</button><button class="btn primary" onclick="openModal('financeiroModal')">+ Lançamento</button></div></div>
+ <div class="grid4"><div class="card pad kpi"><small>Receita recebida</small><strong>R$ 48,6 mil</strong><span class="positive">↑ 8,4%</span></div><div class="card pad kpi"><small>Despesas</small><strong>R$ 21,7 mil</strong><span class="muted tiny">44,7% da receita</span></div><div class="card pad kpi"><small>Resultado</small><strong>R$ 26,9 mil</strong><span class="positive">Margem 55,3%</span></div><div class="card pad kpi"><small>Inadimplência</small><strong>4,3%</strong><span class="warning tiny">R$ 2,1 mil vencidos</span></div></div>
+ <div class="grid2" style="margin-top:14px"><div class="card pad"><div class="titlebar"><h3>Receitas x despesas</h3><select class="field"><option>Últimos 7 meses</option></select></div><div class="bars"><div class="baritem"><div class="bar" style="height:45%"></div>Fev</div><div class="baritem"><div class="bar" style="height:52%"></div>Mar</div><div class="baritem"><div class="bar" style="height:48%"></div>Abr</div><div class="baritem"><div class="bar" style="height:63%"></div>Mai</div><div class="baritem"><div class="bar" style="height:60%"></div>Jun</div><div class="baritem"><div class="bar" style="height:83%"></div>Jul</div><div class="baritem"><div class="bar" style="height:75%"></div>Ago</div></div></div>
+ <div class="card pad"><div class="titlebar"><h3>Indicadores</h3></div><div class="answer"><b>Ticket médio</b><span>R$ 642,00</span></div><div class="answer" style="margin-top:8px"><b>Receita por hora clínica</b><span>R$ 428,00</span></div><div class="answer" style="margin-top:8px"><b>Procedimento mais rentável</b><span>Implante unitário</span></div><div class="answer" style="margin-top:8px"><b>Forma de pagamento líder</b><span>Pix • 41%</span></div></div></div>
+ <div class="card" style="margin-top:14px"><div class="pad titlebar"><h3>Movimentações recentes</h3><button class="btn sm">Ver todas</button></div><div class="tablewrap"><table><thead><tr><th>Data</th><th>Descrição</th><th>Paciente / fornecedor</th><th>Categoria</th><th>Valor</th><th>Status</th></tr></thead><tbody><tr><td>13/08</td><td>Profilaxia</td><td>Mariana Costa</td><td>Receita</td><td>+ R$ 220</td><td><span class="pill">Recebido</span></td></tr><tr><td>12/08</td><td>Materiais cirúrgicos</td><td>Dental Supply</td><td>Despesa</td><td>- R$ 1.280</td><td><span class="pill">Pago</span></td></tr><tr><td>11/08</td><td>Endodontia</td><td>Beatriz Lima</td><td>Receita</td><td>+ R$ 650</td><td><span class="pill">Recebido</span></td></tr></tbody></table></div></div>
+</section>
+
+<section class="view" id="relatorios">
+ <div class="pagehead"><div><h1>Relatórios</h1><p>Informações clínicas, operacionais e financeiras para decisão.</p></div><button class="btn">Personalizar período</button></div>
+ <div class="reportgrid">
+  <div class="card report"><div class="icon">R$</div><h3>Faturamento por período</h3><p>Receita, recebimentos, ticket médio e evolução mensal.</p><button class="btn sm" onclick="toast('Relatório aberto — protótipo')">Gerar relatório</button></div>
+  <div class="card report"><div class="icon">%</div><h3>Inadimplência</h3><p>Valores vencidos, pacientes, aging e recuperação.</p><button class="btn sm">Gerar relatório</button></div>
+  <div class="card report"><div class="icon">⚕</div><h3>Procedimentos</h3><p>Volume, receita e margem estimada por procedimento.</p><button class="btn sm">Gerar relatório</button></div>
+  <div class="card report"><div class="icon">◷</div><h3>Ocupação da agenda</h3><p>Horários ocupados, ociosidade, cancelamentos e faltas.</p><button class="btn sm">Gerar relatório</button></div>
+  <div class="card report"><div class="icon">♙</div><h3>Base de pacientes</h3><p>Novos, ativos, inativos, retorno e retenção.</p><button class="btn sm">Gerar relatório</button></div>
+  <div class="card report"><div class="icon">✣</div><h3>Cirurgias</h3><p>Cirurgias realizadas, tipos, intercorrências e retornos.</p><button class="btn sm">Gerar relatório</button></div>
+ </div>
+</section>
+
+<section class="view" id="config">
+ <div class="pagehead"><div><h1>Configurações</h1><p>Clínica, usuários, modelos e preferências.</p></div><button class="btn primary" onclick="toast('Configurações salvas — protótipo')">Salvar alterações</button></div>
+ <div class="grid2"><div class="card pad"><h3 style="margin-top:0">Dados da clínica</h3><div class="formgrid"><div class="formgroup"><label>Nome</label><input value="Clínica Soberana Dental"></div><div class="formgroup"><label>CNPJ</label><input value="00.000.000/0001-00"></div><div class="formgroup"><label>Telefone</label><input value="(32) 3333-0000"></div><div class="formgroup"><label>WhatsApp</label><input value="(32) 99999-0000"></div></div></div><div class="card pad"><h3 style="margin-top:0">Usuários</h3><div class="person"><div class="avatar">GM</div><div><b>Dr. Gustavo Martins</b><div class="tiny muted">Administrador • Dentista</div></div></div><hr style="border:0;border-top:1px solid var(--line)"><div class="person"><div class="avatar">AM</div><div><b>Ana Medeiros</b><div class="tiny muted">Recepção</div></div></div><button class="btn sm" style="margin-top:14px">+ Adicionar usuário</button></div></div>
+</section>
+
+<footer class="footer"><div><b>Soberana Dental</b><p>Protótipo conceitual de uma plataforma de prontuário e gestão odontológica.</p></div><div><b>Sobre a empresa</b><p><strong>Projeto de Gustavo, Dani e Inara para o Hub de Inovação da Faculdade Soberana.</strong></p></div></footer>
+</div>
+</main>
+</div>
+
+<nav class="mobilebar"><button onclick="go('dashboard')"><b>⌂</b>Início</button><button onclick="go('agenda')"><b>◷</b>Agenda</button><button onclick="go('pacientes')"><b>♙</b>Pacientes</button><button onclick="go('prontuario')"><b>▤</b>Prontuário</button><button onclick="toggleMenu()"><b>☰</b>Mais</button></nav>
+
+<div class="modalback" id="pacienteModal"><div class="modal"><div class="modalhead"><h2>Novo paciente</h2><button class="x" onclick="closeModal('pacienteModal')">✕</button></div><div class="formgrid"><div class="formgroup"><label>Nome completo</label><input placeholder="Nome do paciente"></div><div class="formgroup"><label>CPF</label><input placeholder="000.000.000-00"></div><div class="formgroup"><label>Telefone</label><input placeholder="(00) 00000-0000"></div><div class="formgroup"><label>Data de nascimento</label><input type="date"></div><div class="formgroup" style="grid-column:1/-1"><label>Observações iniciais</label><textarea></textarea></div></div><div class="toolbar" style="justify-content:flex-end;margin-top:14px"><button class="btn" onclick="closeModal('pacienteModal')">Cancelar</button><button class="btn primary" onclick="closeModal('pacienteModal');toast('Paciente cadastrado no protótipo')">Cadastrar</button></div></div></div>
+<div class="modalback" id="agendaModal"><div class="modal"><div class="modalhead"><h2>Novo compromisso</h2><button class="x" onclick="closeModal('agendaModal')">✕</button></div><div class="formgrid"><div class="formgroup"><label>Paciente</label><select><option>Mariana Costa</option><option>Beatriz Lima</option><option>Lucas Ferreira</option></select></div><div class="formgroup"><label>Procedimento</label><select><option>Avaliação</option><option>Profilaxia</option><option>Endodontia</option></select></div><div class="formgroup"><label>Data</label><input type="date"></div><div class="formgroup"><label>Horário</label><input type="time"></div></div><div class="toolbar" style="justify-content:flex-end;margin-top:14px"><button class="btn" onclick="closeModal('agendaModal')">Cancelar</button><button class="btn primary" onclick="closeModal('agendaModal');toast('Compromisso criado no protótipo')">Agendar</button></div></div></div>
+<div class="modalback" id="atendimentoModal"><div class="modal"><div class="modalhead"><h2>Iniciar atendimento</h2><button class="x" onclick="closeModal('atendimentoModal')">✕</button></div><p class="small muted">Selecione o paciente. O protótipo abrirá diretamente a visão integrada do prontuário.</p><div class="formgroup"><label>Paciente</label><select><option>Beatriz Lima — 10:00</option><option>Mariana Costa — 08:30</option><option>Lucas Ferreira — 11:20</option></select></div><div class="toolbar" style="justify-content:flex-end;margin-top:14px"><button class="btn primary" onclick="closeModal('atendimentoModal');go('prontuario')">Abrir prontuário</button></div></div></div>
+<div class="modalback" id="procedimentoModal"><div class="modal"><div class="modalhead"><h2>Planejar procedimento</h2><button class="x" onclick="closeModal('procedimentoModal')">✕</button></div><div class="formgrid"><div class="formgroup"><label>Procedimento</label><select><option>Restauração</option><option>Endodontia</option><option>Implante</option></select></div><div class="formgroup"><label>Elemento</label><input value="36"></div><div class="formgroup"><label>Valor</label><input value="R$ 350,00"></div><div class="formgroup"><label>Sessões</label><input value="1"></div></div><div class="toolbar" style="justify-content:flex-end;margin-top:14px"><button class="btn primary" onclick="closeModal('procedimentoModal');toast('Procedimento incluído no plano')">Adicionar ao plano</button></div></div></div>
+<div class="modalback" id="cirurgiaModal"><div class="modal"><div class="modalhead"><h2>Planejar cirurgia</h2><button class="x" onclick="closeModal('cirurgiaModal')">✕</button></div><div class="formgrid"><div class="formgroup"><label>Paciente</label><input placeholder="Buscar paciente"></div><div class="formgroup"><label>Tipo</label><select><option>Implante</option><option>Exodontia</option><option>Enxerto ósseo</option></select></div><div class="formgroup"><label>Data</label><input type="date"></div><div class="formgroup"><label>Duração</label><select><option>60 min</option><option>90 min</option><option>120 min</option></select></div></div><div class="toolbar" style="justify-content:flex-end;margin-top:14px"><button class="btn primary" onclick="closeModal('cirurgiaModal');toast('Planejamento criado no protótipo')">Criar planejamento</button></div></div></div>
+<div class="modalback" id="financeiroModal"><div class="modal"><div class="modalhead"><h2>Novo lançamento</h2><button class="x" onclick="closeModal('financeiroModal')">✕</button></div><div class="formgrid"><div class="formgroup"><label>Tipo</label><select><option>Receita</option><option>Despesa</option></select></div><div class="formgroup"><label>Valor</label><input placeholder="R$ 0,00"></div><div class="formgroup"><label>Descrição</label><input></div><div class="formgroup"><label>Data</label><input type="date"></div></div><div class="toolbar" style="justify-content:flex-end;margin-top:14px"><button class="btn primary" onclick="closeModal('financeiroModal');toast('Lançamento registrado no protótipo')">Salvar</button></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const views=[...document.querySelectorAll('.view')], navs=[...document.querySelectorAll('.navbtn')], aside=document.getElementById('aside'), overlay=document.getElementById('overlay');
+function go(id){views.forEach(v=>v.classList.toggle('active',v.id===id));navs.forEach(n=>n.classList.toggle('active',n.dataset.view===id));window.scrollTo({top:0,behavior:'smooth'});if(innerWidth<781){aside.classList.remove('open');overlay.classList.remove('show')}}
+navs.forEach(n=>n.onclick=()=>go(n.dataset.view));
+function toggleMenu(){aside.classList.toggle('open');overlay.classList.toggle('show')}document.getElementById('hamb').onclick=toggleMenu;overlay.onclick=toggleMenu;
+function openModal(id){document.getElementById(id).classList.add('open')}function closeModal(id){document.getElementById(id).classList.remove('open')}
+document.querySelectorAll('.modalback').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
+function selectTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===id));document.querySelectorAll('.patientpanel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+id))}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>selectTab(t.dataset.tab));
+function makeTeeth(el,nums,classes={}){el.innerHTML=nums.map(n=>`<button class="tooth ${classes[n]||''}" onclick="document.getElementById('toothSelection').textContent='Elemento ${n} selecionado'">${n}</button>`).join('')}
+makeTeeth(document.getElementById('teeth1'),[18,17,16,15,14,13,12,11,21,22,23,24,25,26,27,28],{16:'done',24:'plan'});
+makeTeeth(document.getElementById('teeth2'),[48,47,46,45,44,43,42,41,31,32,33,34,35,36,37,38],{36:'problem',46:'plan',38:'done'});
+document.getElementById('globalSearch').addEventListener('keydown',e=>{if(e.key==='Enter'){go('pacientes');toast('Busca simulada: '+e.target.value)}});
+</script>
+</body>
+</html>
