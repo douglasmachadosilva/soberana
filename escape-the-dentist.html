@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Escape the Dentist</title>
+<style>
+  :root{
+    --bg:#08090b;
+    --panel:#111418;
+    --panel2:#171b20;
+    --text:#e8ecef;
+    --muted:#9ba5ad;
+    --danger:#b31624;
+    --danger2:#6f0d16;
+    --accent:#d7e2e8;
+    --line:#2a3036;
+    --ok:#6cbf84;
+    --warn:#d9b35f;
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 50% 10%, rgba(120,0,0,.11), transparent 35%),
+      linear-gradient(180deg,#08090b 0%,#050607 100%);
+    overflow-x:hidden;
+  }
+
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.06;
+    background-image:
+      repeating-linear-gradient(0deg, transparent 0 2px, #fff 3px 4px);
+    mix-blend-mode:overlay;
+    animation:flicker 7s infinite steps(1);
+  }
+
+  @keyframes flicker{
+    0%,94%,100%{opacity:.05}
+    95%{opacity:.11}
+    96%{opacity:.025}
+    97%{opacity:.09}
+  }
+
+  .wrap{max-width:1180px;margin:0 auto;padding:24px}
+  .topbar{
+    display:flex;gap:14px;align-items:center;justify-content:space-between;
+    border:1px solid var(--line);
+    background:rgba(17,20,24,.9);
+    padding:14px 16px;border-radius:14px;
+    box-shadow:0 20px 70px rgba(0,0,0,.35);
+    position:sticky;top:12px;z-index:20;backdrop-filter:blur(10px)
+  }
+  .brand{display:flex;align-items:center;gap:12px}
+  .tooth{
+    width:38px;height:38px;border-radius:10px;background:linear-gradient(145deg,#f0f3f5,#a8b0b6);
+    display:grid;place-items:center;color:#111;font-size:23px;box-shadow:inset 0 -6px 12px rgba(0,0,0,.15)
+  }
+  .brand h1{font-size:17px;letter-spacing:.08em;margin:0;text-transform:uppercase}
+  .brand small{display:block;color:var(--muted);margin-top:2px}
+  .status{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+  .pill{border:1px solid var(--line);background:#0d1013;padding:8px 10px;border-radius:999px;color:var(--muted);font-size:12px}
+  .pill strong{color:var(--text)}
+
+  .game{
+    display:grid;
+    grid-template-columns:1.4fr .75fr;
+    gap:20px;
+    margin-top:20px;
+  }
+
+  .panel{
+    border:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(18,21,25,.97),rgba(11,13,16,.97));
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 24px 70px rgba(0,0,0,.28);
+  }
+
+  .scene{
+    position:relative;
+    min-height:520px;
+    padding:28px;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    background:
+      linear-gradient(to top, rgba(5,6,7,.96) 0%, rgba(5,6,7,.5) 42%, rgba(5,6,7,.18) 100%),
+      radial-gradient(circle at 70% 20%, rgba(180,180,180,.14), transparent 28%),
+      linear-gradient(135deg,#222831,#0d1116 50%,#15191e);
+  }
+
+  .scene.reception{
+    background:
+      linear-gradient(to top, rgba(5,6,7,.96) 0%, rgba(5,6,7,.45) 43%, rgba(5,6,7,.1) 100%),
+      linear-gradient(90deg,transparent 0 65%,rgba(118,9,19,.22) 65% 67%,transparent 67%),
+      radial-gradient(circle at 25% 22%,rgba(210,220,225,.12),transparent 24%),
+      linear-gradient(135deg,#20262b,#101419 48%,#171b20);
+  }
+  .scene.office{
+    background:
+      linear-gradient(to top, rgba(5,6,7,.96), rgba(5,6,7,.38) 45%, rgba(5,6,7,.12)),
+      radial-gradient(circle at 63% 23%,rgba(255,255,240,.17),transparent 18%),
+      linear-gradient(135deg,#1b2025,#0b0f13 46%,#161a1e);
+  }
+  .scene.xray{
+    background:
+      linear-gradient(to top, rgba(5,6,7,.96), rgba(5,6,7,.38) 45%, rgba(5,6,7,.15)),
+      radial-gradient(circle at 50% 28%,rgba(118,160,176,.15),transparent 20%),
+      linear-gradient(135deg,#172027,#0a0d10 48%,#12181d);
+  }
+  .scene.sterile{
+    background:
+      linear-gradient(to top, rgba(5,6,7,.96), rgba(5,6,7,.4) 45%, rgba(5,6,7,.14)),
+      repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0 2px,transparent 2px 70px),
+      linear-gradient(135deg,#1a2023,#0c1013 50%,#171b1e);
+  }
+  .scene.basement{
+    background:
+      linear-gradient(to top, rgba(5,6,7,.98), rgba(5,6,7,.55) 50%, rgba(5,6,7,.25)),
+      radial-gradient(circle at 50% 10%,rgba(150,0,0,.18),transparent 25%),
+      linear-gradient(135deg,#160c0e,#070809 55%,#10090a);
+  }
+
+  .scene::after{
+    content:"";
+    position:absolute;inset:0;pointer-events:none;
+    box-shadow:inset 0 0 140px rgba(0,0,0,.82);
+  }
+
+  .room-art{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    opacity:.95;
+    pointer-events:none;
+  }
+  .door{
+    position:absolute;right:10%;bottom:20%;width:110px;height:230px;
+    border:8px solid #24282d;background:linear-gradient(90deg,#191c20,#0f1114);
+    box-shadow:0 0 30px rgba(0,0,0,.6)
+  }
+  .door::after{content:"";position:absolute;right:13px;top:50%;width:9px;height:9px;border-radius:50%;background:#8a6d36}
+  .chair{
+    position:absolute;left:18%;bottom:19%;width:190px;height:105px;background:#1d262a;border-radius:80px 80px 28px 28px;transform:rotate(-9deg);
+    border:2px solid #334047;box-shadow:0 20px 30px rgba(0,0,0,.45)
+  }
+  .chair::after{
+    content:"";position:absolute;left:70px;top:80px;width:24px;height:150px;background:#20262b;transform:rotate(9deg)
+  }
+  .lamp{
+    position:absolute;left:36%;top:13%;width:110px;height:110px;border-radius:50%;
+    border:10px solid #2a3034;box-shadow:0 0 35px rgba(240,244,220,.10),inset 0 0 30px rgba(230,230,200,.08)
+  }
+  .monitor{
+    position:absolute;left:10%;top:18%;width:160px;height:110px;border:9px solid #1a1d20;background:#071013;
+    box-shadow:0 0 25px rgba(70,130,150,.08)
+  }
+  .monitor::before{
+    content:"PATIENT: UNKNOWN\A STATUS: ...";
+    white-space:pre;
+    position:absolute;inset:12px;color:#7da3a7;font:11px/1.6 monospace;opacity:.85
+  }
+
+  .scene-content{position:relative;z-index:3;max-width:760px}
+  .eyebrow{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:#aeb6bc;margin-bottom:8px}
+  .scene h2{font-size:36px;line-height:1.08;margin:0 0 12px}
+  .scene p{margin:0;color:#c3cbd1;max-width:700px;line-height:1.65}
+  .whisper{margin-top:14px!important;color:#d5a0a5!important;font-style:italic}
+
+  .actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;background:#0c0f12;border-top:1px solid var(--line)}
+  button{
+    appearance:none;border:1px solid #343b42;background:#171b20;color:var(--text);
+    padding:11px 14px;border-radius:10px;font-weight:650;cursor:pointer;
+    transition:.18s ease;box-shadow:none
+  }
+  button:hover{transform:translateY(-1px);background:#20252b;border-color:#48515a}
+  button.primary{background:var(--danger2);border-color:#9c1622}
+  button.primary:hover{background:#8a101c}
+  button:disabled{opacity:.4;cursor:not-allowed;transform:none}
+
+  .side{display:flex;flex-direction:column;gap:20px}
+  .side-section{padding:18px}
+  .side h3{font-size:14px;text-transform:uppercase;letter-spacing:.11em;margin:0 0 12px;color:#cbd2d7}
+  .inventory{display:grid;gap:9px}
+  .item{
+    border:1px solid var(--line);background:#0d1013;padding:11px;border-radius:10px;
+    color:var(--muted);font-size:13px
+  }
+  .item strong{color:var(--text);display:block;margin-bottom:3px}
+  .empty{color:#68737b;font-style:italic;font-size:13px}
+
+  .log{
+    max-height:300px;overflow:auto;display:flex;flex-direction:column;gap:9px;padding-right:4px
+  }
+  .log-entry{
+    border-left:2px solid #4a5158;padding-left:10px;color:#9fa9b0;font-size:12px;line-height:1.5
+  }
+  .log-entry.danger{border-left-color:var(--danger);color:#c6a0a4}
+  .log-entry.ok{border-left-color:var(--ok);color:#9cc7aa}
+
+  .modal{
+    position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;place-items:center;padding:20px;z-index:100;
+    backdrop-filter:blur(7px)
+  }
+  .modal.show{display:grid}
+  .modal-card{
+    width:min(560px,100%);background:#11151a;border:1px solid #343b42;border-radius:18px;padding:24px;
+    box-shadow:0 30px 100px rgba(0,0,0,.65)
+  }
+  .modal-card h2{margin:0 0 10px}
+  .modal-card p{color:#b9c1c7;line-height:1.6}
+  .choices{display:grid;gap:10px;margin-top:18px}
+  .choices button{text-align:left}
+  .code-input{display:flex;gap:8px;margin-top:16px}
+  .code-input input{
+    flex:1;background:#090b0d;border:1px solid #353c43;color:white;padding:12px 13px;border-radius:10px;font-size:18px;letter-spacing:.22em
+  }
+
+  .flash{
+    position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:150
+  }
+  .flash.on{animation:flash .26s}
+  @keyframes flash{0%{opacity:0}35%{opacity:.88}100%{opacity:0}}
+
+  .jumpscare{
+    position:fixed;inset:0;display:none;place-items:center;background:#020202;z-index:200
+  }
+  .jumpscare.show{display:grid;animation:shake .22s linear 2}
+  .face{
+    width:min(420px,75vw);aspect-ratio:1;border-radius:50%;
+    background:
+      radial-gradient(circle at 34% 38%,#050505 0 10%,transparent 11%),
+      radial-gradient(circle at 66% 38%,#050505 0 10%,transparent 11%),
+      radial-gradient(ellipse at 50% 67%,#080808 0 18%,transparent 19%),
+      radial-gradient(circle,#d8d8d0,#6a6a66 66%,#111 67%);
+    box-shadow:0 0 80px rgba(255,255,255,.08)
+  }
+  @keyframes shake{
+    0%{transform:translate(0)}
+    25%{transform:translate(14px,-8px)}
+    50%{transform:translate(-13px,10px)}
+    75%{transform:translate(9px,5px)}
+    100%{transform:translate(0)}
+  }
+
+  .end{
+    display:none;min-height:100vh;place-items:center;text-align:center;padding:30px;
+    background:radial-gradient(circle at 50% 30%,rgba(120,0,0,.18),transparent 33%),#050607
+  }
+  .end.show{display:grid}
+  .end-card{max-width:720px}
+  .end h1{font-size:clamp(42px,8vw,84px);margin:0 0 12px}
+  .end p{color:#bbc3c9;line-height:1.7}
+  .end .big{font-size:19px;color:white}
+
+  @media(max-width:900px){
+    .game{grid-template-columns:1fr}
+    .topbar{position:static}
+    .scene{min-height:470px}
+  }
+  @media(max-width:600px){
+    .wrap{padding:12px}
+    .topbar{align-items:flex-start;flex-direction:column}
+    .status{justify-content:flex-start}
+    .scene{padding:22px;min-height:500px}
+    .scene h2{font-size:30px}
+    .chair{left:8%;transform:scale(.82) rotate(-9deg)}
+    .door{right:5%;transform:scale(.8);transform-origin:bottom right}
+    .monitor{left:6%;transform:scale(.8);transform-origin:top left}
+    .lamp{left:40%;transform:scale(.75)}
+  }
+
+  /* ===== Horror game expansion ===== */
+  :root{
+    --blood:#e00022;
+    --blood-dark:#4d000b;
+    --toxic:#94ffb4;
+  }
+
+  body{
+    cursor:crosshair;
+  }
+
+  body::after{
+    content:"";
+    position:fixed;inset:0;
+    pointer-events:none;
+    z-index:999;
+    background:
+      radial-gradient(circle at center, transparent 48%, rgba(0,0,0,.68) 100%),
+      repeating-linear-gradient(180deg, rgba(255,255,255,.025) 0 1px, transparent 1px 4px);
+    mix-blend-mode:screen;
+    opacity:.38;
+  }
+
+  .blood-drip{
+    position:fixed;
+    top:-30px;
+    width:8px;
+    height:110px;
+    background:linear-gradient(#2d0007,var(--blood),transparent);
+    border-radius:0 0 999px 999px;
+    opacity:.24;
+    pointer-events:none;
+    z-index:5;
+    filter:blur(.4px);
+    animation:drip linear infinite;
+  }
+
+  @keyframes drip{
+    0%{transform:translateY(-120px) scaleY(.5);opacity:0}
+    20%{opacity:.24}
+    100%{transform:translateY(120vh) scaleY(1.5);opacity:0}
+  }
+
+  .fog{
+    position:fixed;
+    width:55vw;height:30vw;
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(190,200,205,.08),transparent 70%);
+    filter:blur(24px);
+    pointer-events:none;
+    z-index:1;
+    animation:fogMove 16s ease-in-out infinite alternate;
+  }
+  .fog.f1{left:-10vw;top:20vh}
+  .fog.f2{right:-10vw;bottom:5vh;animation-delay:-7s}
+
+  @keyframes fogMove{
+    from{transform:translate(-4vw,-2vh) scale(.9)}
+    to{transform:translate(10vw,5vh) scale(1.15)}
+  }
+
+  .topbar{
+    box-shadow:0 0 0 1px rgba(220,0,30,.08),0 20px 70px rgba(0,0,0,.55),0 0 38px rgba(150,0,18,.08);
+  }
+
+  .brand h1{
+    text-shadow:0 0 12px rgba(210,0,28,.35);
+  }
+
+  .tooth{
+    animation:toothPulse 4.2s infinite;
+  }
+
+  @keyframes toothPulse{
+    0%,88%,100%{transform:rotate(0);filter:none}
+    90%{transform:rotate(-4deg);filter:brightness(1.5)}
+    93%{transform:rotate(4deg);filter:brightness(.65)}
+    96%{transform:rotate(-2deg)}
+  }
+
+  .panel{
+    position:relative;
+  }
+
+  .panel::before{
+    content:"";
+    position:absolute;inset:0;
+    pointer-events:none;
+    z-index:10;
+    background:linear-gradient(100deg,transparent 20%,rgba(255,0,35,.025) 50%,transparent 80%);
+    transform:translateX(-120%);
+    animation:panelSweep 7s linear infinite;
+  }
+
+  @keyframes panelSweep{
+    to{transform:translateX(120%)}
+  }
+
+  .scene{
+    overflow:hidden;
+  }
+
+  .scene::before{
+    content:"";
+    position:absolute;inset:-20%;
+    pointer-events:none;
+    z-index:2;
+    background:
+      repeating-radial-gradient(circle at 50% 50%,transparent 0 19px,rgba(255,255,255,.012) 20px 21px),
+      linear-gradient(90deg,transparent 0 48%,rgba(210,0,30,.06) 49% 50%,transparent 51%);
+    animation:sceneNoise 9s steps(2) infinite;
+  }
+
+  @keyframes sceneNoise{
+    0%,92%,100%{transform:translate(0,0);opacity:.25}
+    93%{transform:translate(-7px,2px);opacity:.75}
+    94%{transform:translate(10px,-3px);opacity:.15}
+    95%{transform:translate(-4px,5px);opacity:.55}
+  }
+
+  .scene.glitch{
+    animation:screenGlitch .32s steps(2);
+  }
+
+  @keyframes screenGlitch{
+    0%{transform:translate(0);filter:none}
+    20%{transform:translate(-8px,3px);filter:contrast(1.7) saturate(1.7)}
+    40%{transform:translate(8px,-4px);filter:hue-rotate(12deg)}
+    60%{transform:translate(-4px,2px);filter:brightness(.6)}
+    80%{transform:translate(5px,-1px);filter:contrast(1.4)}
+    100%{transform:translate(0);filter:none}
+  }
+
+  .scene h2{
+    position:relative;
+    text-shadow:2px 0 rgba(210,0,30,.3),-2px 0 rgba(0,140,255,.12),0 5px 30px #000;
+  }
+
+  .scene h2::after{
+    content:attr(data-shadow);
+    position:absolute;left:2px;top:0;
+    color:rgba(225,0,30,.17);
+    clip-path:inset(40% 0 30% 0);
+    transform:translateX(2px);
+    pointer-events:none;
+  }
+
+  .actions button{
+    position:relative;
+    overflow:hidden;
+  }
+
+  .actions button::after{
+    content:"";
+    position:absolute;inset:0;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);
+    transform:translateX(-140%);
+  }
+
+  .actions button:hover::after{
+    animation:buttonSweep .5s ease;
+  }
+
+  @keyframes buttonSweep{
+    to{transform:translateX(140%)}
+  }
+
+  button.primary{
+    box-shadow:inset 0 0 20px rgba(0,0,0,.25),0 0 20px rgba(180,0,25,.08);
+  }
+
+  .danger-pulse{
+    animation:dangerPulse .7s ease;
+  }
+
+  @keyframes dangerPulse{
+    0%,100%{box-shadow:none}
+    25%{box-shadow:inset 0 0 0 100vmax rgba(150,0,20,.18)}
+    50%{box-shadow:inset 0 0 0 100vmax rgba(0,0,0,.0)}
+    75%{box-shadow:inset 0 0 0 100vmax rgba(150,0,20,.10)}
+  }
+
+  .screen-shake{
+    animation:fullShake .28s linear;
+  }
+
+  @keyframes fullShake{
+    0%{transform:translate(0)}
+    20%{transform:translate(-8px,4px)}
+    40%{transform:translate(7px,-5px)}
+    60%{transform:translate(-6px,-2px)}
+    80%{transform:translate(5px,3px)}
+    100%{transform:translate(0)}
+  }
+
+  .hit-marker{
+    position:fixed;
+    left:50%;top:50%;
+    width:40px;height:40px;
+    transform:translate(-50%,-50%) rotate(45deg);
+    opacity:0;pointer-events:none;z-index:300;
+  }
+
+  .hit-marker::before,.hit-marker::after{
+    content:"";position:absolute;background:var(--blood);
+  }
+  .hit-marker::before{width:100%;height:4px;top:18px;left:0}
+  .hit-marker::after{height:100%;width:4px;left:18px;top:0}
+
+  .hit-marker.show{animation:hitMarker .3s ease}
+
+  @keyframes hitMarker{
+    0%{opacity:0;transform:translate(-50%,-50%) rotate(45deg) scale(.4)}
+    40%{opacity:1;transform:translate(-50%,-50%) rotate(45deg) scale(1.1)}
+    100%{opacity:0;transform:translate(-50%,-50%) rotate(45deg) scale(1.5)}
+  }
+
+  .success-burst{
+    position:fixed;inset:0;
+    pointer-events:none;z-index:250;
+    background:radial-gradient(circle at center,rgba(120,255,165,.15),transparent 35%);
+    opacity:0;
+  }
+  .success-burst.show{animation:successBurst .55s ease}
+  @keyframes successBurst{
+    0%{opacity:0;transform:scale(.5)}
+    40%{opacity:1}
+    100%{opacity:0;transform:scale(1.4)}
+  }
+
+  .audio-toggle{
+    border:1px solid var(--line);
+    background:#0b0e11;
+    padding:8px 11px;
+    border-radius:999px;
+    color:#d4d9dd;
+    font-size:12px;
+  }
+
+  .audio-toggle.on{
+    border-color:#7c141d;
+    box-shadow:0 0 18px rgba(180,0,25,.12);
+  }
+
+  .heartbeat{
+    position:fixed;
+    left:14px;bottom:12px;
+    z-index:30;
+    font-size:11px;
+    letter-spacing:.14em;
+    color:#8f9aa1;
+    opacity:.7;
+    pointer-events:none;
+  }
+
+  .heartbeat::before{
+    content:"♥";
+    color:#8d0f1b;
+    margin-right:6px;
+    display:inline-block;
+    animation:heartBeat 1.5s infinite;
+  }
+
+  @keyframes heartBeat{
+    0%,28%,100%{transform:scale(1)}
+    10%{transform:scale(1.38)}
+    17%{transform:scale(1.05)}
+    22%{transform:scale(1.28)}
+  }
+
+
+  /* ===== Extra game FX ===== */
+  .red-alert{
+    position:fixed; inset:0; pointer-events:none; z-index:260;
+    background:radial-gradient(circle at center, transparent 35%, rgba(190,0,24,.28) 100%);
+    opacity:0;
+  }
+  .red-alert.show{animation:redAlert .8s ease}
+  @keyframes redAlert{
+    0%,100%{opacity:0}
+    18%,48%{opacity:.95}
+    32%,68%{opacity:.2}
+  }
+
+  .static-overlay{
+    position:fixed; inset:0; pointer-events:none; z-index:255; opacity:0;
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.09) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(90deg, rgba(255,0,30,.035) 0 2px, transparent 2px 5px);
+    mix-blend-mode:screen;
+  }
+  .static-overlay.show{animation:staticHit .45s steps(3)}
+  @keyframes staticHit{
+    0%{opacity:0}
+    20%{opacity:.45;transform:translateX(-5px)}
+    45%{opacity:.15;transform:translateX(7px)}
+    70%{opacity:.38;transform:translateX(-3px)}
+    100%{opacity:0;transform:none}
+  }
+
+  .room-pulse{
+    animation:roomPulse .9s ease;
+  }
+  @keyframes roomPulse{
+    0%,100%{filter:none}
+    30%{filter:contrast(1.5) brightness(.55) saturate(1.4)}
+    55%{filter:contrast(1.9) brightness(1.15) saturate(.8)}
+  }
+
+  .objective{
+    position:fixed;
+    top:84px;left:50%;transform:translateX(-50%);
+    z-index:240;
+    padding:9px 14px;
+    border:1px solid rgba(180,0,25,.4);
+    background:rgba(8,8,10,.9);
+    border-radius:9px;
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:#d6d9dc;
+    opacity:0;
+    pointer-events:none;
+    box-shadow:0 0 28px rgba(180,0,25,.12);
+  }
+  .objective.show{animation:objectivePop 2.1s ease}
+  @keyframes objectivePop{
+    0%{opacity:0;transform:translate(-50%,-8px)}
+    15%,75%{opacity:1;transform:translate(-50%,0)}
+    100%{opacity:0;transform:translate(-50%,8px)}
+  }
+
+  .scene-content .whisper{
+    animation:whisperPulse 4s ease-in-out infinite;
+  }
+  @keyframes whisperPulse{
+    0%,100%{opacity:.66}
+    50%{opacity:1;text-shadow:0 0 16px rgba(200,0,25,.2)}
+  }
+
+</style>
+</head>
+<body>
+
+<div class="fog f1"></div>
+<div class="fog f2"></div>
+<div class="hit-marker" id="hitMarker"></div>
+<div class="success-burst" id="successBurst"></div>
+<div class="heartbeat">SINAL VITAL INSTÁVEL</div>
+<div class="red-alert" id="redAlert"></div>
+<div class="static-overlay" id="staticOverlay"></div>
+<div class="objective" id="objectiveToast"></div>
+<script>
+  for(let i=0;i<14;i++){
+    const d=document.createElement("div");
+    d.className="blood-drip";
+    d.style.left=(Math.random()*100)+"vw";
+    d.style.animationDuration=(7+Math.random()*10)+"s";
+    d.style.animationDelay=(-Math.random()*12)+"s";
+    d.style.opacity=(.08+Math.random()*.18);
+    d.style.height=(50+Math.random()*120)+"px";
+    document.body.appendChild(d);
+  }
+</script>
+
+
+<div id="gameRoot" class="wrap">
+  <div class="topbar">
+    <div class="brand">
+      <div class="tooth">🦷</div>
+      <div>
+        <h1>Escape the Dentist</h1>
+        <small>Uma clínica. Cinco salas. Uma saída.</small>
+      </div>
+    </div>
+    <div class="status">
+      <div class="pill">Sala: <strong id="roomLabel">Recepção</strong></div>
+      <div class="pill">Pistas: <strong id="clueCount">0/4</strong></div>
+      <div class="pill">Hora: <strong id="clock">03:17</strong></div>
+<button id="audioToggle" class="audio-toggle" onclick="toggleAudio()">🔇 Som desligado</button>
+    </div>
+  </div>
+
+  <main class="game">
+    <section class="panel">
+      <div id="scene" class="scene reception">
+        <div class="room-art">
+          <div class="door"></div>
+          <div class="monitor"></div>
+        </div>
+        <div class="scene-content">
+          <div class="eyebrow">Clínica Odontológica Santa Ágata • 03:17</div>
+          <h2 id="roomTitle">Você acorda na recepção.</h2>
+          <p id="roomText">A porta principal está trancada. O telefone não dá linha. No balcão, uma ficha de paciente está aberta em seu nome — mas você nunca esteve aqui.</p>
+          <p id="roomWhisper" class="whisper">Do corredor vem um som metálico. Como uma bandeja de instrumentos sendo arrastada.</p>
+        </div>
+      </div>
+      <div id="actions" class="actions"></div>
+    </section>
+
+    <aside class="side">
+      <section class="panel side-section">
+        <h3>Inventário</h3>
+        <div id="inventory" class="inventory">
+          <div class="empty">Você ainda não encontrou nada.</div>
+        </div>
+      </section>
+
+      <section class="panel side-section">
+        <h3>Registro</h3>
+        <div id="log" class="log"></div>
+      </section>
+    </aside>
+  </main>
+</div>
+
+
+<div id="introOverlay" class="modal show" style="z-index:500;background:radial-gradient(circle at center,rgba(70,0,10,.22),rgba(0,0,0,.96));">
+  <div class="modal-card" style="text-align:center;border-color:#5b1019;box-shadow:0 0 80px rgba(130,0,18,.16);">
+    <div style="font-size:76px;filter:drop-shadow(0 0 20px rgba(210,0,30,.25))">🦷</div>
+    <div class="eyebrow">Horror game • Som obrigatório • Use fones de ouvido</div>
+    <h2 style="font-size:38px;margin-top:5px">ESCAPE THE DENTIST</h2>
+    <p>Você acordou em uma clínica odontológica abandonada. Resolva os enigmas, encontre as pistas e saia antes que o seu “tratamento” comece.</p>
+    <button class="primary" onclick="startGameWithSound()" style="font-size:16px;padding:14px 22px;margin-top:8px">▶ Entrar na clínica</button>
+  </div>
+</div>
+
+<div id="modal" class="modal">
+  <div class="modal-card">
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<div id="flash" class="flash"></div>
+
+<div id="jumpscare" class="jumpscare">
+  <div class="face"></div>
+</div>
+
+<section id="endScreen" class="end">
+  <div class="end-card">
+    <div style="font-size:62px">🦷</div>
+    <h1>VOCÊ ESCAPOU.</h1>
+    <p class="big">A porta da clínica se abre às 04:02.</p>
+    <p>Do lado de fora, a rua está vazia. Quando você olha para trás, não há placa, luzes ou recepção. Apenas uma construção abandonada com as janelas fechadas por tábuas.</p>
+    <p style="margin-top:28px;color:#d6a0a5">No seu bolso, porém, há uma ficha de retorno marcada para amanhã.</p>
+    <button onclick="location.reload()" style="margin-top:24px">Jogar novamente</button>
+  </div>
+</section>
+
+<script>
+const rooms = {
+  reception: {
+    label: "Recepção",
+    cls: "reception",
+    title: "Você acorda na recepção.",
+    text: "A porta principal está trancada. O telefone não dá linha. No balcão, uma ficha de paciente está aberta em seu nome — mas você nunca esteve aqui.",
+    whisper: "Do corredor vem um som metálico. Como uma bandeja de instrumentos sendo arrastada.",
+    art: '<div class="door"></div><div class="monitor"></div>',
+    actions: [
+      ["Examinar a ficha", "receptionFile"],
+      ["Ir ao consultório", () => go("office")],
+      ["Tentar a porta principal", "frontDoor"]
+    ]
+  },
+  office: {
+    label: "Consultório 2",
+    cls: "office",
+    title: "A cadeira ainda está inclinada.",
+    text: "O refletor odontológico acende sozinho. Na bancada há uma pinça, um espelho e um odontograma rabiscado. Uma das gavetas está presa por um cadeado numérico.",
+    whisper: "No monitor, uma frase aparece e some: “COMECE PELOS DENTES.”",
+    art: '<div class="chair"></div><div class="lamp"></div><div class="monitor"></div>',
+    actions: [
+      ["Examinar o odontograma", "odontogram"],
+      ["Abrir a gaveta", "drawer"],
+      ["Ir à sala de raio-X", () => go("xray")],
+      ["Voltar à recepção", () => go("reception")]
+    ]
+  },
+  xray: {
+    label: "Sala de raio-X",
+    cls: "xray",
+    title: "Uma radiografia está presa no negatoscópio.",
+    text: "A imagem mostra dentes posteriores. No verso, alguém escreveu: “O que falta revela o próximo número.”",
+    whisper: "Você ouve uma respiração curta atrás da divisória de chumbo.",
+    art: '<div class="monitor" style="left:34%;top:15%;width:230px;height:170px"></div><div class="door"></div>',
+    actions: [
+      ["Analisar a radiografia", "xrayPuzzle"],
+      ["Examinar a divisória", "partition"],
+      ["Ir à esterilização", () => go("sterile")],
+      ["Voltar ao consultório", () => go("office")]
+    ]
+  },
+  sterile: {
+    label: "Esterilização",
+    cls: "sterile",
+    title: "Tudo está limpo demais.",
+    text: "Pacotes esterilizados estão alinhados em silêncio. Um armário de vidro contém instrumentos numerados. Há também uma chave pequena dentro de uma cuba metálica.",
+    whisper: "O autoclave apita. O visor mostra: CICLO FINALIZADO — 00:00.",
+    art: '<div class="monitor" style="left:58%;top:18%;width:180px;height:120px"></div><div class="door"></div>',
+    actions: [
+      ["Pegar a chave", "takeKey"],
+      ["Examinar os instrumentos", "instrumentPuzzle"],
+      ["Descer ao porão", "basementDoor"],
+      ["Voltar à sala de raio-X", () => go("xray")]
+    ]
+  },
+  basement: {
+    label: "Porão",
+    cls: "basement",
+    title: "A saída está aqui.",
+    text: "No fim da escada há uma porta de emergência. Um painel exige uma sequência de quatro números. Acima dele, uma frase foi riscada na parede: “VOCÊ JÁ VIU TODOS ELES.”",
+    whisper: "Atrás de você, a escada range. Um degrau de cada vez.",
+    art: '<div class="door" style="right:38%;bottom:14%;width:150px;height:260px;border-color:#30171a"></div>',
+    actions: [
+      ["Usar o painel da saída", "finalPanel"],
+      ["Examinar a parede", "wall"],
+      ["Voltar à esterilização", () => go("sterile")]
+    ]
+  }
+};
+
+let state = {
+  room:"reception",
+  inventory:[],
+  clues:{file:false, odonto:false, xray:false, instrument:false},
+  drawerOpened:false,
+  key:false,
+  start: Date.now()
+};
+
+const roomLabel = document.getElementById("roomLabel");
+const roomTitle = document.getElementById("roomTitle");
+const roomText = document.getElementById("roomText");
+const roomWhisper = document.getElementById("roomWhisper");
+const scene = document.getElementById("scene");
+const actions = document.getElementById("actions");
+const inventory = document.getElementById("inventory");
+const logEl = document.getElementById("log");
+const modal = document.getElementById("modal");
+const modalContent = document.getElementById("modalContent");
+const clueCount = document.getElementById("clueCount");
+
+function addLog(text,type=""){
+  const e=document.createElement("div");
+  e.className="log-entry "+type;
+  e.textContent=text;
+  logEl.prepend(e);
+}
+
+function addItem(name,desc){
+  if(state.inventory.some(i=>i.name===name)) return;
+  soundItem();
+  state.inventory.push({name,desc});
+  renderInventory();
+  addLog("Item obtido: "+name,"ok");
+}
+
+function renderInventory(){
+  if(!state.inventory.length){
+    inventory.innerHTML='<div class="empty">Você ainda não encontrou nada.</div>';
+    return;
+  }
+  inventory.innerHTML=state.inventory.map(i=>`<div class="item"><strong>${i.name}</strong>${i.desc}</div>`).join("");
+}
+
+function updateClues(){
+  clueCount.textContent = Object.values(state.clues).filter(Boolean).length + "/4";
+}
+
+function go(room){
+  soundDoor(); soundFootstep(); visualGlitch(); staticFX(); roomPulse();
+  state.room=room;
+  renderRoom();
+  addLog("Você entrou em: "+rooms[room].label+".");
+  if(room==="office"){ setTimeout(soundMetal,260); objective("Investigue o consultório."); }
+  if(room==="xray"){ setTimeout(soundMonitor,280); objective("Analise a radiografia."); }
+  if(room==="sterile"){ setTimeout(soundAutoclave,320); objective("Encontre o acesso técnico."); }
+  if(room==="basement"){ setTimeout(()=>{soundHeartbeat(); alertFX();},250); objective("Abra a porta de emergência."); }
+}
+
+function renderRoom(){
+  const r=rooms[state.room];
+  roomLabel.textContent=r.label;
+  scene.className="scene "+r.cls;
+  roomTitle.textContent=r.title;
+  roomTitle.setAttribute("data-shadow", r.title);
+  roomText.textContent=r.text;
+  roomWhisper.textContent=r.whisper;
+  document.querySelector(".room-art").innerHTML=r.art;
+  actions.innerHTML="";
+  r.actions.forEach(([label,act])=>{
+    const b=document.createElement("button");
+    b.textContent=label;
+    if(label.includes("porta") || label.includes("painel") || label.includes("gaveta")) b.classList.add("primary");
+    b.onclick=()=> typeof act==="function" ? act() : interact(act);
+    actions.appendChild(b);
+  });
+}
+
+function showModal(html){
+  modalContent.innerHTML=html;
+  modal.classList.add("show");
+}
+function closeModal(){ modal.classList.remove("show"); }
+modal.addEventListener("click",e=>{if(e.target===modal) closeModal()});
+
+function flash(){
+  visualGlitch();
+  const f=document.getElementById("flash");
+  f.classList.remove("on"); void f.offsetWidth; f.classList.add("on");
+}
+function scare(){
+  soundScare(); screenShake();
+  const j=document.getElementById("jumpscare");
+  j.classList.add("show");
+  setTimeout(()=>j.classList.remove("show"),650);
+}
+
+function markClue(k){
+  if(!state.clues[k]){
+    state.clues[k]=true;
+    updateClues();
+  }
+}
+
+function interact(type){
+  if(type==="receptionFile"){
+    soundMonitor(); staticFX();
+    markClue("file");
+    addItem("Ficha de paciente","No campo 'idade', há apenas o número 7 circulado.");
+    showModal(`
+      <h2>Ficha de paciente</h2>
+      <p><strong>Nome:</strong> [SEU NOME]</p>
+      <p><strong>Idade:</strong> <span style="color:#d68d94;font-size:26px">7</span></p>
+      <p><strong>Procedimento:</strong> “Retorno obrigatório.”</p>
+      <button onclick="closeModal()">Guardar a ficha</button>
+    `);
+  }
+
+  if(type==="frontDoor"){
+    soundKnock(); badFX(); alertFX(); flash();
+    addLog("A porta principal não abre. Há quatro encaixes vazios no painel ao lado.","danger");
+    showModal(`<h2>Trancada.</h2><p>O painel ao lado da porta tem quatro posições. Ainda falta alguma coisa.</p><button onclick="closeModal()">Voltar</button>`);
+  }
+
+  if(type==="odontogram"){
+    soundMetal(); roomPulse();
+    showModal(`
+      <h2>Odontograma</h2>
+      <p>Quatro dentes estão marcados: <strong>11, 21, 31 e 41</strong>. Abaixo, alguém escreveu:</p>
+      <p style="font-size:20px;color:#d7a0a5">“Quantos quadrantes?”</p>
+      <div class="choices">
+        <button onclick="answerOdonto(2)">2</button>
+        <button onclick="answerOdonto(4)">4</button>
+        <button onclick="answerOdonto(8)">8</button>
+      </div>
+    `);
+  }
+
+  if(type==="drawer"){
+    soundMetal();
+    if(!state.clues.odonto){
+      showModal(`<h2>Cadeado numérico</h2><p>O cadeado pede um número. Talvez haja uma pista no consultório.</p><button onclick="closeModal()">Voltar</button>`);
+    } else if(!state.drawerOpened){
+      state.drawerOpened=true;
+      goodFX();
+      addItem("Etiqueta metálica","Gravada com o número 4.");
+      addLog("A gaveta abriu. Dentro havia uma etiqueta metálica.","ok");
+      showModal(`<h2>CLIQUE.</h2><p>O código <strong>4</strong> abre a gaveta. Dentro, uma etiqueta metálica também exibe o número 4.</p><button onclick="closeModal()">Guardar</button>`);
+    } else {
+      showModal(`<h2>Gaveta vazia</h2><p>Você já pegou tudo que havia aqui.</p><button onclick="closeModal()">Voltar</button>`);
+    }
+  }
+
+  if(type==="xrayPuzzle"){
+    soundMonitor(); staticFX();
+    showModal(`
+      <h2>Radiografia</h2>
+      <p>Na imagem, três molares aparecem alinhados, mas o terceiro está ausente.</p>
+      <p>Qual número representa a quantidade de molares que deveriam estar visíveis nesta sequência?</p>
+      <div class="choices">
+        <button onclick="answerXray(2)">2</button>
+        <button onclick="answerXray(3)">3</button>
+        <button onclick="answerXray(4)">4</button>
+      </div>
+    `);
+  }
+
+  if(type==="partition"){
+    closeModal(); soundKnock(); alertFX(); flash(); scare();
+    addLog("Havia alguém atrás da divisória. Ou você acha que havia.","danger");
+  }
+
+  if(type==="takeKey"){
+    soundMetal();
+    if(!state.key){
+      state.key=true;
+      addItem("Chave pequena","Etiqueta: ACESSO TÉCNICO.");
+      addLog("Você pegou uma chave marcada como ACESSO TÉCNICO.","ok");
+    }
+    showModal(`<h2>Chave encontrada</h2><p>A chave estava dentro da cuba. Está gelada.</p><button onclick="closeModal()">Guardar</button>`);
+  }
+
+  if(type==="instrumentPuzzle"){
+    soundAutoclave();
+    showModal(`
+      <h2>Armário de instrumentos</h2>
+      <p>Quatro bandejas estão numeradas. Apenas uma contém um <strong>espelho odontológico</strong>.</p>
+      <p>O espelho serve principalmente para visão indireta e auxílio no exame clínico. Em qual bandeja ele está?</p>
+      <div class="choices">
+        <button onclick="answerInstrument(1)">Bandeja 1 — Fórceps</button>
+        <button onclick="answerInstrument(2)">Bandeja 2 — Espelho e sonda</button>
+        <button onclick="answerInstrument(3)">Bandeja 3 — Brocas</button>
+      </div>
+    `);
+  }
+
+  if(type==="basementDoor"){
+    soundDoor();
+    if(!state.key){
+      showModal(`<h2>Porta de acesso técnico</h2><p>Está trancada. Você precisa de uma chave.</p><button onclick="closeModal()">Voltar</button>`);
+    } else {
+      flash(); go("basement");
+    }
+  }
+
+  if(type==="wall"){
+    soundWhisper(); alertFX(); staticFX();
+    showModal(`
+      <h2>Mensagem na parede</h2>
+      <p>Há quatro riscos verticais. Abaixo deles:</p>
+      <p style="font-size:22px;color:#d7a0a5">RECEPÇÃO → CONSULTÓRIO → RAIO-X → ESTERILIZAÇÃO</p>
+      <p>A ordem importa.</p>
+      <button onclick="closeModal()">Entendi</button>
+    `);
+  }
+
+  if(type==="finalPanel"){
+    soundMonitor(); soundHeartbeat(); alertFX();
+    showModal(`
+      <h2>Painel da saída</h2>
+      <p>Digite a sequência de quatro números encontrada ao longo da clínica.</p>
+      <div class="code-input">
+        <input id="finalCode" maxlength="4" inputmode="numeric" placeholder="••••">
+        <button class="primary" onclick="checkFinal()">Abrir</button>
+      </div>
+      <p style="font-size:12px;color:#78838b;margin-top:12px">Dica: siga a ordem das salas.</p>
+    `);
+    setTimeout(()=>document.getElementById("finalCode")?.focus(),50);
+  }
+}
+
+function answerOdonto(v){
+  if(v===4){
+    goodFX();
+    markClue("odonto");
+    addLog("Enigma do odontograma resolvido: 4 quadrantes.","ok");
+    showModal(`<h2>Correto.</h2><p>A arcada está dividida em <strong>4 quadrantes</strong>. O cadeado da gaveta talvez goste desse número.</p><button onclick="closeModal()">Continuar</button>`);
+  } else {
+    badFX(); flash();
+    addLog("Resposta incorreta no odontograma.","danger");
+    showModal(`<h2>Errado.</h2><p>O refletor pisca três vezes. Tente novamente.</p><button onclick="closeModal()">Voltar</button>`);
+  }
+}
+
+function answerXray(v){
+  if(v===3){
+    goodFX();
+    markClue("xray");
+    addItem("Fragmento de filme","No canto da radiografia aparece o número 3.");
+    addLog("Enigma da radiografia resolvido: 3.","ok");
+    showModal(`<h2>Correto.</h2><p>A sequência deveria mostrar <strong>3 molares</strong>. No verso do filme, o número 3 está marcado em tinta vermelha.</p><button onclick="closeModal()">Guardar</button>`);
+  } else {
+    badFX(); flash(); scare();
+    addLog("Você errou a leitura da radiografia.","danger");
+  }
+}
+
+function answerInstrument(v){
+  if(v===2){
+    goodFX();
+    markClue("instrument");
+    addItem("Lacre numerado","O pacote do espelho tem o número 2.");
+    addLog("Enigma dos instrumentos resolvido: 2.","ok");
+    showModal(`<h2>Correto.</h2><p>O espelho está na <strong>Bandeja 2</strong>. O lacre do pacote também traz o número 2.</p><button onclick="closeModal()">Guardar</button>`);
+  } else {
+    badFX(); flash();
+    addLog("Instrumento incorreto.","danger");
+    showModal(`<h2>Não.</h2><p>Alguma coisa bate três vezes no vidro do armário.</p><button onclick="closeModal()">Tentar depois</button>`);
+  }
+}
+
+function checkFinal(){
+  const v=(document.getElementById("finalCode")?.value||"").trim();
+  // Ordem: recepção 7, consultório 4, raio-X 3, esterilização 2
+  if(v==="7432"){
+    goodFX();
+    if(Object.values(state.clues).filter(Boolean).length<4){
+      showModal(`<h2>O painel rejeita o código.</h2><p>Você conhece os números, mas ainda não compreendeu todas as pistas.</p><button onclick="closeModal()">Voltar</button>`);
+      return;
+    }
+    closeModal();
+    soundFinal(); flash();
+    document.getElementById("gameRoot").style.display="none";
+    document.getElementById("endScreen").classList.add("show");
+  } else {
+    badFX(); flash(); scare();
+    addLog("Sequência incorreta no painel final.","danger");
+    setTimeout(()=>showModal(`<h2>ACESSO NEGADO</h2><p>A sequência está errada.</p><p style="color:#d6a0a5">A escada range novamente.</p><button onclick="closeModal()">Tentar outra vez</button>`),700);
+  }
+}
+
+function updateClock(){
+  const elapsed=Math.floor((Date.now()-state.start)/1000);
+  const base=3*60+17;
+  const mins=base+Math.floor(elapsed/18);
+  const h=Math.floor(mins/60)%24;
+  const m=mins%60;
+  document.getElementById("clock").textContent=String(h).padStart(2,"0")+":"+String(m).padStart(2,"0");
+}
+
+
+/* ===== Procedural horror audio ===== */
+
+function startGameWithSound(){
+  document.getElementById("introOverlay").classList.remove("show");
+  audioEnabled=true;
+  ensureAudio();
+  if(audioCtx.state==="suspended") audioCtx.resume();
+  const b=document.getElementById("audioToggle");
+  b.textContent="🔊 Som ligado"; b.classList.add("on");
+  startHorrorMusic();
+  startAmbientEvents();
+  objective("Encontre uma saída.");
+  tone(55,.7,"sine",.12);
+  setTimeout(()=>tone(41,.8,"triangle",.06),160);
+}
+
+let audioEnabled = false;
+let audioCtx = null;
+let masterGain = null;
+let musicTimer = null;
+let droneOsc = null;
+let droneGain = null;
+
+function ensureAudio(){
+  if(audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  masterGain = audioCtx.createGain();
+  masterGain.gain.value = 0.62;
+  masterGain.connect(audioCtx.destination);
+}
+
+function tone(freq, duration=.12, type="sine", volume=.12, when=0){
+  if(!audioEnabled) return;
+  ensureAudio();
+  const o=audioCtx.createOscillator();
+  const g=audioCtx.createGain();
+  o.type=type;
+  o.frequency.setValueAtTime(freq,audioCtx.currentTime+when);
+  g.gain.setValueAtTime(0,audioCtx.currentTime+when);
+  g.gain.linearRampToValueAtTime(volume,audioCtx.currentTime+when+.01);
+  g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+when+duration);
+  o.connect(g); g.connect(masterGain);
+  o.start(audioCtx.currentTime+when);
+  o.stop(audioCtx.currentTime+when+duration+.03);
+}
+
+function noiseBurst(duration=.18, volume=.05){
+  if(!audioEnabled) return;
+  ensureAudio();
+  const buffer=audioCtx.createBuffer(1,audioCtx.sampleRate*duration,audioCtx.sampleRate);
+  const data=buffer.getChannelData(0);
+  for(let i=0;i<data.length;i++) data[i]=(Math.random()*2-1)*(1-i/data.length);
+  const src=audioCtx.createBufferSource();
+  const g=audioCtx.createGain();
+  const filter=audioCtx.createBiquadFilter();
+  filter.type="bandpass";
+  filter.frequency.value=700;
+  filter.Q.value=.7;
+  g.gain.value=volume;
+  src.buffer=buffer;
+  src.connect(filter); filter.connect(g); g.connect(masterGain);
+  src.start();
+}
+
+function soundCorrect(){
+  tone(220,.13,"sine",.10,0);
+  tone(277,.16,"triangle",.10,.09);
+  tone(330,.2,"sine",.11,.18);
+  tone(440,.28,"triangle",.07,.28);
+}
+function soundWrong(){
+  noiseBurst(.22,.08);
+  tone(150,.18,"sawtooth",.09,0);
+  tone(106,.30,"square",.06,.08);
+  tone(70,.38,"sine",.10,.16);
+}
+function soundDoor(){
+  tone(70,.45,"sawtooth",.055,0);
+  noiseBurst(.35,.035);
+}
+function soundScare(){
+  noiseBurst(.3,.14);
+  tone(480,.12,"sawtooth",.11,0);
+  tone(220,.30,"square",.09,.05);
+  tone(80,.50,"sine",.13,.10);
+}
+function soundItem(){
+  tone(392,.10,"triangle",.06,0);
+  tone(523,.16,"sine",.06,.08);
+}
+function soundFinal(){
+  [110,146.8,174.6,220,293.7].forEach((f,i)=>tone(f,.6,"triangle",.06,i*.18));
+}
+
+
+function soundFootstep(){
+  if(!audioEnabled) return;
+  tone(74,.10,"sine",.11,0);
+  noiseBurst(.09,.045);
+  setTimeout(()=>{ tone(61,.11,"sine",.10,0); noiseBurst(.08,.04); },180);
+}
+function soundMetal(){
+  if(!audioEnabled) return;
+  tone(1100,.06,"triangle",.10,0);
+  tone(720,.10,"square",.07,.03);
+  tone(410,.24,"sine",.055,.07);
+}
+function soundKnock(){
+  if(!audioEnabled) return;
+  [0,.18,.42].forEach((t,i)=>{
+    tone(58+i*4,.10,"sine",.13,t);
+    noiseBurst(.05,.035);
+  });
+}
+function soundMonitor(){
+  if(!audioEnabled) return;
+  tone(920,.055,"square",.05,0);
+  tone(920,.055,"square",.04,.12);
+}
+function soundAutoclave(){
+  if(!audioEnabled) return;
+  tone(780,.10,"sine",.05,0);
+  tone(980,.12,"sine",.04,.18);
+  tone(680,.18,"triangle",.045,.36);
+}
+function soundWhisper(){
+  if(!audioEnabled) return;
+  noiseBurst(.55,.022);
+  tone(118,.7,"sine",.018,0);
+}
+function soundHeartbeat(){
+  if(!audioEnabled) return;
+  tone(42,.12,"sine",.12,0);
+  tone(39,.10,"sine",.085,.18);
+}
+function alertFX(){
+  const a=document.getElementById("redAlert");
+  a.classList.remove("show"); void a.offsetWidth; a.classList.add("show");
+}
+function staticFX(){
+  const s=document.getElementById("staticOverlay");
+  s.classList.remove("show"); void s.offsetWidth; s.classList.add("show");
+}
+function objective(text){
+  const o=document.getElementById("objectiveToast");
+  o.textContent=text;
+  o.classList.remove("show"); void o.offsetWidth; o.classList.add("show");
+}
+function roomPulse(){
+  scene.classList.remove("room-pulse"); void scene.offsetWidth; scene.classList.add("room-pulse");
+}
+
+let ambientTimer=null;
+function startAmbientEvents(){
+  clearInterval(ambientTimer);
+  ambientTimer=setInterval(()=>{
+    if(!audioEnabled) return;
+    const r=Math.random();
+    if(r<.22){ soundWhisper(); staticFX(); }
+    else if(r<.42){ soundKnock(); }
+    else if(r<.58){ soundMetal(); }
+    else if(r<.70){ soundHeartbeat(); alertFX(); }
+    else if(r<.78){ visualGlitch(); soundMonitor(); }
+  }, 6500);
+}
+
+function startHorrorMusic(){
+  if(!audioEnabled) return;
+  ensureAudio();
+  if(audioCtx.state==="suspended") audioCtx.resume();
+
+  if(!droneOsc){
+    droneOsc=audioCtx.createOscillator();
+    droneGain=audioCtx.createGain();
+    const filter=audioCtx.createBiquadFilter();
+    filter.type="lowpass";
+    filter.frequency.value=420;
+    droneOsc.type="sawtooth";
+    droneOsc.frequency.value=43.65;
+    droneGain.gain.value=.034;
+    droneOsc.connect(filter);filter.connect(droneGain);droneGain.connect(masterGain);
+    droneOsc.start();
+  }
+
+  clearInterval(musicTimer);
+  let beat=0;
+  const seq=[65.4,65.4,73.4,58.3,65.4,49,55,58.3];
+  musicTimer=setInterval(()=>{
+    if(!audioEnabled) return;
+    const f=seq[beat%seq.length];
+    tone(f,.20,"square",.045,0);
+    if(beat%2===0) tone(f/2,.28,"triangle",.052,.02);
+    if(beat%4===0){
+      tone(36.7,.16,"sine",.12,0);
+      tone(36.7,.12,"sine",.08,.16);
+    }
+    if(beat%8===7 && Math.random()>.35) noiseBurst(.08,.018);
+    beat++;
+  },390);
+}
+
+function stopHorrorMusic(){
+  clearInterval(musicTimer);
+  musicTimer=null;
+  if(droneOsc){
+    try{droneOsc.stop()}catch(e){}
+    droneOsc=null;droneGain=null;
+  }
+}
+
+function toggleAudio(){
+  ensureAudio();
+  audioEnabled=!audioEnabled;
+  const b=document.getElementById("audioToggle");
+  if(audioEnabled){
+    if(audioCtx.state==="suspended") audioCtx.resume();
+    b.textContent="🔊 Som ligado";
+    b.classList.add("on");
+    startHorrorMusic();
+    startAmbientEvents();
+    tone(65,.5,"sine",.09);
+  }else{
+    b.textContent="🔇 Som desligado";
+    b.classList.remove("on");
+    stopHorrorMusic();
+    clearInterval(ambientTimer);
+  }
+}
+
+function visualGlitch(){
+  scene.classList.remove("glitch"); void scene.offsetWidth; scene.classList.add("glitch");
+}
+function screenShake(){
+  document.body.classList.remove("screen-shake"); void document.body.offsetWidth; document.body.classList.add("screen-shake");
+}
+function badFX(){
+  soundWrong(); soundKnock(); alertFX(); staticFX();
+  screenShake();
+  visualGlitch();
+  document.body.classList.remove("danger-pulse"); void document.body.offsetWidth; document.body.classList.add("danger-pulse");
+  const h=document.getElementById("hitMarker");h.classList.remove("show");void h.offsetWidth;h.classList.add("show");
+}
+function goodFX(){
+  soundCorrect(); soundItem();
+  const s=document.getElementById("successBurst");s.classList.remove("show");void s.offsetWidth;s.classList.add("show");
+}
+
+addLog("Você acordou na Clínica Odontológica Santa Ágata.","danger");
+
+document.addEventListener("click",(e)=>{
+  if(!audioEnabled) return;
+  if(e.target.tagName==="BUTTON"){
+    tone(240,.035,"square",.025,0);
+  }
+});
+
+renderRoom();
+renderInventory();
+updateClues();
+setInterval(updateClock,1000);
+</script>
+</body>
+</html>
