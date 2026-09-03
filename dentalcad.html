@@ -1,0 +1,2010 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+  <title>DentalCAD Web</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0c1016;
+      --panel: #151b24;
+      --panel-2: #1b2330;
+      --border: #283241;
+      --text: #edf3fa;
+      --muted: #8e9bac;
+      --accent: #3da5ff;
+      --accent-dark: #1976c9;
+      --danger: #ff5a65;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      touch-action: none;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* =========================================================
+       HEADER
+    ========================================================= */
+
+    header {
+      height: 58px;
+      flex-shrink: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 18px;
+
+      background: #111720;
+      border-bottom: 1px solid var(--border);
+
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+    }
+
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+
+      border-radius: 9px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: linear-gradient(
+        145deg,
+        #51b8ff,
+        #146cb6
+      );
+
+      font-weight: 800;
+    }
+
+    .brand-subtitle {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 400;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* =========================================================
+       BUTTONS
+    ========================================================= */
+
+    button,
+    .file-label {
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--text);
+
+      padding: 9px 12px;
+      border-radius: 8px;
+
+      cursor: pointer;
+
+      transition: 0.15s ease;
+
+      font-size: 13px;
+
+      user-select: none;
+    }
+
+    button:hover,
+    .file-label:hover {
+      background: #273244;
+      border-color: #3b4b60;
+    }
+
+    button.active {
+      background: var(--accent-dark);
+      border-color: var(--accent);
+    }
+
+    .primary-button {
+      background: var(--accent-dark);
+      border-color: var(--accent);
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    /* =========================================================
+       APP
+    ========================================================= */
+
+    .app {
+      flex: 1;
+
+      display: grid;
+
+      grid-template-columns:
+        220px
+        minmax(0, 1fr)
+        240px;
+
+      min-height: 0;
+    }
+
+    /* =========================================================
+       SIDEBARS
+    ========================================================= */
+
+    aside {
+      background: var(--panel);
+      overflow-y: auto;
+    }
+
+    .sidebar-left {
+      border-right: 1px solid var(--border);
+    }
+
+    .sidebar-right {
+      border-left: 1px solid var(--border);
+    }
+
+    .section {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-title {
+      font-size: 11px;
+      color: var(--muted);
+
+      font-weight: 700;
+
+      text-transform: uppercase;
+      letter-spacing: 1px;
+
+      margin-bottom: 12px;
+    }
+
+    .tool-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .tool {
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      text-align: left;
+
+      padding: 10px;
+
+      border-radius: 8px;
+    }
+
+    .tool-icon {
+      width: 26px;
+      text-align: center;
+      font-size: 17px;
+    }
+
+    /* =========================================================
+       CENTER VIEWPORT
+    ========================================================= */
+
+    .viewport-area {
+      position: relative;
+      min-width: 0;
+      min-height: 0;
+
+      overflow: hidden;
+
+      background:
+        radial-gradient(
+          circle at center,
+          #1b2633 0%,
+          #0d1219 70%
+        );
+    }
+
+    #viewer {
+      width: 100%;
+      height: 100%;
+
+      display: block;
+
+      outline: none;
+    }
+
+    /* =========================================================
+       VIEWPORT TOP
+    ========================================================= */
+
+    .viewport-toolbar {
+      position: absolute;
+
+      top: 12px;
+      left: 50%;
+
+      transform: translateX(-50%);
+
+      z-index: 5;
+
+      display: flex;
+      gap: 5px;
+
+      padding: 5px;
+
+      background: rgba(18, 24, 33, 0.9);
+      backdrop-filter: blur(8px);
+
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .viewport-toolbar button {
+      padding: 7px 9px;
+      font-size: 12px;
+    }
+
+    /* =========================================================
+       STATUS
+    ========================================================= */
+
+    .status {
+      position: absolute;
+
+      bottom: 12px;
+      left: 12px;
+
+      display: flex;
+      gap: 8px;
+
+      z-index: 5;
+    }
+
+    .status-pill {
+      background: rgba(17, 23, 32, 0.9);
+
+      border: 1px solid var(--border);
+
+      padding: 7px 10px;
+
+      border-radius: 20px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+    }
+
+    /* =========================================================
+       HELP
+    ========================================================= */
+
+    .help {
+      position: absolute;
+
+      right: 12px;
+      bottom: 12px;
+
+      padding: 8px 11px;
+
+      border-radius: 8px;
+
+      background: rgba(17, 23, 32, 0.9);
+
+      border: 1px solid var(--border);
+
+      color: var(--muted);
+
+      font-size: 11px;
+    }
+
+    /* =========================================================
+       RIGHT INFO
+    ========================================================= */
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+
+      margin-bottom: 10px;
+
+      font-size: 12px;
+    }
+
+    .info-label {
+      color: var(--muted);
+    }
+
+    .info-value {
+      text-align: right;
+    }
+
+    select {
+      width: 100%;
+      padding: 9px;
+
+      background: var(--panel-2);
+      color: white;
+
+      border: 1px solid var(--border);
+      border-radius: 8px;
+
+      outline: none;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .color-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    input[type="color"] {
+      width: 40px;
+      height: 32px;
+
+      border: 0;
+      background: none;
+
+      cursor: pointer;
+    }
+
+    /* =========================================================
+       EMPTY SCREEN
+    ========================================================= */
+
+    .empty-state {
+      position: absolute;
+
+      top: 50%;
+      left: 50%;
+
+      transform: translate(-50%, -50%);
+
+      text-align: center;
+
+      pointer-events: none;
+    }
+
+    .empty-icon {
+      font-size: 60px;
+      opacity: 0.25;
+      margin-bottom: 18px;
+    }
+
+    .empty-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .empty-text {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 7px;
+    }
+
+    /* =========================================================
+       MOBILE / TABLET
+    ========================================================= */
+
+    @media (max-width: 900px) {
+
+      .app {
+        grid-template-columns: 72px minmax(0, 1fr);
+      }
+
+      .sidebar-right {
+        display: none;
+      }
+
+      .sidebar-left {
+        width: 72px;
+      }
+
+      .sidebar-left .section {
+        padding: 10px;
+      }
+
+      .section-title {
+        display: none;
+      }
+
+      .tool {
+        justify-content: center;
+        padding: 12px 5px;
+      }
+
+      .tool span:not(.tool-icon) {
+        display: none;
+      }
+
+      .tool-icon {
+        font-size: 20px;
+      }
+
+      .brand-subtitle {
+        display: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+
+      header {
+        padding: 0 8px;
+      }
+
+      .brand span:nth-child(2) {
+        font-size: 13px;
+      }
+
+      .header-actions button {
+        display: none;
+      }
+
+      .viewport-toolbar {
+        max-width: calc(100% - 20px);
+        overflow-x: auto;
+      }
+
+      .help {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="brand">
+
+    <div class="brand-logo">
+      D
+    </div>
+
+    <div>
+      DentalCAD Web
+      <div class="brand-subtitle">
+        CAD odontológico online
+      </div>
+    </div>
+
+  </div>
+
+  <div class="header-actions">
+
+    <button onclick="resetCamera()">
+      ↻ Resetar vista
+    </button>
+
+    <label class="file-label primary-button">
+
+      + Importar STL
+
+      <input
+        type="file"
+        id="fileInput"
+        accept=".stl"
+      />
+
+    </label>
+
+  </div>
+
+</header>
+
+
+<div class="app">
+
+  <!-- =====================================================
+       SIDEBAR ESQUERDA
+  ====================================================== -->
+
+  <aside class="sidebar-left">
+
+    <div class="section">
+
+      <div class="section-title">
+        Projeto
+      </div>
+
+      <div class="tool-list">
+
+        <label class="tool file-label">
+
+          <span class="tool-icon">
+            📂
+          </span>
+
+          <span>
+            Importar STL
+          </span>
+
+          <input
+            type="file"
+            id="fileInputSidebar"
+            accept=".stl"
+          />
+
+        </label>
+
+        <button
+          class="tool"
+          onclick="centerModel()"
+        >
+
+          <span class="tool-icon">
+            ◎
+          </span>
+
+          <span>
+            Centralizar
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <div class="section-title">
+        Ferramentas
+      </div>
+
+      <div class="tool-list">
+
+        <button
+          class="tool active"
+          id="navigateTool"
+        >
+
+          <span class="tool-icon">
+            ✥
+          </span>
+
+          <span>
+            Navegar
+          </span>
+
+        </button>
+
+
+        <button
+          class="tool"
+          onclick="alertDevelopment('Seleção')"
+        >
+
+          <span class="tool-icon">
+            ◉
+          </span>
+
+          <span>
+            Selecionar
+          </span>
+
+        </button>
+
+
+        <button
+          class="tool"
+          onclick="alertDevelopment('Linha de margem')"
+        >
+
+          <span class="tool-icon">
+            ✎
+          </span>
+
+          <span>
+            Margem
+          </span>
+
+        </button>
+
+
+        <button
+          class="tool"
+          onclick="alertDevelopment('Escultura')"
+        >
+
+          <span class="tool-icon">
+            ◌
+          </span>
+
+          <span>
+            Escultura
+          </span>
+
+        </button>
+
+
+        <button
+          class="tool"
+          onclick="alertDevelopment('Corte')"
+        >
+
+          <span class="tool-icon">
+            ✂
+          </span>
+
+          <span>
+            Corte
+          </span>
+
+        </button>
+
+
+        <button
+          class="tool"
+          onclick="alertDevelopment('Medição')"
+        >
+
+          <span class="tool-icon">
+            ↔
+          </span>
+
+          <span>
+            Medir
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </aside>
+
+
+  <!-- =====================================================
+       VIEWPORT
+  ====================================================== -->
+
+  <main class="viewport-area">
+
+    <canvas id="viewer"></canvas>
+
+
+    <div class="viewport-toolbar">
+
+      <button
+        onclick="setView('front')"
+        title="Vista frontal"
+      >
+        Frente
+      </button>
+
+      <button
+        onclick="setView('back')"
+      >
+        Trás
+      </button>
+
+      <button
+        onclick="setView('left')"
+      >
+        Esq.
+      </button>
+
+      <button
+        onclick="setView('right')"
+      >
+        Dir.
+      </button>
+
+      <button
+        onclick="setView('top')"
+      >
+        Superior
+      </button>
+
+      <button
+        onclick="setView('bottom')"
+      >
+        Inferior
+      </button>
+
+    </div>
+
+
+    <div
+      class="empty-state"
+      id="emptyState"
+    >
+
+      <div class="empty-icon">
+        🦷
+      </div>
+
+      <div class="empty-title">
+        Nenhum modelo carregado
+      </div>
+
+      <div class="empty-text">
+        Importe um arquivo STL para começar
+      </div>
+
+    </div>
+
+
+    <div class="status">
+
+      <div
+        class="status-pill"
+        id="fpsStatus"
+      >
+        FPS: --
+      </div>
+
+      <div
+        class="status-pill"
+        id="trianglesStatus"
+      >
+        Triângulos: 0
+      </div>
+
+      <div
+        class="status-pill"
+        id="performanceStatus"
+      >
+        Modo: Normal
+      </div>
+
+    </div>
+
+
+    <div class="help">
+
+      🖱️ Esquerdo: girar &nbsp;
+      Direito: mover &nbsp;
+      Scroll: zoom
+
+    </div>
+
+  </main>
+
+
+  <!-- =====================================================
+       SIDEBAR DIREITA
+  ====================================================== -->
+
+  <aside class="sidebar-right">
+
+    <div class="section">
+
+      <div class="section-title">
+        Modelo
+      </div>
+
+
+      <div class="info-row">
+
+        <span class="info-label">
+          Arquivo
+        </span>
+
+        <span
+          class="info-value"
+          id="fileName"
+        >
+          —
+        </span>
+
+      </div>
+
+
+      <div class="info-row">
+
+        <span class="info-label">
+          Triângulos
+        </span>
+
+        <span
+          class="info-value"
+          id="triangleCount"
+        >
+          0
+        </span>
+
+      </div>
+
+
+      <div class="info-row">
+
+        <span class="info-label">
+          Largura
+        </span>
+
+        <span
+          class="info-value"
+          id="sizeX"
+        >
+          —
+        </span>
+
+      </div>
+
+
+      <div class="info-row">
+
+        <span class="info-label">
+          Altura
+        </span>
+
+        <span
+          class="info-value"
+          id="sizeY"
+        >
+          —
+        </span>
+
+      </div>
+
+
+      <div class="info-row">
+
+        <span class="info-label">
+          Profundidade
+        </span>
+
+        <span
+          class="info-value"
+          id="sizeZ"
+        >
+          —
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <div class="section-title">
+        Visualização
+      </div>
+
+
+      <div style="margin-bottom: 14px;">
+
+        <div class="info-label">
+          Cor do modelo
+        </div>
+
+        <div class="color-row">
+
+          <input
+            type="color"
+            id="modelColor"
+            value="#e6ddd1"
+          />
+
+        </div>
+
+      </div>
+
+
+      <div style="margin-bottom: 14px;">
+
+        <div class="info-label">
+          Opacidade
+        </div>
+
+        <input
+          type="range"
+          id="opacityRange"
+          min="10"
+          max="100"
+          value="100"
+        />
+
+      </div>
+
+
+      <div class="tool-list">
+
+        <button
+          onclick="toggleWireframe()"
+          id="wireframeButton"
+        >
+          Wireframe
+        </button>
+
+        <button
+          onclick="toggleGrid()"
+          id="gridButton"
+          class="active"
+        >
+          Grade
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <div class="section-title">
+        Desempenho
+      </div>
+
+      <select
+        id="performanceMode"
+        onchange="changePerformanceMode()"
+      >
+
+        <option value="eco">
+          Econômico
+        </option>
+
+        <option
+          value="normal"
+          selected
+        >
+          Normal
+        </option>
+
+        <option value="high">
+          Alta qualidade
+        </option>
+
+      </select>
+
+    </div>
+
+  </aside>
+
+</div>
+
+
+<script type="importmap">
+
+{
+  "imports": {
+
+    "three":
+      "https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js",
+
+    "three/addons/":
+      "https://cdn.jsdelivr.net/npm/three@0.179.1/examples/jsm/"
+
+  }
+}
+
+</script>
+
+
+<script type="module">
+
+  import * as THREE from "three";
+
+  import {
+    OrbitControls
+  }
+  from "three/addons/controls/OrbitControls.js";
+
+  import {
+    STLLoader
+  }
+  from "three/addons/loaders/STLLoader.js";
+
+
+  /* =====================================================
+     ELEMENTOS
+  ====================================================== */
+
+  const canvas =
+    document.getElementById("viewer");
+
+  const emptyState =
+    document.getElementById("emptyState");
+
+
+  /* =====================================================
+     RENDERER
+  ====================================================== */
+
+  const renderer =
+    new THREE.WebGLRenderer({
+
+      canvas,
+
+      antialias: true,
+
+      powerPreference: "high-performance"
+
+    });
+
+
+  renderer.setPixelRatio(
+    Math.min(
+      window.devicePixelRatio,
+      2
+    )
+  );
+
+
+  renderer.shadowMap.enabled = false;
+
+  renderer.outputColorSpace =
+    THREE.SRGBColorSpace;
+
+
+  /* =====================================================
+     SCENE
+  ====================================================== */
+
+  const scene =
+    new THREE.Scene();
+
+  scene.background =
+    new THREE.Color(0x0d1219);
+
+
+  /* =====================================================
+     CAMERA
+  ====================================================== */
+
+  const camera =
+    new THREE.PerspectiveCamera(
+
+      40,
+
+      1,
+
+      0.01,
+
+      10000
+
+    );
+
+
+  camera.position.set(
+    0,
+    0,
+    120
+  );
+
+
+  /* =====================================================
+     CONTROLS
+  ====================================================== */
+
+  const controls =
+    new OrbitControls(
+      camera,
+      renderer.domElement
+    );
+
+
+  controls.enableDamping = true;
+
+  controls.dampingFactor = 0.08;
+
+  controls.rotateSpeed = 0.7;
+
+  controls.zoomSpeed = 1;
+
+  controls.panSpeed = 0.8;
+
+  controls.screenSpacePanning = true;
+
+
+  controls.touches = {
+
+    ONE:
+      THREE.TOUCH.ROTATE,
+
+    TWO:
+      THREE.TOUCH.DOLLY_PAN
+
+  };
+
+
+  /* =====================================================
+     LIGHTS
+  ====================================================== */
+
+  const hemisphereLight =
+    new THREE.HemisphereLight(
+
+      0xffffff,
+
+      0x283545,
+
+      2.2
+
+    );
+
+
+  scene.add(
+    hemisphereLight
+  );
+
+
+  const directionalLight =
+    new THREE.DirectionalLight(
+
+      0xffffff,
+
+      3
+
+    );
+
+
+  directionalLight.position.set(
+    5,
+    10,
+    10
+  );
+
+
+  scene.add(
+    directionalLight
+  );
+
+
+  const backLight =
+    new THREE.DirectionalLight(
+
+      0x8fbfff,
+
+      1.5
+
+    );
+
+
+  backLight.position.set(
+    -8,
+    2,
+    -10
+  );
+
+
+  scene.add(
+    backLight
+  );
+
+
+  /* =====================================================
+     GRID
+  ====================================================== */
+
+  const grid =
+    new THREE.GridHelper(
+
+      200,
+
+      40,
+
+      0x405063,
+
+      0x202b37
+
+    );
+
+
+  grid.position.y = -30;
+
+  scene.add(grid);
+
+
+  /* =====================================================
+     MODEL
+  ====================================================== */
+
+  let model = null;
+
+  let wireframe = false;
+
+  let gridVisible = true;
+
+  let modelSize = 50;
+
+
+  const loader =
+    new STLLoader();
+
+
+  /* =====================================================
+     MATERIAL
+  ====================================================== */
+
+  function createMaterial() {
+
+    return new THREE.MeshStandardMaterial({
+
+      color:
+        document
+          .getElementById("modelColor")
+          .value,
+
+      roughness: 0.72,
+
+      metalness: 0,
+
+      side: THREE.DoubleSide,
+
+      transparent: true,
+
+      opacity:
+        parseInt(
+          document
+            .getElementById("opacityRange")
+            .value
+        ) / 100,
+
+      wireframe
+
+    });
+
+  }
+
+
+  /* =====================================================
+     LOAD STL
+  ====================================================== */
+
+  function loadSTL(file) {
+
+    if (!file)
+      return;
+
+
+    const reader =
+      new FileReader();
+
+
+    reader.onload =
+      function(event) {
+
+        try {
+
+          const geometry =
+            loader.parse(
+              event.target.result
+            );
+
+
+          geometry.computeVertexNormals();
+
+          geometry.computeBoundingBox();
+
+
+          if (model) {
+
+            scene.remove(model);
+
+            model.geometry.dispose();
+
+            model.material.dispose();
+
+          }
+
+
+          model =
+            new THREE.Mesh(
+
+              geometry,
+
+              createMaterial()
+
+            );
+
+
+          scene.add(model);
+
+
+          prepareModel(
+            file.name
+          );
+
+        }
+
+        catch(error) {
+
+          console.error(error);
+
+          alert(
+            "Não foi possível abrir este arquivo STL."
+          );
+
+        }
+
+      };
+
+
+    reader.readAsArrayBuffer(file);
+
+  }
+
+
+  /* =====================================================
+     PREPARE MODEL
+  ====================================================== */
+
+  function prepareModel(fileName) {
+
+    const geometry =
+      model.geometry;
+
+
+    geometry.computeBoundingBox();
+
+
+    const boundingBox =
+      geometry.boundingBox;
+
+
+    const center =
+      new THREE.Vector3();
+
+
+    boundingBox.getCenter(
+      center
+    );
+
+
+    model.position.sub(
+      center
+    );
+
+
+    geometry.computeBoundingBox();
+
+
+    const size =
+      new THREE.Vector3();
+
+
+    boundingBox.getSize(
+      size
+    );
+
+
+    modelSize =
+      Math.max(
+        size.x,
+        size.y,
+        size.z
+      );
+
+
+    document
+      .getElementById("fileName")
+      .textContent =
+      fileName;
+
+
+    document
+      .getElementById("sizeX")
+      .textContent =
+      size.x.toFixed(2) +
+      " mm";
+
+
+    document
+      .getElementById("sizeY")
+      .textContent =
+      size.y.toFixed(2) +
+      " mm";
+
+
+    document
+      .getElementById("sizeZ")
+      .textContent =
+      size.z.toFixed(2) +
+      " mm";
+
+
+    const triangles =
+
+      geometry.index
+
+      ?
+
+      geometry.index.count / 3
+
+      :
+
+      geometry.attributes.position.count / 3;
+
+
+    document
+      .getElementById("triangleCount")
+      .textContent =
+      Math.round(triangles)
+        .toLocaleString("pt-BR");
+
+
+    document
+      .getElementById("trianglesStatus")
+      .textContent =
+      "Triângulos: " +
+      Math.round(triangles)
+        .toLocaleString("pt-BR");
+
+
+    emptyState.style.display =
+      "none";
+
+
+    fitCamera();
+
+  }
+
+
+  /* =====================================================
+     CAMERA FIT
+  ====================================================== */
+
+  function fitCamera() {
+
+    if (!model)
+      return;
+
+
+    const distance =
+      modelSize * 2.3;
+
+
+    camera.position.set(
+
+      distance * 0.6,
+
+      distance * 0.4,
+
+      distance
+
+    );
+
+
+    camera.near =
+      Math.max(
+        modelSize / 1000,
+        0.01
+      );
+
+
+    camera.far =
+      modelSize * 100;
+
+
+    camera.updateProjectionMatrix();
+
+
+    controls.target.set(
+      0,
+      0,
+      0
+    );
+
+
+    controls.update();
+
+
+    grid.position.y =
+      -(modelSize * 0.55);
+
+
+    grid.scale.setScalar(
+
+      Math.max(
+        modelSize / 50,
+        0.5
+      )
+
+    );
+
+  }
+
+
+  /* =====================================================
+     VIEW FUNCTIONS
+  ====================================================== */
+
+  window.setView =
+    function(view) {
+
+      if (!model)
+        return;
+
+
+      const distance =
+        modelSize * 2.5;
+
+
+      switch(view) {
+
+        case "front":
+
+          camera.position.set(
+            0,
+            0,
+            distance
+          );
+
+        break;
+
+
+        case "back":
+
+          camera.position.set(
+            0,
+            0,
+            -distance
+          );
+
+        break;
+
+
+        case "left":
+
+          camera.position.set(
+            -distance,
+            0,
+            0
+          );
+
+        break;
+
+
+        case "right":
+
+          camera.position.set(
+            distance,
+            0,
+            0
+          );
+
+        break;
+
+
+        case "top":
+
+          camera.position.set(
+            0,
+            distance,
+            0.001
+          );
+
+        break;
+
+
+        case "bottom":
+
+          camera.position.set(
+            0,
+            -distance,
+            0.001
+          );
+
+        break;
+
+      }
+
+
+      controls.target.set(
+        0,
+        0,
+        0
+      );
+
+
+      controls.update();
+
+    };
+
+
+  window.resetCamera =
+    function() {
+
+      fitCamera();
+
+    };
+
+
+  window.centerModel =
+    function() {
+
+      if (!model)
+        return;
+
+
+      model.position.set(
+        0,
+        0,
+        0
+      );
+
+
+      fitCamera();
+
+    };
+
+
+  /* =====================================================
+     WIREFRAME
+  ====================================================== */
+
+  window.toggleWireframe =
+    function() {
+
+      if (!model)
+        return;
+
+
+      wireframe =
+        !wireframe;
+
+
+      model.material.wireframe =
+        wireframe;
+
+
+      document
+        .getElementById(
+          "wireframeButton"
+        )
+        .classList.toggle(
+          "active",
+          wireframe
+        );
+
+    };
+
+
+  /* =====================================================
+     GRID
+  ====================================================== */
+
+  window.toggleGrid =
+    function() {
+
+      gridVisible =
+        !gridVisible;
+
+
+      grid.visible =
+        gridVisible;
+
+
+      document
+        .getElementById(
+          "gridButton"
+        )
+        .classList.toggle(
+          "active",
+          gridVisible
+        );
+
+    };
+
+
+  /* =====================================================
+     COLOR
+  ====================================================== */
+
+  document
+    .getElementById("modelColor")
+    .addEventListener(
+      "input",
+      function(event) {
+
+        if (!model)
+          return;
+
+
+        model.material.color.set(
+          event.target.value
+        );
+
+      }
+    );
+
+
+  /* =====================================================
+     OPACITY
+  ====================================================== */
+
+  document
+    .getElementById(
+      "opacityRange"
+    )
+    .addEventListener(
+      "input",
+      function(event) {
+
+        if (!model)
+          return;
+
+
+        model.material.opacity =
+          Number(
+            event.target.value
+          ) / 100;
+
+
+        model.material.transparent =
+          model.material.opacity < 1;
+
+      }
+    );
+
+
+  /* =====================================================
+     PERFORMANCE
+  ====================================================== */
+
+  window.changePerformanceMode =
+    function() {
+
+      const mode =
+        document
+          .getElementById(
+            "performanceMode"
+          )
+          .value;
+
+
+      const status =
+        document
+          .getElementById(
+            "performanceStatus"
+          );
+
+
+      if (mode === "eco") {
+
+        renderer.setPixelRatio(1);
+
+        status.textContent =
+          "Modo: Econômico";
+
+      }
+
+
+      if (mode === "normal") {
+
+        renderer.setPixelRatio(
+
+          Math.min(
+            window.devicePixelRatio,
+            1.5
+          )
+
+        );
+
+        status.textContent =
+          "Modo: Normal";
+
+      }
+
+
+      if (mode === "high") {
+
+        renderer.setPixelRatio(
+
+          Math.min(
+            window.devicePixelRatio,
+            2
+          )
+
+        );
+
+        status.textContent =
+          "Modo: Alto";
+
+      }
+
+
+      resize();
+
+    };
+
+
+  /* =====================================================
+     INPUT FILES
+  ====================================================== */
+
+  document
+    .getElementById("fileInput")
+    .addEventListener(
+      "change",
+      event =>
+        loadSTL(
+          event.target.files[0]
+        )
+    );
+
+
+  document
+    .getElementById(
+      "fileInputSidebar"
+    )
+    .addEventListener(
+      "change",
+      event =>
+        loadSTL(
+          event.target.files[0]
+        )
+    );
+
+
+  /* =====================================================
+     RESIZE
+  ====================================================== */
+
+  function resize() {
+
+    const parent =
+      canvas.parentElement;
+
+
+    const width =
+      parent.clientWidth;
+
+
+    const height =
+      parent.clientHeight;
+
+
+    renderer.setSize(
+      width,
+      height,
+      false
+    );
+
+
+    camera.aspect =
+      width / height;
+
+
+    camera.updateProjectionMatrix();
+
+  }
+
+
+  window.addEventListener(
+    "resize",
+    resize
+  );
+
+
+  resize();
+
+
+  /* =====================================================
+     FPS
+  ====================================================== */
+
+  let frames = 0;
+
+  let previousTime =
+    performance.now();
+
+
+  function updateFPS() {
+
+    frames++;
+
+
+    const current =
+      performance.now();
+
+
+    if (
+      current - previousTime
+      >= 1000
+    ) {
+
+      document
+        .getElementById("fpsStatus")
+        .textContent =
+        "FPS: " +
+        frames;
+
+
+      frames = 0;
+
+      previousTime =
+        current;
+
+    }
+
+  }
+
+
+  /* =====================================================
+     LOOP
+  ====================================================== */
+
+  function animate() {
+
+    requestAnimationFrame(
+      animate
+    );
+
+
+    controls.update();
+
+
+    renderer.render(
+      scene,
+      camera
+    );
+
+
+    updateFPS();
+
+  }
+
+
+  animate();
+
+
+  /* =====================================================
+     DEVELOPMENT TOOLS
+  ====================================================== */
+
+  window.alertDevelopment =
+    function(tool) {
+
+      alert(
+
+        tool +
+        " será implementado na próxima etapa do DentalCAD."
+
+      );
+
+    };
+
+</script>
+
+</body>
+</html>

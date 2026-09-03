@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saúde Sem Fronteiras</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:#f7f8fa;color:#202124}
+:root{--red:#e5242a;--soft:#fff0f0;--green:#19a463;--border:#e6e8ec}
+.app{display:flex;min-height:100vh}.sidebar{width:245px;background:white;border-right:1px solid var(--border);padding:22px 16px;position:fixed;inset:0 auto 0 0}
+.logo{display:flex;gap:10px;align-items:center;font-weight:800;font-size:17px;margin-bottom:30px}.logoMark{width:40px;height:40px;border-radius:12px;background:var(--red);color:white;display:grid;place-items:center;font-size:22px}
+.tag{font-size:11px;color:#777;margin-top:-25px;margin-left:50px;margin-bottom:28px}.nav button{width:100%;border:0;background:none;text-align:left;padding:12px 13px;border-radius:9px;margin:3px 0;font-size:14px;cursor:pointer;color:#45484d}.nav button.active,.nav button:hover{background:var(--soft);color:var(--red);font-weight:700}
+.main{margin-left:245px;width:calc(100% - 245px);padding:20px 28px}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}.search{background:white;border:1px solid var(--border);border-radius:10px;padding:12px 16px;width:45%;color:#777}.profile{font-size:13px;font-weight:700}
+h1{font-size:25px;margin:0}.sub{color:#73777d;margin:6px 0 20px}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:white;border:1px solid var(--border);border-radius:13px;padding:18px}.label{font-size:12px;color:#74777b}.num{font-size:25px;font-weight:800;margin-top:7px}.up{font-size:11px;color:var(--green);margin-top:4px}
+.grid{display:grid;grid-template-columns:1.7fr 1fr;gap:16px;margin-top:16px}.panel{background:white;border:1px solid var(--border);border-radius:13px;padding:18px}.panel h2{font-size:16px;margin:0 0 14px}.map{height:335px;border-radius:10px;background:linear-gradient(135deg,#d9f0df,#cfe8f5 45%,#f4e5cf);position:relative;overflow:hidden}
+.map:before{content:"";position:absolute;inset:25px;background:repeating-linear-gradient(25deg,transparent 0 35px,rgba(255,255,255,.55) 36px 38px),repeating-linear-gradient(115deg,transparent 0 48px,rgba(255,255,255,.45) 49px 51px)}
+.pin{position:absolute;width:22px;height:22px;border-radius:50% 50% 50% 0;background:var(--red);transform:rotate(-45deg);box-shadow:0 2px 8px #777}.pin i{display:block;width:7px;height:7px;border-radius:50%;background:white;margin:7px}
+.p1{left:24%;top:28%}.p2{left:55%;top:46%}.p3{left:70%;top:25%}.p4{left:43%;top:70%}.p5{left:78%;top:64%}.mapTitle{position:absolute;left:18px;top:15px;background:white;padding:9px 12px;border-radius:8px;font-size:12px;font-weight:700;z-index:2}
+.item{border:1px solid var(--border);border-radius:10px;padding:13px;margin:9px 0}.itemTop{display:flex;justify-content:space-between;font-weight:700;font-size:13px}.badge{font-size:10px;padding:4px 7px;border-radius:5px;background:#ffe1e1;color:#c51d22}.small{font-size:11px;color:#74777d;margin-top:6px}
+.btn{border:0;border-radius:8px;padding:10px 14px;background:var(--red);color:white;font-weight:700;cursor:pointer}.btn.alt{background:white;color:var(--red);border:1px solid var(--red)}
+.section{display:none}.section.active{display:block}.table{width:100%;border-collapse:collapse;font-size:13px}.table th,.table td{padding:12px 8px;border-bottom:1px solid var(--border);text-align:left}.status{color:var(--green);font-weight:700}
+.actions{display:flex;gap:10px;margin-top:15px}.notice{background:var(--soft);padding:15px;border-radius:10px;margin-top:14px}
+@media(max-width:900px){.sidebar{width:70px}.sidebar .logo span,.sidebar .tag,.nav button span{display:none}.main{margin-left:70px;width:calc(100% - 70px);padding:15px}.cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.search{width:55%}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="logo"><div class="logoMark">❤</div><span>Saúde Sem<br>Fronteiras</span></div>
+  <div class="tag">Conectando quem precisa com quem pode ajudar.</div>
+  <div class="nav">
+    <button class="active" onclick="show('inicio',this)">⌂ <span>Início</span></button>
+    <button onclick="show('mapa',this)">◉ <span>Mapa de Necessidades</span></button>
+    <button onclick="show('oportunidades',this)">▣ <span>Oportunidades</span></button>
+    <button onclick="show('profissionais',this)">♙ <span>Profissionais Disponíveis</span></button>
+    <button onclick="show('instituicoes',this)">▤ <span>Instituições Cadastradas</span></button>
+    <button onclick="show('relatorios',this)">▥ <span>Relatórios e Dados</span></button>
+  </div>
+</aside>
+
+<main class="main">
+<header class="top"><div class="search">⌕ &nbsp; Buscar instituições, profissionais, regiões...</div><div class="profile">🔔 &nbsp;&nbsp; Dra. Juliana Santos<br><small style="color:#777">CRO-SP 123456</small></div></header>
+
+<section id="inicio" class="section active">
+<h1>Olá, Dra. Juliana 👋</h1><p class="sub">Veja onde sua atuação pode fazer a diferença hoje.</p>
+<div class="cards">
+<div class="card"><div class="label">Instituições cadastradas</div><div class="num">482</div><div class="up">+12 este mês</div></div>
+<div class="card"><div class="label">Profissionais voluntários</div><div class="num">1.256</div><div class="up">+34 este mês</div></div>
+<div class="card"><div class="label">Ações realizadas</div><div class="num">158</div><div class="up">+8 este mês</div></div>
+<div class="card"><div class="label">Pessoas impactadas</div><div class="num">24.532</div><div class="up">+1.230 este mês</div></div>
+</div>
+<div class="grid">
+<div class="panel"><h2>Mapa de necessidades</h2><div class="map"><div class="mapTitle">Brasil • Necessidades abertas</div><div class="pin p1"><i></i></div><div class="pin p2"><i></i></div><div class="pin p3"><i></i></div><div class="pin p4"><i></i></div><div class="pin p5"><i></i></div></div><div class="actions"><button class="btn" onclick="show('mapa')">Abrir mapa completo</button></div></div>
+<div class="panel"><h2>Necessidades próximas</h2>
+<div class="item"><div class="itemTop"><span>Abaetetuba – PA</span><span class="badge">MUITO ALTA</span></div><div class="small">Atendimento odontológico • 12 km</div><div class="small">4.230 pessoas • idade média 28 anos</div></div>
+<div class="item"><div class="itemTop"><span>Marituba – PA</span><span class="badge">ALTA</span></div><div class="small">Educação em saúde bucal • 45 km</div><div class="small">7.850 pessoas • idade média 24 anos</div></div>
+<div class="item"><div class="itemTop"><span>Benevides – PA</span><span class="badge">MÉDIA</span></div><div class="small">Triagem e diagnóstico • 68 km</div><div class="small">6.120 pessoas • idade média 31 anos</div></div>
+</div></div>
+<div class="panel" style="margin-top:16px"><h2>Pronto para fazer a diferença?</h2><p class="sub">Seu conhecimento pode transformar vidas.</p><button class="btn" onclick="show('oportunidades')">Quero ser voluntário</button> <button class="btn alt" onclick="alert('Formulário de cadastro da instituição aberto!')">Cadastrar minha instituição</button></div>
+</section>
+
+<section id="mapa" class="section"><h1>Mapa de Necessidades</h1><p class="sub">Visualize demandas por localização, distância e nível de necessidade.</p><div class="panel"><div class="map" style="height:500px"><div class="mapTitle">Mapa interativo de necessidades</div><div class="pin p1"><i></i></div><div class="pin p2"><i></i></div><div class="pin p3"><i></i></div><div class="pin p4"><i></i></div><div class="pin p5"><i></i></div></div></div></section>
+
+<section id="oportunidades" class="section"><h1>Oportunidades de voluntariado</h1><p class="sub">Demandas publicadas pelas instituições.</p><div class="panel">
+<div class="item"><div class="itemTop"><span>Atendimento odontológico preventivo</span><span class="badge">URGENTE</span></div><div class="small">Instituto Sorriso do Bem • São Paulo – SP • 18 km</div><div class="small">45 pessoas • crianças e adolescentes • sábado, 08h–17h</div><div class="actions"><button class="btn" onclick="alert('Interesse registrado! A instituição receberá uma notificação.')">Quero participar</button></div></div>
+<div class="item"><div class="itemTop"><span>Triagem e orientação em saúde</span><span class="badge">ALTA</span></div><div class="small">Associação Vida e Saúde • Rio de Janeiro – RJ • 32 km</div><div class="small">80 pessoas • público geral • domingo, 09h–16h</div><div class="actions"><button class="btn" onclick="alert('Interesse registrado!')">Quero participar</button></div></div>
+</div></section>
+
+<section id="profissionais" class="section"><h1>Profissionais disponíveis</h1><p class="sub">Profissionais verificados e disponíveis para ações voluntárias.</p><div class="panel"><table class="table"><tr><th>Profissional</th><th>Registro</th><th>Especialidade</th><th>Distância</th><th>Status</th></tr>
+<tr><td>Dra. Juliana Santos</td><td>CRO-SP 123456</td><td>Clínico geral</td><td>12 km</td><td class="status">Disponível</td></tr>
+<tr><td>Dr. Rafael Costa</td><td>CRO-RJ 654321</td><td>Cirurgia / Implantodontia</td><td>45 km</td><td class="status">Disponível</td></tr>
+<tr><td>Dra. Camila Alves</td><td>CRO-MG 987654</td><td>Saúde coletiva</td><td>68 km</td><td class="status">Disponível</td></tr>
+<tr><td>Dr. Lucas Mendes</td><td>CRM-SP 123123</td><td>Clínica médica</td><td>80 km</td><td class="status">Disponível</td></tr></table></div></section>
+
+<section id="instituicoes" class="section"><h1>Instituições cadastradas</h1><p class="sub">ONGs e instituições comunitárias verificadas.</p><div class="panel"><table class="table"><tr><th>Instituição</th><th>CNPJ</th><th>Localização</th><th>Necessidades</th><th>Status</th></tr>
+<tr><td>Instituto Sorriso do Bem</td><td>12.345.678/0001-90</td><td>São Paulo – SP</td><td>23</td><td class="status">Verificada</td></tr>
+<tr><td>Associação Vida e Saúde</td><td>23.456.789/0001-01</td><td>Rio de Janeiro – RJ</td><td>18</td><td class="status">Verificada</td></tr>
+<tr><td>Projeto Cuidar+</td><td>34.567.890/0001-12</td><td>Salvador – BA</td><td>15</td><td class="status">Verificada</td></tr></table></div></section>
+
+<section id="relatorios" class="section"><h1>Relatórios e dados</h1><p class="sub">Panorama das necessidades por região e perfil populacional.</p><div class="cards"><div class="card"><div class="label">Necessidades abertas</div><div class="num">482</div></div><div class="card"><div class="label">Alta/muito alta</div><div class="num">60%</div></div><div class="card"><div class="label">Atendimento odontológico</div><div class="num">45%</div></div><div class="card"><div class="label">Faixa 25–39 anos</div><div class="num">28%</div></div></div><div class="panel" style="margin-top:16px"><h2>Principais necessidades</h2><div class="notice">Atendimento odontológico — 45%</div><div class="notice">Educação em saúde — 25%</div><div class="notice">Triagem e diagnóstico — 15%</div><div class="notice">Outros — 15%</div></div></section>
+</main></div>
+<script>
+function show(id,btn){
+ document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));
+ if(btn)btn.classList.add('active');
+ window.scrollTo(0,0);
+}
+</script>
+</body></html>
