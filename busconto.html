@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Busconto — Compare preços de materiais odontológicos</title>
+
+  <style>
+    :root {
+      --primary: #0c6cf2;
+      --primary-dark: #0754be;
+      --primary-light: #eaf3ff;
+      --secondary: #13b8a6;
+      --accent: #ffb020;
+      --danger: #eb5757;
+
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --surface-soft: #f9fafc;
+      --border: #e5eaf1;
+
+      --text: #172033;
+      --muted: #6f7b8f;
+
+      --shadow: 0 10px 30px rgba(30, 55, 90, 0.08);
+      --shadow-hover: 0 16px 35px rgba(30, 55, 90, 0.14);
+
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1240px, calc(100% - 32px)); margin: 0 auto; }
+
+    .topbar { background: #082956; color: white; font-size: 13px; }
+    .topbar-content { min-height: 38px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .topbar-links { display: flex; gap: 22px; opacity: 0.92; }
+
+    header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-main {
+      min-height: 82px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 28px;
+      align-items: center;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+      font-size: 30px;
+      letter-spacing: -1.3px;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+    .logo-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: linear-gradient(135deg, var(--primary), #38a8ff);
+      box-shadow: 0 8px 18px rgba(12, 108, 242, 0.25);
+    }
+    .logo span { color: var(--secondary); }
+
+    .search-bar {
+      background: white;
+      border: 2px solid var(--primary);
+      border-radius: 14px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      overflow: hidden;
+    }
+    .search-bar input {
+      height: 50px;
+      border: 0;
+      outline: 0;
+      padding: 0 18px;
+      font-size: 15px;
+      min-width: 0;
+    }
+    .search-button {
+      border: 0;
+      background: var(--primary);
+      color: white;
+      min-width: 58px;
+      font-size: 20px;
+    }
+    .header-actions { display: flex; gap: 12px; align-items: center; }
+    .header-action {
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text);
+      border-radius: 12px;
+      padding: 10px 13px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .hero {
+      background:
+        radial-gradient(circle at 80% 20%, rgba(19, 184, 166, 0.22), transparent 28%),
+        linear-gradient(120deg, #082956 0%, #0a4a92 56%, #0c6cf2 100%);
+      color: white;
+      overflow: hidden;
+    }
+    .hero-content {
+      min-height: 350px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      align-items: center;
+      gap: 50px;
+      padding: 50px 0;
+    }
+    .hero-tag {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      background: rgba(255,255,255,.13);
+      border: 1px solid rgba(255,255,255,.18);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(36px, 5vw, 58px);
+      line-height: 0.98;
+      letter-spacing: -2px;
+      max-width: 700px;
+    }
+    .hero h1 strong { color: #6be2d4; }
+    .hero p {
+      font-size: 18px;
+      line-height: 1.55;
+      max-width: 640px;
+      color: rgba(255,255,255,.86);
+      margin: 22px 0 28px;
+    }
+    .hero-search {
+      max-width: 680px;
+      padding: 7px;
+      border-radius: 16px;
+      background: white;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      box-shadow: 0 20px 45px rgba(0,0,0,.16);
+    }
+    .hero-search input { border: 0; outline: 0; padding: 0 14px; font-size: 15px; min-width: 0; }
+    .hero-search button {
+      border: 0;
+      background: var(--primary);
+      color: white;
+      border-radius: 11px;
+      padding: 14px 22px;
+      font-weight: 800;
+    }
+    .hero-art { display: flex; justify-content: center; }
+    .hero-card {
+      width: min(360px, 100%);
+      background: rgba(255,255,255,.96);
+      color: var(--text);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 25px 70px rgba(0,0,0,.22);
+      transform: rotate(2deg);
+    }
+    .hero-product-image {
+      height: 145px;
+      border-radius: 18px;
+      background: radial-gradient(circle at 40% 30%, white, #dbeaff 50%, #b9d6ff);
+      display: grid;
+      place-items: center;
+      font-size: 68px;
+      margin-bottom: 18px;
+    }
+    .hero-card small { color: var(--muted); }
+    .hero-price-row { display: flex; align-items: end; justify-content: space-between; gap: 15px; margin-top: 14px; }
+    .hero-price { font-size: 28px; font-weight: 900; color: var(--primary); }
+    .discount {
+      background: #e8fbf6;
+      color: #0c8e7e;
+      border-radius: 999px;
+      padding: 6px 9px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .stats { margin-top: -28px; position: relative; z-index: 3; }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-radius: 18px;
+      background: white;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .stat { padding: 24px; text-align: center; border-right: 1px solid var(--border); }
+    .stat:last-child { border-right: none; }
+    .stat strong { display: block; font-size: 25px; color: var(--primary); }
+    .stat span { color: var(--muted); font-size: 13px; }
+
+    .section { padding: 54px 0; }
+    .section-title-row {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+    .section-title h2 { font-size: 28px; letter-spacing: -0.7px; margin: 0 0 6px; }
+    .section-title p { margin: 0; color: var(--muted); }
+    .link-button { color: var(--primary); font-weight: 800; font-size: 14px; }
+
+    .categories { display: grid; grid-template-columns: repeat(7, 1fr); gap: 13px; }
+    .category {
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: var(--radius);
+      padding: 20px 10px;
+      text-align: center;
+      transition: .2s ease;
+    }
+    .category:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); border-color: #cfe0fb; }
+    .category-icon {
+      height: 58px;
+      width: 58px;
+      margin: 0 auto 12px;
+      border-radius: 17px;
+      background: var(--primary-light);
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+    }
+    .category strong { font-size: 13px; }
+
+    .content-layout { display: grid; grid-template-columns: 240px 1fr; gap: 25px; }
+    .filters {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      align-self: start;
+      position: sticky;
+      top: 106px;
+    }
+    .filters h3 { margin: 0 0 20px; }
+    .filter-group { padding: 18px 0; border-top: 1px solid var(--border); }
+    .filter-group h4 { margin: 0 0 12px; font-size: 14px; }
+    .filter-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 9px 0;
+      font-size: 13px;
+      color: #4f5a6d;
+    }
+    .price-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .price-inputs input, .sort select {
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 10px;
+      outline: none;
+      width: 100%;
+    }
+    .product-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 20px; }
+    .product-count { color: var(--muted); font-size: 14px; }
+    .sort { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+
+    .products { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .product-card {
+      position: relative;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: .2s ease;
+    }
+    .product-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+    .product-image {
+      height: 180px;
+      background: linear-gradient(145deg, #fafcff, #edf4ff);
+      display: grid;
+      place-items: center;
+      font-size: 63px;
+    }
+    .favorite {
+      position: absolute;
+      right: 13px;
+      top: 13px;
+      height: 36px;
+      width: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: white;
+      font-size: 18px;
+      z-index: 1;
+    }
+    .favorite.active { color: var(--danger); }
+    .badge {
+      position: absolute;
+      left: 12px;
+      top: 13px;
+      border-radius: 7px;
+      padding: 6px 9px;
+      background: var(--secondary);
+      color: white;
+      font-weight: 800;
+      font-size: 11px;
+    }
+    .product-body { padding: 17px; }
+    .brand {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      font-size: 10px;
+      font-weight: 900;
+    }
+    .product-card h3 { font-size: 15px; line-height: 1.4; margin: 7px 0 9px; min-height: 42px; }
+    .rating { color: #f2a000; font-size: 12px; margin-bottom: 14px; }
+    .rating span { color: var(--muted); margin-left: 5px; }
+    .price-label { font-size: 11px; color: var(--muted); }
+    .price { font-size: 25px; font-weight: 900; margin: 3px 0; }
+    .installments { font-size: 12px; color: var(--muted); }
+    .offers { margin: 15px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .offer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 9px 0;
+      font-size: 12px;
+    }
+    .offer + .offer { border-top: 1px solid #f0f2f6; }
+    .supplier { font-weight: 700; }
+    .supplier-price { font-weight: 900; }
+    .product-actions { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+    .btn-primary, .btn-secondary { border-radius: 10px; padding: 11px 12px; font-weight: 800; border: 0; }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-secondary { color: var(--primary); background: var(--primary-light); }
+
+    .business-banner {
+      border-radius: 24px;
+      background: linear-gradient(120deg, #092d5e, #115dad);
+      color: white;
+      padding: 34px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 30px;
+      align-items: center;
+      overflow: hidden;
+    }
+    .business-banner h2 { margin: 0 0 9px; }
+    .business-banner p {
+      max-width: 750px;
+      margin: 0;
+      color: rgba(255,255,255,.78);
+      line-height: 1.5;
+    }
+    .business-banner button {
+      border: 0;
+      background: white;
+      color: #0b4c91;
+      padding: 13px 20px;
+      border-radius: 10px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .compare-drawer {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%) translateY(150%);
+      width: min(900px, calc(100% - 30px));
+      background: #12223b;
+      color: white;
+      border-radius: 18px;
+      padding: 15px 18px;
+      z-index: 200;
+      box-shadow: 0 20px 50px rgba(0,0,0,.3);
+      transition: .3s ease;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 15px;
+      align-items: center;
+    }
+    .compare-drawer.visible { transform: translateX(-50%) translateY(0); }
+    .compare-items { display: flex; gap: 8px; flex-wrap: wrap; }
+    .compare-pill {
+      background: rgba(255,255,255,.11);
+      border: 1px solid rgba(255,255,255,.14);
+      padding: 8px 11px;
+      border-radius: 10px;
+      font-size: 12px;
+    }
+    .compare-button {
+      border: 0;
+      background: var(--secondary);
+      color: white;
+      border-radius: 10px;
+      padding: 11px 18px;
+      font-weight: 900;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: rgba(6, 18, 38, .58);
+      backdrop-filter: blur(5px);
+      display: none;
+      place-items: center;
+      padding: 20px;
+    }
+    .modal-overlay.visible { display: grid; }
+    .modal {
+      background: white;
+      width: min(900px, 100%);
+      max-height: 85vh;
+      overflow: auto;
+      border-radius: 22px;
+      box-shadow: 0 30px 90px rgba(0,0,0,.25);
+    }
+    .modal-header {
+      padding: 22px 25px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h2 { margin: 0; }
+    .close-modal {
+      border: 0;
+      background: #f1f4f8;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      font-size: 18px;
+    }
+    .comparison-table { padding: 20px 25px 28px; overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; min-width: 680px; }
+    th, td { text-align: left; border-bottom: 1px solid var(--border); padding: 14px 12px; font-size: 13px; }
+    th { background: #f7f9fc; }
+    td strong { color: var(--primary); }
+
+    footer { background: #081d38; color: white; margin-top: 50px; }
+    .footer-grid {
+      padding: 45px 0;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+    }
+    .footer-logo { font-size: 27px; font-weight: 900; margin-bottom: 14px; }
+    footer p { color: #9eb0c6; max-width: 420px; line-height: 1.55; font-size: 13px; }
+    footer h4 { margin: 5px 0 16px; }
+    footer a { display: block; font-size: 13px; color: #a9bad0; margin: 10px 0; }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.1);
+      color: #869bb5;
+      padding: 18px 0;
+      font-size: 12px;
+    }
+
+    @media (max-width: 1050px) {
+      .categories { grid-template-columns: repeat(4, 1fr); }
+      .products { grid-template-columns: repeat(2, 1fr); }
+      .header-actions { display: none; }
+      .header-main { grid-template-columns: auto 1fr; }
+    }
+    @media (max-width: 800px) {
+      .hero-content { grid-template-columns: 1fr; padding: 45px 0 70px; }
+      .hero-art { display: none; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .content-layout { grid-template-columns: 1fr; }
+      .filters { position: static; }
+      .business-banner { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 620px) {
+      .container { width: min(100% - 22px, 1240px); }
+      .topbar { display: none; }
+      .header-main { display: block; padding: 14px 0; }
+      .logo { margin-bottom: 12px; }
+      .hero h1 { font-size: 39px; }
+      .hero-search { grid-template-columns: 1fr; gap: 6px; }
+      .hero-search input { height: 45px; }
+      .categories { grid-template-columns: repeat(2, 1fr); }
+      .products { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .stat { border-bottom: 1px solid var(--border); }
+      .section-title-row, .product-header { align-items: start; flex-direction: column; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .compare-drawer { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="topbar">
+    <div class="container topbar-content">
+      <div>Compare preços. Compre melhor. Economize na sua clínica.</div>
+      <div class="topbar-links">
+        <a href="#">Para fornecedores</a>
+        <a href="#">Busconto Pro</a>
+        <a href="#">Ajuda</a>
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <div class="container header-main">
+      <a class="logo" href="#">
+        <div class="logo-mark">B</div>
+        Bus<span>conto</span>
+      </a>
+
+      <div class="search-bar">
+        <input id="headerSearch" type="text" placeholder="Busque resina, anestésico, luvas, implantes...">
+        <button class="search-button" onclick="runSearch('headerSearch')" aria-label="Pesquisar">🔎</button>
+      </div>
+
+      <div class="header-actions">
+        <button class="header-action">♡ Favoritos</button>
+        <button class="header-action">👤 Entrar</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-content">
+        <div>
+          <div class="hero-tag">🦷 Economia inteligente para odontologia</div>
+          <h1>Compare preços antes de <strong>comprar.</strong></h1>
+          <p>
+            Encontre materiais odontológicos em diferentes fornecedores,
+            compare preços, fretes e condições de pagamento e escolha
+            a melhor oferta para sua clínica, consultório ou faculdade.
+          </p>
+
+          <div class="hero-search">
+            <input id="heroSearch" placeholder="O que você está procurando?">
+            <button onclick="runSearch('heroSearch')">Comparar preços</button>
+          </div>
+        </div>
+
+        <div class="hero-art">
+          <div class="hero-card">
+            <div class="hero-product-image">🧪</div>
+            <small>Melhor preço encontrado</small>
+            <h3>Resina Filtek Z350 XT A2B</h3>
+            <div class="hero-price-row">
+              <div>
+                <small>A partir de</small>
+                <div class="hero-price">R$ 89,90</div>
+              </div>
+              <div class="discount">↓ 18%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat"><strong>+42 mil</strong><span>produtos monitorados</span></div>
+          <div class="stat"><strong>86</strong><span>lojas comparadas</span></div>
+          <div class="stat"><strong>até 38%</strong><span>de economia encontrada</span></div>
+          <div class="stat"><strong>24h</strong><span>monitoramento de preços</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-title-row">
+          <div class="section-title">
+            <h2>Compre por categoria</h2>
+            <p>Encontre rapidamente os materiais que você usa todos os dias.</p>
+          </div>
+          <a class="link-button" href="#">Ver todas →</a>
+        </div>
+
+        <div class="categories">
+          <button class="category" onclick="filterCategory('Resinas')"><div class="category-icon">🧪</div><strong>Resinas</strong></button>
+          <button class="category" onclick="filterCategory('Anestésicos')"><div class="category-icon">💉</div><strong>Anestésicos</strong></button>
+          <button class="category" onclick="filterCategory('Descartáveis')"><div class="category-icon">🧤</div><strong>Descartáveis</strong></button>
+          <button class="category" onclick="filterCategory('Endodontia')"><div class="category-icon">🦷</div><strong>Endodontia</strong></button>
+          <button class="category" onclick="filterCategory('Implantes')"><div class="category-icon">🔩</div><strong>Implantes</strong></button>
+          <button class="category" onclick="filterCategory('Ortodontia')"><div class="category-icon">😁</div><strong>Ortodontia</strong></button>
+          <button class="category" onclick="filterCategory('Instrumentais')"><div class="category-icon">🛠️</div><strong>Instrumentais</strong></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top: 15px">
+      <div class="container">
+        <div class="section-title-row">
+          <div class="section-title">
+            <h2>Ofertas em destaque</h2>
+            <p id="searchDescription">Produtos com boas oportunidades de preço hoje.</p>
+          </div>
+        </div>
+
+        <div class="content-layout">
+          <aside class="filters">
+            <h3>Filtros</h3>
+
+            <div class="filter-group">
+              <h4>Categoria</h4>
+              <label class="filter-option"><input type="checkbox"> Dentística</label>
+              <label class="filter-option"><input type="checkbox"> Endodontia</label>
+              <label class="filter-option"><input type="checkbox"> Cirurgia</label>
+              <label class="filter-option"><input type="checkbox"> Ortodontia</label>
+              <label class="filter-option"><input type="checkbox"> Biossegurança</label>
+            </div>
+
+            <div class="filter-group">
+              <h4>Faixa de preço</h4>
+              <div class="price-inputs">
+                <input placeholder="R$ mín.">
+                <input placeholder="R$ máx.">
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <h4>Fabricante</h4>
+              <label class="filter-option"><input type="checkbox"> 3M</label>
+              <label class="filter-option"><input type="checkbox"> Dentsply Sirona</label>
+              <label class="filter-option"><input type="checkbox"> FGM</label>
+              <label class="filter-option"><input type="checkbox"> Kulzer</label>
+              <label class="filter-option"><input type="checkbox"> Septodont</label>
+            </div>
+
+            <div class="filter-group">
+              <h4>Entrega</h4>
+              <label class="filter-option"><input type="checkbox"> Frete grátis</label>
+              <label class="filter-option"><input type="checkbox"> Entrega rápida</label>
+            </div>
+          </aside>
+
+          <div>
+            <div class="product-header">
+              <div class="product-count"><strong id="productCount">6 produtos</strong> encontrados</div>
+              <div class="sort">
+                Ordenar por
+                <select id="sortSelect" onchange="sortProducts()">
+                  <option value="relevance">Mais relevantes</option>
+                  <option value="lowest">Menor preço</option>
+                  <option value="highest">Maior preço</option>
+                  <option value="rating">Melhor avaliação</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="products" id="productGrid"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="business-banner">
+          <div>
+            <h2>Busconto para clínicas</h2>
+            <p>
+              Crie listas de compra, acompanhe a evolução dos preços,
+              receba alertas de ofertas e descubra quanto sua clínica
+              pode economizar nas compras recorrentes.
+            </p>
+          </div>
+          <button>Conhecer o Busconto Pro</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <div class="footer-logo">Busconto</div>
+        <p>
+          Comparação de preços de materiais odontológicos para dentistas,
+          estudantes, clínicas e instituições de ensino.
+        </p>
+      </div>
+
+      <div>
+        <h4>Busconto</h4>
+        <a href="#">Sobre nós</a>
+        <a href="#">Como funciona</a>
+        <a href="#">Busconto Pro</a>
+      </div>
+
+      <div>
+        <h4>Compradores</h4>
+        <a href="#">Materiais</a>
+        <a href="#">Ofertas</a>
+        <a href="#">Alertas de preço</a>
+      </div>
+
+      <div>
+        <h4>Parceiros</h4>
+        <a href="#">Cadastrar loja</a>
+        <a href="#">Área do fornecedor</a>
+        <a href="#">Integração</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">© 2026 Busconto — Mockup conceitual.</div>
+    </div>
+  </footer>
+
+  <div class="compare-drawer" id="compareDrawer">
+    <div>
+      <strong>Comparar produtos</strong>
+      <div class="compare-items" id="compareItems"></div>
+    </div>
+    <button class="compare-button" onclick="openComparison()">Comparar agora</button>
+  </div>
+
+  <div class="modal-overlay" id="comparisonModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Comparação de produtos</h2>
+        <button class="close-modal" onclick="closeComparison()">×</button>
+      </div>
+      <div class="comparison-table">
+        <table id="comparisonTable"></table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const products = [
+      {
+        id: 1,
+        category: "Resinas",
+        icon: "🧪",
+        brand: "3M",
+        name: "Resina Filtek Z350 XT A2B 4g",
+        rating: 4.9,
+        reviews: 213,
+        price: 89.90,
+        oldPrice: 109.90,
+        badge: "Menor preço",
+        offers: [["Dental Speed", 89.90], ["Dental Cremer", 94.50], ["Surya Dental", 97.90]]
+      },
+      {
+        id: 2,
+        category: "Anestésicos",
+        icon: "💉",
+        brand: "DFL",
+        name: "Articaine 4% com Epinefrina 1:100.000",
+        rating: 4.8,
+        reviews: 142,
+        price: 154.90,
+        oldPrice: 178.00,
+        badge: "Oferta",
+        offers: [["Dental Cremer", 154.90], ["Dental Speed", 159.80], ["Odonto Médica", 166.20]]
+      },
+      {
+        id: 3,
+        category: "Descartáveis",
+        icon: "🧤",
+        brand: "Descarpack",
+        name: "Luva de Procedimento Nitrílica Premium",
+        rating: 4.7,
+        reviews: 387,
+        price: 28.90,
+        oldPrice: 34.90,
+        badge: "Popular",
+        offers: [["Dental Shop", 28.90], ["Surya Dental", 30.50], ["Dental Cremer", 32.20]]
+      },
+      {
+        id: 4,
+        category: "Endodontia",
+        icon: "🦷",
+        brand: "Dentsply Sirona",
+        name: "Lima ProTaper Gold Sortida",
+        rating: 4.9,
+        reviews: 98,
+        price: 239.00,
+        oldPrice: 268.00,
+        badge: "Mais vendido",
+        offers: [["Dental Speed", 239.00], ["Odonto Médica", 245.90], ["Dental Cremer", 251.30]]
+      },
+      {
+        id: 5,
+        category: "Instrumentais",
+        icon: "🛠️",
+        brand: "Golgran",
+        name: "Kit Clínico Odontológico Inox 6 peças",
+        rating: 4.6,
+        reviews: 71,
+        price: 79.90,
+        oldPrice: 99.00,
+        badge: "Bom preço",
+        offers: [["Odonto Shop", 79.90], ["Dental Speed", 84.50], ["Dental Cremer", 89.90]]
+      },
+      {
+        id: 6,
+        category: "Resinas",
+        icon: "🧴",
+        brand: "FGM",
+        name: "Adesivo Ambar Universal APS 5ml",
+        rating: 4.8,
+        reviews: 162,
+        price: 82.40,
+        oldPrice: 95.90,
+        badge: "Oferta",
+        offers: [["Surya Dental", 82.40], ["Dental Speed", 85.50], ["Dental Cremer", 88.00]]
+      }
+    ];
+
+    let visibleProducts = [...products];
+    const compared = new Set();
+
+    function money(value) {
+      return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById("productGrid");
+
+      grid.innerHTML = visibleProducts.map(product => `
+        <article class="product-card">
+          <div class="badge">${product.badge}</div>
+          <button class="favorite" onclick="toggleFavorite(this)" title="Adicionar aos favoritos">♡</button>
+          <div class="product-image">${product.icon}</div>
+
+          <div class="product-body">
+            <div class="brand">${product.brand}</div>
+            <h3>${product.name}</h3>
+
+            <div class="rating">
+              ★★★★★
+              <span>${product.rating} (${product.reviews})</span>
+            </div>
+
+            <div class="price-label">Melhor preço</div>
+            <div class="price">${money(product.price)}</div>
+            <div class="installments">ou 3x de ${money(product.price / 3)}</div>
+
+            <div class="offers">
+              ${product.offers.map((offer, index) => `
+                <div class="offer">
+                  <span class="supplier">${index === 0 ? "🏆 " : ""}${offer[0]}</span>
+                  <span class="supplier-price">${money(offer[1])}</span>
+                </div>
+              `).join("")}
+            </div>
+
+            <div class="product-actions">
+              <button class="btn-primary" onclick="alert('Em uma aplicação real, você seria direcionado para a loja com a melhor oferta.')">Ver ofertas</button>
+              <button class="btn-secondary" onclick="toggleCompare(${product.id})">⇄</button>
+            </div>
+          </div>
+        </article>
+      `).join("");
+
+      document.getElementById("productCount").textContent =
+        `${visibleProducts.length} produto${visibleProducts.length === 1 ? "" : "s"}`;
+    }
+
+    function toggleFavorite(button) {
+      button.classList.toggle("active");
+      button.textContent = button.classList.contains("active") ? "♥" : "♡";
+    }
+
+    function toggleCompare(id) {
+      if (compared.has(id)) {
+        compared.delete(id);
+      } else {
+        if (compared.size >= 3) {
+          alert("Você pode comparar até 3 produtos neste mockup.");
+          return;
+        }
+        compared.add(id);
+      }
+      updateCompareDrawer();
+    }
+
+    function updateCompareDrawer() {
+      const drawer = document.getElementById("compareDrawer");
+      const items = document.getElementById("compareItems");
+      const selected = products.filter(p => compared.has(p.id));
+
+      items.innerHTML = selected.map(product => `
+        <div class="compare-pill">${product.brand} — ${product.name}</div>
+      `).join("");
+
+      drawer.classList.toggle("visible", selected.length > 0);
+    }
+
+    function openComparison() {
+      const selected = products.filter(p => compared.has(p.id));
+      if (!selected.length) return;
+
+      const table = document.getElementById("comparisonTable");
+      table.innerHTML = `
+        <thead>
+          <tr>
+            <th>Característica</th>
+            ${selected.map(p => `<th>${p.brand}<br>${p.name}</th>`).join("")}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Melhor preço</td>
+            ${selected.map(p => `<td><strong>${money(p.price)}</strong></td>`).join("")}
+          </tr>
+          <tr>
+            <td>Avaliação</td>
+            ${selected.map(p => `<td>⭐ ${p.rating}</td>`).join("")}
+          </tr>
+          <tr>
+            <td>Ofertas encontradas</td>
+            ${selected.map(p => `<td>${p.offers.length} lojas</td>`).join("")}
+          </tr>
+          <tr>
+            <td>Loja mais barata</td>
+            ${selected.map(p => `<td>${p.offers[0][0]}</td>`).join("")}
+          </tr>
+          <tr>
+            <td>Preço mais alto listado</td>
+            ${selected.map(p => `<td>${money(Math.max(...p.offers.map(o => o[1])))}</td>`).join("")}
+          </tr>
+        </tbody>
+      `;
+
+      document.getElementById("comparisonModal").classList.add("visible");
+    }
+
+    function closeComparison() {
+      document.getElementById("comparisonModal").classList.remove("visible");
+    }
+
+    function runSearch(inputId) {
+      const input = document.getElementById(inputId);
+      const term = input.value.trim().toLowerCase();
+
+      document.getElementById("headerSearch").value = input.value;
+      document.getElementById("heroSearch").value = input.value;
+
+      if (!term) {
+        visibleProducts = [...products];
+        document.getElementById("searchDescription").textContent =
+          "Produtos com boas oportunidades de preço hoje.";
+      } else {
+        visibleProducts = products.filter(product =>
+          product.name.toLowerCase().includes(term) ||
+          product.brand.toLowerCase().includes(term) ||
+          product.category.toLowerCase().includes(term)
+        );
+
+        document.getElementById("searchDescription").textContent =
+          `Resultados para “${input.value}”.`;
+      }
+
+      renderProducts();
+      document.getElementById("productGrid").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function filterCategory(category) {
+      visibleProducts = products.filter(p => p.category === category);
+      document.getElementById("searchDescription").textContent =
+        `Produtos da categoria ${category}.`;
+      renderProducts();
+      document.getElementById("productGrid").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function sortProducts() {
+      const type = document.getElementById("sortSelect").value;
+
+      if (type === "lowest") visibleProducts.sort((a, b) => a.price - b.price);
+      if (type === "highest") visibleProducts.sort((a, b) => b.price - a.price);
+      if (type === "rating") visibleProducts.sort((a, b) => b.rating - a.rating);
+      if (type === "relevance") {
+        visibleProducts = products.filter(p => visibleProducts.some(v => v.id === p.id));
+      }
+
+      renderProducts();
+    }
+
+    document.getElementById("comparisonModal").addEventListener("click", event => {
+      if (event.target.id === "comparisonModal") closeComparison();
+    });
+
+    document.getElementById("headerSearch").addEventListener("keydown", event => {
+      if (event.key === "Enter") runSearch("headerSearch");
+    });
+
+    document.getElementById("heroSearch").addEventListener("keydown", event => {
+      if (event.key === "Enter") runSearch("heroSearch");
+    });
+
+    renderProducts();
+  </script>
+
+</body>
+</html>
