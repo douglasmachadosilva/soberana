@@ -2,179 +2,197 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CareLink AI — Mockup</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>CareLink AI — Startup Day Mockup</title>
 <style>
 :root{
-  --blue:#1769aa; --blue2:#0f4f8a; --teal:#18a6a0; --ink:#17324d;
-  --muted:#718096; --bg:#f4f8fb; --card:#fff; --line:#e5edf3;
-  --green:#20a36a; --yellow:#e9a72c; --red:#dc4d55; --shadow:0 10px 30px rgba(23,50,77,.08);
+  --blue:#1769aa; --blue2:#2d8dcc; --aqua:#5fd3d8; --bg:#f4f9fc;
+  --text:#17324d; --muted:#6d8192; --line:#dceaf2; --white:#fff;
+  --danger:#d9534f; --warning:#e5a72c; --success:#2ca66f;
+  --shadow:0 10px 30px rgba(24,76,110,.10); --radius:20px;
 }
-*{box-sizing:border-box} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
-button{font:inherit;cursor:pointer;border:0}.app{display:flex;min-height:100vh}
-.sidebar{width:245px;background:#fff;border-right:1px solid var(--line);padding:24px 16px;position:fixed;inset:0 auto 0 0;z-index:10}
-.brand{display:flex;align-items:center;gap:10px;padding:4px 10px 28px}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--blue),var(--teal));display:grid;place-items:center;color:#fff;font-size:22px;box-shadow:0 7px 16px rgba(23,105,170,.2)}
-.brand strong{font-size:19px}.brand small{display:block;color:var(--teal);font-weight:700}
-.nav{display:grid;gap:7px}.nav button{padding:12px 14px;border-radius:12px;background:transparent;color:#60758a;text-align:left;font-weight:600}.nav button:hover,.nav button.active{background:#eaf4fb;color:var(--blue)}
-.side-bottom{position:absolute;bottom:22px;left:16px;right:16px;background:#f0f8fa;border-radius:15px;padding:14px;color:#537083;font-size:12px;line-height:1.5}
-.main{margin-left:245px;width:calc(100% - 245px);padding:28px 34px 40px}.top{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:25px}.top h1{margin:0;font-size:27px}.top p{margin:5px 0 0;color:var(--muted)}.top-actions{display:flex;align-items:center;gap:10px}.pill{padding:9px 12px;border-radius:20px;background:#eaf7f5;color:#16847e;font-weight:700;font-size:12px}.avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#d9ebf8;color:var(--blue);font-weight:800}
-.page{display:none}.page.active{display:block}.grid{display:grid;gap:18px}.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}.stat{position:relative;overflow:hidden}.stat .icon{width:39px;height:39px;border-radius:12px;background:#edf6fb;display:grid;place-items:center;color:var(--blue);margin-bottom:14px}.stat h2{margin:0;font-size:27px}.stat p{margin:5px 0 0;color:var(--muted);font-size:13px}.delta{position:absolute;right:18px;top:18px;font-size:12px;font-weight:800;color:var(--green)}
-.two{grid-template-columns:1.55fr 1fr}.three{grid-template-columns:repeat(3,1fr)}.card-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}.card-title h3{margin:0;font-size:16px}.link{background:none;color:var(--blue);font-weight:700;font-size:12px}
-.patient{display:flex;align-items:center;gap:13px;padding:13px;border-radius:14px;background:#f8fbfd;margin-bottom:9px}.patient:last-child{margin-bottom:0}.pavatar{width:40px;height:40px;border-radius:12px;background:#dceff6;display:grid;place-items:center;color:var(--blue);font-weight:800}.patient .name{font-weight:750}.patient .sub{font-size:12px;color:var(--muted);margin-top:3px}.risk{margin-left:auto;font-size:11px;font-weight:800;padding:6px 9px;border-radius:99px}.low{color:#13744c;background:#e7f7ef}.med{color:#9a6812;background:#fff3d9}.high{color:#a8323b;background:#ffe7e8}
-.progress{height:8px;background:#edf2f6;border-radius:99px;overflow:hidden}.bar{height:100%;background:linear-gradient(90deg,var(--teal),var(--blue));border-radius:99px}
-.metric{display:flex;justify-content:space-between;font-size:13px;margin:13px 0 7px}.metric b{font-size:13px}.timeline{display:grid;gap:12px}.event{display:flex;gap:12px}.dot{width:10px;height:10px;border-radius:50%;background:var(--teal);margin-top:5px;box-shadow:0 0 0 5px #e7f7f5}.event b{font-size:13px}.event p{margin:3px 0 0;font-size:12px;color:var(--muted)}
-table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:13px 8px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
-.btn{padding:10px 14px;border-radius:11px;font-weight:750;background:#eaf4fb;color:var(--blue)}.btn.primary{background:var(--blue);color:#fff}.btn.danger{background:#ffe9ea;color:#b33841}.btn:active{transform:translateY(1px)}
-.chat{display:flex;flex-direction:column;height:560px}.messages{flex:1;overflow:auto;padding:5px}.bubble{max-width:72%;padding:11px 13px;border-radius:15px;margin:9px 0;font-size:13px;line-height:1.45}.bot{background:#edf7f7;border-top-left-radius:4px}.me{background:#1769aa;color:#fff;margin-left:auto;border-top-right-radius:4px}.composer{display:flex;gap:8px;border-top:1px solid var(--line);padding-top:15px}.composer input{flex:1;border:1px solid var(--line);border-radius:12px;padding:12px;outline:none}
-.toggle{display:flex;background:#edf3f7;padding:4px;border-radius:12px}.toggle button{padding:8px 12px;border-radius:9px;background:transparent;color:#647789;font-weight:700;font-size:12px}.toggle button.active{background:#fff;color:var(--blue);box-shadow:0 2px 8px rgba(0,0,0,.07)}
-.hero{background:linear-gradient(135deg,#0f5d91,#168c91);color:#fff;border-radius:20px;padding:25px;display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:18px}.hero h2{margin:0 0 7px;font-size:22px}.hero p{margin:0;opacity:.86;font-size:13px}.hero .shield{font-size:45px;opacity:.9}
-.alert{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:14px;background:#fff0f0;border:1px solid #ffd8da;margin-bottom:12px}.alert strong{font-size:13px}.alert p{margin:3px 0 0;color:#7b4d51;font-size:12px}
-.toast{position:fixed;right:24px;bottom:24px;background:#17324d;color:#fff;padding:13px 16px;border-radius:12px;box-shadow:var(--shadow);opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none;font-size:13px}.toast.show{opacity:1;transform:none}
-@media(max-width:1000px){.sidebar{width:76px}.brand div,.nav button span,.side-bottom{display:none}.brand{justify-content:center;padding-bottom:24px}.nav button{text-align:center;font-size:20px}.main{margin-left:76px;width:calc(100% - 76px)}.stats{grid-template-columns:repeat(2,1fr)}.two,.three{grid-template-columns:1fr}}
-@media(max-width:650px){.main{padding:18px}.top{align-items:flex-start}.top-actions .pill{display:none}.stats{grid-template-columns:1fr 1fr}.card{padding:15px}.hero{padding:19px}.hero .shield{display:none}}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+button,input,textarea{font:inherit} button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+.sidebar{width:245px;background:#fff;border-right:1px solid var(--line);padding:24px 16px;position:fixed;inset:0 auto 0 0;z-index:20}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:21px;color:var(--blue);padding:4px 10px 25px}
+.logo-mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--aqua));display:grid;place-items:center;color:#fff;font-weight:900}
+.nav{display:grid;gap:7px}.nav button{border:0;background:transparent;text-align:left;padding:13px 14px;border-radius:13px;color:#5e7486;display:flex;gap:11px;align-items:center}
+.nav button.active,.nav button:hover{background:#eaf6fc;color:var(--blue);font-weight:700}
+.demo{position:absolute;bottom:18px;left:16px;right:16px;background:#eefafd;border:1px solid #d3f0f3;padding:13px;border-radius:15px;font-size:12px;color:#4e7180}
+.main{margin-left:245px;width:calc(100% - 245px);padding:25px 30px 40px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.crumb{color:var(--muted);font-size:13px}.top h1{margin:5px 0 0;font-size:27px}
+.avatar{width:43px;height:43px;border-radius:50%;background:#d9eef9;display:grid;place-items:center;color:var(--blue);font-weight:800}
+.page{display:none}.page.active{display:block}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.grid{display:grid;gap:18px}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}
+.hero{padding:25px;background:linear-gradient(135deg,#eaf8fc,#f8fcff);display:flex;justify-content:space-between;gap:20px;align-items:center}
+.badge{display:inline-flex;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;background:#e8f6fb;color:var(--blue)}
+.hero h2{margin:10px 0 7px;font-size:25px}.hero p{margin:0;color:var(--muted);line-height:1.5}
+.hero-icon{font-size:58px}
+.stat{padding:20px}.stat .label{font-size:13px;color:var(--muted)}.stat .value{font-size:29px;font-weight:800;margin-top:7px}.stat .sub{font-size:12px;color:var(--muted);margin-top:5px}
+.section-title{margin:27px 0 13px;font-size:17px}.list{padding:6px 18px}.row{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}
+.patient{display:flex;gap:12px;align-items:center}.pic{width:42px;height:42px;border-radius:14px;background:#e3f4f9;display:grid;place-items:center;font-weight:800;color:var(--blue)}
+.small{font-size:12px;color:var(--muted)}.btn{border:0;border-radius:12px;padding:11px 15px;font-weight:700}.primary{background:var(--blue);color:#fff}.secondary{background:#eaf6fc;color:var(--blue)}.danger{background:#fff0ef;color:var(--danger)}
+.btn:active{transform:translateY(1px)}
+.center{max-width:850px;margin:0 auto}.patient-head{padding:24px}.patient-head h2{margin:0 0 4px}.patient-head p{margin:0;color:var(--muted)}
+.feeling{padding:24px;text-align:center}.feeling h2{margin:0 0 7px}.feeling p{color:var(--muted);margin-top:0}
+.emojis{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:24px 0}.emoji{width:115px;min-height:100px;border:2px solid var(--line);background:#fff;border-radius:18px;padding:12px;color:var(--text)}.emoji span{display:block;font-size:38px;margin-bottom:7px}.emoji.selected{border-color:var(--aqua);background:#effcfd;box-shadow:0 0 0 3px #d9f6f7}
+.note{font-size:12px;color:var(--muted);background:#f7fafc;padding:11px;border-radius:12px;text-align:left}
+.q-card{padding:22px}.progress{height:7px;background:#e7f0f4;border-radius:10px;overflow:hidden;margin:12px 0 22px}.bar{height:100%;width:62%;background:linear-gradient(90deg,var(--blue),var(--aqua))}
+.q{padding:18px 0;border-bottom:1px solid var(--line)}.q:last-child{border:0}.q strong{display:block;margin-bottom:12px}.opts{display:flex;gap:9px;flex-wrap:wrap}.opt{border:1px solid var(--line);background:#fff;padding:10px 13px;border-radius:12px}.opt.selected{border-color:var(--blue);background:#eef7fc;color:var(--blue);font-weight:700}
+textarea{width:100%;min-height:90px;border:1px solid var(--line);border-radius:13px;padding:12px;resize:vertical}
+.result{padding:27px}.risk{border-radius:17px;padding:20px;margin:15px 0}.risk.high{background:#fff2f1;border:1px solid #f4c9c6}.risk.low{background:#eefaf5;border:1px solid #ccebdc}.risk .big{font-size:23px;font-weight:800}.risk p{color:#667b8c;line-height:1.5}
+.report{padding:24px}.report-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}.risk-pill{padding:8px 12px;border-radius:999px;background:#fff0ef;color:var(--danger);font-weight:800;font-size:12px}.report-box{background:#f8fbfd;border:1px solid var(--line);border-radius:15px;padding:17px;margin-top:14px}.report-box h4{margin:0 0 9px}.report-box p{margin:0;line-height:1.5;color:#536c7d}
+.alert{border-left:5px solid var(--danger);padding:16px 18px;background:#fff7f6;border-radius:12px;margin:16px 0}.alert strong{display:block;margin-bottom:5px}
+.chat{display:flex;flex-direction:column;height:560px}.chat-body{flex:1;padding:22px;overflow:auto}.bubble{max-width:70%;padding:12px 15px;border-radius:17px;margin:8px 0;line-height:1.45}.mine{margin-left:auto;background:#dff5f6}.theirs{background:#eef5f8}.chat-input{border-top:1px solid var(--line);padding:14px;display:flex;gap:8px}.chat-input input{flex:1;border:1px solid var(--line);border-radius:12px;padding:11px}
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.search{border:1px solid var(--line);border-radius:12px;padding:11px 13px;width:250px}
+.table{padding:0 18px}.table-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px;padding:15px 0;border-bottom:1px solid var(--line);align-items:center}.table-row.header{font-size:12px;color:var(--muted);font-weight:700}
+.footer-note{margin-top:18px;text-align:center;color:var(--muted);font-size:11px}
+@media(max-width:800px){
+ .sidebar{width:100%;height:68px;top:auto;bottom:0;left:0;padding:7px 8px;border-right:0;border-top:1px solid var(--line);display:flex;align-items:center}
+ .logo,.demo{display:none}.nav{width:100%;display:flex;justify-content:space-around}.nav button{font-size:0;padding:9px 12px;justify-content:center}.nav button span{font-size:21px}.main{margin-left:0;width:100%;padding:18px 14px 88px}.top h1{font-size:22px}.g3,.g2{grid-template-columns:1fr}.hero{align-items:flex-start}.search{width:170px}.table-row{grid-template-columns:1.6fr 1fr 1fr}.table-row div:nth-child(4){display:none}.emoji{width:90px}.bubble{max-width:85%}
+}
 </style>
 </head>
 <body>
 <div class="app">
 <aside class="sidebar">
-  <div class="brand"><div class="logo">♥</div><div><strong>CareLink</strong><small>AI</small></div></div>
+  <div class="logo"><div class="logo-mark">+</div>CareLink AI</div>
   <nav class="nav">
-    <button class="active" data-page="dashboard">⌂ <span>Dashboard</span></button>
-    <button data-page="patients">♙ <span>Pacientes</span></button>
-    <button data-page="monitoring">◉ <span>Monitoramento</span></button>
-    <button data-page="medications">◷ <span>Medicações</span></button>
-    <button data-page="chat">✦ <span>Chat inteligente</span></button>
-    <button data-page="reports">▥ <span>Relatórios</span></button>
+    <button class="active" onclick="go('dashboard',this)"><span>⌂</span> Dashboard</button>
+    <button onclick="go('patient',this)"><span>👤</span> Fernanda</button>
+    <button onclick="go('monitoring',this)"><span>◉</span> Monitoramento</button>
+    <button onclick="go('meds',this)"><span>💊</span> Medicamentos</button>
+    <button onclick="go('chat',this)"><span>💬</span> Chat</button>
+    <button onclick="go('report',this)"><span>▤</span> Relatório IA</button>
   </nav>
-  <div class="side-bottom"><b>Privacidade em foco</b><br>Dados clínicos protegidos e acesso controlado. A IA é uma ferramenta de apoio e não substitui a avaliação profissional.</div>
+  <div class="demo"><b>Modo Startup Day</b><br>Paciente e dados são hipotéticos. A IA apoia a avaliação profissional e não substitui o dentista.</div>
 </aside>
 
 <main class="main">
-  <div class="top">
-    <div><h1 id="pageTitle">Olá, Dra. Camila 👋</h1><p id="pageSubtitle">Painel de acompanhamento dos seus pacientes</p></div>
-    <div class="top-actions"><div class="pill">● Sistema operacional</div><div class="avatar">CA</div></div>
-  </div>
+  <div class="top"><div><div class="crumb">CareLink AI / Startup Day</div><h1 id="pageTitle">Visão geral</h1></div><div class="avatar">DR</div></div>
 
-  <section class="page active" id="dashboard">
-    <div class="hero"><div><h2>Monitoramento inteligente, cuidado contínuo.</h2><p>O CareLink AI centraliza sintomas, medicações, sinais vitais e alertas para apoiar o acompanhamento pré e pós-procedimento.</p></div><div class="shield">✚</div></div>
-    <div class="grid stats">
-      <div class="card stat"><div class="icon">♙</div><h2>24</h2><p>Pacientes ativos</p><span class="delta">+3 esta semana</span></div>
-      <div class="card stat"><div class="icon">⚠</div><h2>3</h2><p>Alertas para avaliar</p><span class="delta" style="color:var(--red)">atenção</span></div>
-      <div class="card stat"><div class="icon">✓</div><h2>91%</h2><p>Adesão às medicações</p><span class="delta">↑ 6%</span></div>
-      <div class="card stat"><div class="icon">♥</div><h2>97%</h2><p>Dados vitais recebidos</p><span class="delta">estável</span></div>
+  <section id="dashboard" class="page active">
+    <div class="hero card">
+      <div><span class="badge">DEMO • PÓS-OPERATÓRIO</span><h2>Olá, Dra. Renata 👋</h2><p>Acompanhe a evolução da paciente Fernanda após a extração do elemento 48.</p><button class="btn primary" style="margin-top:16px" onclick="go('patient')">Abrir paciente</button></div>
+      <div class="hero-icon">🦷</div>
     </div>
-    <div class="grid two">
-      <div class="card">
-        <div class="card-title"><h3>Pacientes que precisam de atenção</h3><button class="link" onclick="go('patients')">Ver todos</button></div>
-        <div class="patient"><div class="pavatar">MS</div><div><div class="name">Mariana Silva</div><div class="sub">Pós-operatório · 3º dia</div></div><span class="risk high">ALTO RISCO</span></div>
-        <div class="patient"><div class="pavatar">RL</div><div><div class="name">Rafael Lima</div><div class="sub">Pós-operatório · 7º dia</div></div><span class="risk med">ATENÇÃO</span></div>
-        <div class="patient"><div class="pavatar">AS</div><div><div class="name">Ana Souza</div><div class="sub">Acompanhamento crônico</div></div><span class="risk low">BAIXO RISCO</span></div>
-      </div>
-      <div class="card">
-        <div class="card-title"><h3>Adesão ao tratamento</h3><span class="pill">Últimos 7 dias</span></div>
-        <div class="metric"><span>Medicação</span><b>94%</b></div><div class="progress"><div class="bar" style="width:94%"></div></div>
-        <div class="metric"><span>Registro de sintomas</span><b>87%</b></div><div class="progress"><div class="bar" style="width:87%"></div></div>
-        <div class="metric"><span>Check-in diário</span><b>92%</b></div><div class="progress"><div class="bar" style="width:92%"></div></div>
-        <div class="metric"><span>Envio de imagens</span><b>81%</b></div><div class="progress"><div class="bar" style="width:81%"></div></div>
-      </div>
+    <div class="grid g3" style="margin-top:18px">
+      <div class="card stat"><div class="label">Pacientes acompanhados</div><div class="value">01</div><div class="sub">No piloto demonstrativo</div></div>
+      <div class="card stat"><div class="label">Alertas de alta prioridade</div><div class="value" style="color:var(--danger)">01</div><div class="sub">Aguardando avaliação profissional</div></div>
+      <div class="card stat"><div class="label">Monitoramento hoje</div><div class="value">100%</div><div class="sub">Questionário recebido</div></div>
     </div>
+    <h3 class="section-title">Acompanhamento recente</h3>
+    <div class="card list"><div class="row"><div class="patient"><div class="pic">F</div><div><b>Fernanda</b><div class="small">Pós-operatório • elemento 48</div></div></div><span class="risk-pill">Alta prioridade</span><button class="btn secondary" onclick="go('report')">Ver análise</button></div></div>
   </section>
 
-  <section class="page" id="patients">
-    <div class="card">
-      <div class="card-title"><h3>Pacientes</h3><button class="btn primary" onclick="toast('Cadastro de paciente aberto')">+ Novo paciente</button></div>
-      <table><thead><tr><th>Paciente</th><th>Condição</th><th>Último check-in</th><th>Risco IA</th><th>Ação</th></tr></thead>
-      <tbody>
-      <tr><td><b>Mariana Silva</b></td><td>Pós-operatório</td><td>Hoje · 08:42</td><td><span class="risk high">Alto</span></td><td><button class="btn" onclick="toast('Abrindo prontuário de Mariana Silva')">Abrir</button></td></tr>
-      <tr><td><b>Rafael Lima</b></td><td>Pós-operatório</td><td>Hoje · 08:10</td><td><span class="risk med">Atenção</span></td><td><button class="btn" onclick="toast('Abrindo prontuário de Rafael Lima')">Abrir</button></td></tr>
-      <tr><td><b>Ana Souza</b></td><td>Crônico</td><td>Hoje · 07:55</td><td><span class="risk low">Baixo</span></td><td><button class="btn" onclick="toast('Abrindo prontuário de Ana Souza')">Abrir</button></td></tr>
-      <tr><td><b>João Costa</b></td><td>Idoso · acompanhamento</td><td>Ontem · 19:20</td><td><span class="risk low">Baixo</span></td><td><button class="btn" onclick="toast('Abrindo prontuário de João Costa')">Abrir</button></td></tr>
-      </tbody></table>
-    </div>
-  </section>
-
-  <section class="page" id="monitoring">
-    <div class="grid two">
-      <div class="card"><div class="card-title"><h3>Monitoramento em tempo real</h3><span class="pill">Smartwatch conectado</span></div>
-        <div class="grid three">
-          <div><div style="font-size:11px;color:var(--muted)">Frequência cardíaca</div><h2 style="margin:5px 0">78 <small>bpm</small></h2><span style="font-size:11px;color:var(--green)">● Normal</span></div>
-          <div><div style="font-size:11px;color:var(--muted)">SpO₂</div><h2 style="margin:5px 0">98 <small>%</small></h2><span style="font-size:11px;color:var(--green)">● Normal</span></div>
-          <div><div style="font-size:11px;color:var(--muted)">Temperatura</div><h2 style="margin:5px 0">36,7 <small>°C</small></h2><span style="font-size:11px;color:var(--green)">● Normal</span></div>
+  <section id="patient" class="page">
+    <div class="center">
+      <div class="card patient-head"><div class="patient"><div class="pic" style="width:55px;height:55px;font-size:20px">F</div><div><h2>Fernanda</h2><p>Paciente hipotética • Pós-extração do elemento 48</p></div></div></div>
+      <h3 class="section-title">Como a Fernanda está hoje?</h3>
+      <div class="card feeling">
+        <h2>Como você está se sentindo? 💙</h2><p>Escolha a opção que melhor representa como você se sente hoje.</p>
+        <div class="emojis">
+          <button class="emoji" onclick="selectEmoji(this)"><span>😊</span>Muito bem</button>
+          <button class="emoji" onclick="selectEmoji(this)"><span>🙂</span>Bem</button>
+          <button class="emoji" onclick="selectEmoji(this)"><span>😐</span>Regular</button>
+          <button class="emoji" onclick="selectEmoji(this)"><span>😟</span>Não estou bem</button>
+          <button class="emoji" onclick="selectEmoji(this)"><span>😣</span>Muito mal</button>
         </div>
-      </div>
-      <div class="card"><div class="card-title"><h3>Triagem por IA</h3><span class="pill">Atualizado agora</span></div>
-        <div class="alert"><div>⚠️</div><div><strong>Mariana Silva — possível complicação</strong><p>A IA identificou uma combinação de sintomas que merece avaliação profissional.</p></div></div>
-        <button class="btn danger" onclick="toast('Alerta encaminhado para avaliação clínica')">Avaliar alerta</button>
-      </div>
-    </div>
-    <div class="card" style="margin-top:18px"><div class="card-title"><h3>Evolução do paciente selecionado</h3><div class="toggle"><button class="active">7 dias</button><button>30 dias</button></div></div>
-      <div class="timeline">
-        <div class="event"><span class="dot"></span><div><b>Hoje · 08:42 — Check-in recebido</b><p>Sintomas registrados + sinais vitais sincronizados.</p></div></div>
-        <div class="event"><span class="dot"></span><div><b>Ontem · 20:15 — Medicação confirmada</b><p>Paciente confirmou a tomada conforme lembrete.</p></div></div>
-        <div class="event"><span class="dot"></span><div><b>Ontem · 09:00 — Imagem enviada</b><p>Fotografia da região em acompanhamento recebida para análise.</p></div></div>
+        <div class="note">💡 Essa percepção ajuda a contextualizar o acompanhamento, mas não define sozinha o nível de risco.</div>
+        <button class="btn primary" style="margin-top:18px" onclick="go('monitoring')">Continuar monitoramento →</button>
       </div>
     </div>
   </section>
 
-  <section class="page" id="medications">
-    <div class="card"><div class="card-title"><h3>Lembretes de medicação</h3><button class="btn primary" onclick="toast('Novo lembrete criado')">+ Adicionar lembrete</button></div>
-      <table><thead><tr><th>Paciente</th><th>Horário</th><th>Status</th><th>Última confirmação</th></tr></thead>
-      <tbody>
-      <tr><td><b>Mariana Silva</b></td><td>08:00 · 20:00</td><td><span class="risk low">Em dia</span></td><td>Hoje · 08:03</td></tr>
-      <tr><td><b>Rafael Lima</b></td><td>07:30</td><td><span class="risk med">Pendente</span></td><td>—</td></tr>
-      <tr><td><b>Ana Souza</b></td><td>09:00</td><td><span class="risk low">Confirmado</span></td><td>Hoje · 09:02</td></tr>
-      </tbody></table>
+  <section id="monitoring" class="page">
+    <div class="center">
+      <div class="card q-card">
+        <span class="badge">MONITORAMENTO DIÁRIO</span><h2 style="margin-bottom:4px">Como foi seu pós-operatório?</h2><div class="small">Fernanda • hoje</div>
+        <div class="progress"><div class="bar"></div></div>
+        <div class="q"><strong>1. Como está a dor?</strong><div class="opts"><button class="opt" onclick="pick(this)">Sem dor</button><button class="opt selected" onclick="pick(this)">Leve</button><button class="opt" onclick="pick(this)">Moderada</button><button class="opt" onclick="pick(this)">Forte</button></div></div>
+        <div class="q"><strong>2. O local está mais vermelho?</strong><div class="opts"><button class="opt" onclick="pick(this)">Não</button><button class="opt selected" onclick="pick(this)">Sim</button><button class="opt" onclick="pick(this)">Não sei</button></div></div>
+        <div class="q"><strong>3. Houve secreção no local?</strong><div class="opts"><button class="opt" onclick="pick(this)">Não</button><button class="opt selected" onclick="pick(this)">Sim</button><button class="opt" onclick="pick(this)">Não sei</button></div></div>
+        <div class="q"><strong>4. Como está o inchaço?</strong><div class="opts"><button class="opt" onclick="pick(this)">Melhorando</button><button class="opt" onclick="pick(this)">Estável</button><button class="opt selected" onclick="pick(this)">Piorando</button></div></div>
+        <div class="q"><strong>5. Teve sangramento?</strong><div class="opts"><button class="opt selected" onclick="pick(this)">Não</button><button class="opt" onclick="pick(this)">Pouco</button><button class="opt" onclick="pick(this)">Muito</button></div></div>
+        <div class="q"><strong>6. Está com febre ou sensação de febre?</strong><div class="opts"><button class="opt" onclick="pick(this)">Não</button><button class="opt selected" onclick="pick(this)">Sim</button></div></div>
+        <div class="q"><strong>7. Comparando com ontem, os sintomas estão...</strong><div class="opts"><button class="opt" onclick="pick(this)">Melhores</button><button class="opt" onclick="pick(this)">Iguais</button><button class="opt selected" onclick="pick(this)">Piores</button></div></div>
+        <div class="q"><strong>8. Está com dificuldade para abrir a boca?</strong><div class="opts"><button class="opt" onclick="pick(this)">Não</button><button class="opt selected" onclick="pick(this)">Sim</button></div></div>
+        <div class="q"><strong>9. Está com dificuldade para engolir ou respirar?</strong><div class="opts"><button class="opt selected" onclick="pick(this)">Não</button><button class="opt" onclick="pick(this)">Sim</button></div></div>
+        <div class="q"><strong>10. Tomou os medicamentos conforme orientado?</strong><div class="opts"><button class="opt selected" onclick="pick(this)">Sim</button><button class="opt" onclick="pick(this)">Não</button><button class="opt" onclick="pick(this)">Parcialmente</button></div></div>
+        <div class="q"><strong>11. Tomou algum medicamento diferente?</strong><div class="opts"><button class="opt selected" onclick="pick(this)">Não</button><button class="opt" onclick="pick(this)">Sim</button></div></div>
+        <div class="q"><strong>12. Quer contar algo mais?</strong><textarea placeholder="Escreva aqui qualquer preocupação...">Estou preocupada porque o inchaço aumentou e apareceu secreção.</textarea></div>
+        <button class="btn primary" onclick="showResult()">Enviar monitoramento e analisar →</button>
+      </div>
     </div>
   </section>
 
-  <section class="page" id="chat">
+  <section id="result" class="page">
+    <div class="center">
+      <div class="card result">
+        <span class="badge">ANÁLISE AUTOMÁTICA</span><h2>Resumo do acompanhamento</h2>
+        <div class="risk high"><div class="big">🔴 Alta prioridade para avaliação profissional</div><p>O conjunto de respostas demonstrou sinais que, neste protótipo, elevam a prioridade de revisão pelo profissional, especialmente a associação entre dor, aumento do inchaço, vermelhidão, secreção e sensação de febre.</p></div>
+        <div class="grid g2">
+          <div class="report-box"><h4>🩺 Sintomas destacados</h4><p>Dor leve • vermelhidão • secreção • inchaço piorando • sensação de febre • dificuldade para abrir a boca.</p></div>
+          <div class="report-box"><h4>💊 Medicamentos</h4><p>Relatou uso conforme orientação e não relatou medicamento diferente.</p></div>
+        </div>
+        <div class="alert"><strong>Próximo passo</strong>A CareLink AI organiza os dados e sinaliza a necessidade de avaliação. A decisão clínica permanece com o profissional responsável.</div>
+        <button class="btn primary" onclick="go('report')">Abrir relatório para o dentista</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="report" class="page">
+    <div class="card report">
+      <div class="report-head"><div><span class="badge">RELATÓRIO CARELINK AI</span><h2 style="margin:10px 0 4px">Fernanda — evolução pós-operatória</h2><div class="small">Extração do elemento 48 • caso hipotético • Startup Day</div></div><span class="risk-pill">ALTA PRIORIDADE</span></div>
+      <div class="alert"><strong>⚠️ Atenção para avaliação profissional</strong>A combinação de informações recebidas merece revisão pelo responsável pelo atendimento.</div>
+      <div class="grid g2">
+        <div class="report-box"><h4>Percepção da paciente</h4><p>😟 Não estou bem</p></div>
+        <div class="report-box"><h4>Medicação</h4><p>Uso conforme orientação; nenhum medicamento diferente informado.</p></div>
+        <div class="report-box"><h4>Principais alterações</h4><p>Dor + vermelhidão + secreção + aumento do inchaço + sensação de febre + limitação para abrir a boca.</p></div>
+        <div class="report-box"><h4>Evolução</h4><p>Sintomas relatados como piores em comparação com o dia anterior.</p></div>
+      </div>
+      <div class="report-box"><h4>Resumo gerado pela IA</h4><p>A paciente relata piora do quadro pós-operatório e múltiplos sinais associados. Neste protótipo, o conjunto é classificado como de alta prioridade para avaliação profissional. O sistema não realiza diagnóstico e não substitui a avaliação clínica.</p></div>
+      <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap"><button class="btn primary" onclick="go('chat')">💬 Contatar paciente</button><button class="btn secondary" onclick="alert('No protótipo: abrir agenda de retorno.')">📅 Agendar retorno</button><button class="btn secondary" onclick="alert('No protótipo: marcar alerta como revisado.')">✓ Marcar como revisado</button></div>
+    </div>
+  </section>
+
+  <section id="meds" class="page">
+    <div class="toolbar"><div><h2 style="margin:0">Medicamentos</h2><div class="small">Acompanhamento da adesão da Fernanda</div></div><button class="btn primary">+ Adicionar</button></div>
+    <div class="card table">
+      <div class="table-row header"><div>Medicamento</div><div>Dose</div><div>Horário</div><div>Status</div></div>
+      <div class="table-row"><div><b>Analgésico</b><div class="small">Conforme orientação profissional</div></div><div>Orientada</div><div>08:00</div><div>✓ Registrado</div></div>
+      <div class="table-row"><div><b>Medicação pós-operatória</b><div class="small">Conforme prescrição do caso</div></div><div>Orientada</div><div>20:00</div><div>⏳ Próximo</div></div>
+    </div>
+  </section>
+
+  <section id="chat" class="page">
     <div class="card chat">
-      <div class="card-title"><h3>Chat inteligente</h3><span class="pill">Assistente CareLink AI</span></div>
-      <div class="messages" id="messages">
-        <div class="bubble bot">Olá! Posso ajudar com dúvidas rápidas sobre o acompanhamento registrado na plataforma. Em situações de risco, a avaliação do profissional de saúde continua sendo necessária.</div>
-        <div class="bubble me">O que devo verificar no alerta da Mariana?</div>
-        <div class="bubble bot">Revise os sintomas registrados, os sinais vitais e a evolução das imagens. O alerta deve servir como apoio à avaliação clínica, não como diagnóstico automático.</div>
-      </div>
-      <div class="composer"><input id="chatInput" placeholder="Digite uma pergunta..." onkeydown="if(event.key==='Enter')sendChat()"><button class="btn primary" onclick="sendChat()">Enviar</button></div>
+      <div style="padding:20px;border-bottom:1px solid var(--line)"><b>Chat com Fernanda</b><div class="small">Canal de comunicação paciente ↔ profissional</div></div>
+      <div class="chat-body"><div class="bubble theirs">Olá, doutora. Estou preocupada porque meu inchaço aumentou.</div><div class="bubble mine">Oi, Fernanda. Recebi seu acompanhamento pela CareLink. Vou revisar as informações e orientar os próximos passos.</div><div class="bubble theirs">Também percebi secreção no local.</div></div>
+      <div class="chat-input"><input id="chatText" placeholder="Digite uma mensagem..."><button class="btn primary" onclick="sendChat()">Enviar</button></div>
     </div>
   </section>
-
-  <section class="page" id="reports">
-    <div class="grid three">
-      <div class="card"><div class="card-title"><h3>Adesão</h3></div><h2>91%</h2><p style="color:var(--muted);font-size:12px">Meta do projeto: aumentar a adesão ao tratamento.</p></div>
-      <div class="card"><div class="card-title"><h3>Reinternações evitáveis</h3></div><h2>↓</h2><p style="color:var(--muted);font-size:12px">Indicador esperado do acompanhamento contínuo.</p></div>
-      <div class="card"><div class="card-title"><h3>Tempo de resposta</h3></div><h2>↓</h2><p style="color:var(--muted);font-size:12px">Alertas priorizam casos de maior risco.</p></div>
-    </div>
-    <div class="card" style="margin-top:18px"><div class="card-title"><h3>Resumo do período</h3><button class="btn" onclick="toast('Relatório demonstrativo gerado')">Gerar relatório</button></div>
-      <p style="color:var(--muted);font-size:13px;line-height:1.6">Painel demonstrativo baseado nas funcionalidades descritas no Business Plan: monitoramento remoto, lembretes automáticos, triagem por IA, chat inteligente, integração com dispositivos vestíveis e painel médico.</p>
-    </div>
-  </section>
+  <div class="footer-note">CareLink AI • Protótipo demonstrativo • Dados fictícios • Não destinado a diagnóstico ou uso clínico real sem validação.</div>
 </main>
 </div>
-<div class="toast" id="toast"></div>
 <script>
-const titles={
- dashboard:['Olá, Dra. Camila 👋','Painel de acompanhamento dos seus pacientes'],
- patients:['Pacientes','Cadastro e acompanhamento dos usuários'],
- monitoring:['Monitoramento','Sinais vitais, sintomas e triagem por IA'],
- medications:['Medicações','Lembretes e adesão ao tratamento'],
- chat:['Chat inteligente','Orientação rápida e suporte ao acompanhamento'],
- reports:['Relatórios','Indicadores e visão geral do acompanhamento']
-};
-function go(id){
+const titles={dashboard:'Visão geral',patient:'Paciente Fernanda',monitoring:'Monitoramento diário',result:'Resultado da análise',report:'Relatório IA',meds:'Medicamentos',chat:'Chat'};
+function go(id,btn){
  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
- document.getElementById(id).classList.add('active');
- document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===id));
- document.getElementById('pageTitle').textContent=titles[id][0];
- document.getElementById('pageSubtitle').textContent=titles[id][1];
+ const el=document.getElementById(id); if(el) el.classList.add('active');
+ document.getElementById('pageTitle').textContent=titles[id]||'CareLink AI';
+ if(btn){document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));btn.classList.add('active')}
+ window.scrollTo({top:0,behavior:'smooth'});
 }
-document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+function selectEmoji(el){document.querySelectorAll('.emoji').forEach(x=>x.classList.remove('selected'));el.classList.add('selected')}
+function pick(el){el.parentElement.querySelectorAll('.opt').forEach(x=>x.classList.remove('selected'));el.classList.add('selected')}
+function showResult(){go('result')}
 function sendChat(){
- const i=document.getElementById('chatInput'); const v=i.value.trim(); if(!v)return;
- const box=document.getElementById('messages'); box.insertAdjacentHTML('beforeend',`<div class="bubble me">${v.replace(/</g,'&lt;')}</div>`);
- i.value=''; setTimeout(()=>{box.insertAdjacentHTML('beforeend','<div class="bubble bot">Entendi. Esta é uma resposta demonstrativa do protótipo. Para decisões clínicas, consulte o profissional responsável e os protocolos aplicáveis.</div>');box.scrollTop=box.scrollHeight},500);
- box.scrollTop=box.scrollHeight;
+ const input=document.getElementById('chatText'); if(!input.value.trim())return;
+ const b=document.createElement('div');b.className='bubble mine';b.textContent=input.value;document.querySelector('.chat-body').appendChild(b);input.value='';
 }
 </script>
 </body>

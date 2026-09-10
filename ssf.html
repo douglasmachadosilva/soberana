@@ -20,11 +20,156 @@ h1{font-size:25px;margin:0}.sub{color:#73777d;margin:6px 0 20px}.cards{display:g
 .btn{border:0;border-radius:8px;padding:10px 14px;background:var(--red);color:white;font-weight:700;cursor:pointer}.btn.alt{background:white;color:var(--red);border:1px solid var(--red)}
 .section{display:none}.section.active{display:block}.table{width:100%;border-collapse:collapse;font-size:13px}.table th,.table td{padding:12px 8px;border-bottom:1px solid var(--border);text-align:left}.status{color:var(--green);font-weight:700}
 .actions{display:flex;gap:10px;margin-top:15px}.notice{background:var(--soft);padding:15px;border-radius:10px;margin-top:14px}
+.testiGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.testi{background:white;border:1px solid var(--border);border-radius:13px;padding:18px;display:flex;flex-direction:column}
+.stars{color:#f5a623;font-size:14px;letter-spacing:2px}.testiText{font-size:13px;color:#45484d;margin:10px 0;flex:1;line-height:1.5}
+.testiFoot{display:flex;align-items:center;gap:10px;margin-top:6px}.avatar{width:36px;height:36px;border-radius:50%;background:var(--soft);color:var(--red);display:grid;place-items:center;font-weight:800;font-size:13px}
+.testiName{font-size:13px;font-weight:700}.testiRole{font-size:11px;color:#74777d}
+.teaser{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px}.teaser .testi{min-width:260px}
+@media(max-width:900px){.testiGrid{grid-template-columns:1fr}}
+.feedGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}@media(max-width:1100px){.feedGrid{grid-template-columns:repeat(2,1fr)}}@media(max-width:700px){.feedGrid{grid-template-columns:1fr}}
+.post{background:white;border:1px solid var(--border);border-radius:13px;overflow:hidden;display:flex;flex-direction:column}
+.postHead{display:flex;align-items:center;gap:10px;padding:12px 14px}.postHead .avatar{width:34px;height:34px}
+.postName{font-size:13px;font-weight:700}.postRole{font-size:11px;color:#74777d}
+.postMedia{height:220px;position:relative;display:grid;place-items:center;color:white;font-weight:800}
+.playBtn{width:52px;height:52px;border-radius:50%;background:rgba(0,0,0,.45);display:grid;place-items:center;font-size:20px;backdrop-filter:blur(2px)}
+.postBody{padding:12px 14px}.postCaption{font-size:13px;color:#333;line-height:1.5}.postStats{display:flex;gap:16px;font-size:12px;color:#74777d;margin-top:10px}
+.postStats span{cursor:pointer}.postStats span:hover{color:var(--red)}
+.newPostBar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.modalBg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;align-items:center;justify-content:center}
+.modalBg.active{display:flex}.modal{background:white;border-radius:14px;padding:22px;width:420px;max-width:92vw;max-height:88vh;overflow:auto}
+.modal h2{margin-top:0;font-size:17px}.field{margin-bottom:14px}.field label{display:block;font-size:12px;font-weight:700;color:#45484d;margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;background:#fbfbfc}
+.field textarea{resize:vertical;min-height:70px}.field small{display:block;color:#8a8d92;margin-top:4px;font-size:11px}
+.modalActions{display:flex;justify-content:flex-end;gap:10px;margin-top:6px}
+.formGrid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}.formGrid .field.full{grid-column:1/-1}
+@media(max-width:700px){.formGrid{grid-template-columns:1fr}}
+.photoUpload{display:flex;align-items:center;gap:14px}.photoPreview{width:64px;height:64px;border-radius:50%;background:var(--soft);color:var(--red);display:grid;place-items:center;font-size:24px;font-weight:800;overflow:hidden}
+.photoPreview img{width:100%;height:100%;object-fit:cover}
 @media(max-width:900px){.sidebar{width:70px}.sidebar .logo span,.sidebar .tag,.nav button span{display:none}.main{margin-left:70px;width:calc(100% - 70px);padding:15px}.cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.search{width:55%}}
 </style>
 </head>
+
+<style>
+/* ===== LANDING / LOGIN REDESIGN ===== */
+#landing{min-height:100vh;background:linear-gradient(135deg,#f8fbff 0%,#ffffff 52%,#eef8f3 100%);font-family:Inter,Arial,sans-serif;color:#17324d}
+.landing-nav{height:74px;display:flex;align-items:center;justify-content:space-between;padding:0 7%;background:rgba(255,255,255,.92);border-bottom:1px solid #e7edf2;position:sticky;top:0;z-index:20;backdrop-filter:blur(12px)}
+.brand{display:flex;align-items:center;gap:11px;font-weight:850;font-size:18px}
+.brand-icon{width:42px;height:42px;border-radius:14px;background:#e5242a;color:#fff;display:grid;place-items:center;font-size:21px;box-shadow:0 8px 20px rgba(229,36,42,.18)}
+.brand small{display:block;font-size:10px;color:#718096;font-weight:600;margin-top:2px}
+.nav-links{display:flex;gap:26px;font-size:13px;color:#526273}
+.nav-links a{cursor:pointer;text-decoration:none;color:inherit}
+.nav-login{border:1px solid #dce5eb;background:#fff;border-radius:10px;padding:10px 16px;font-weight:750;color:#17324d;cursor:pointer}
+.hero{max-width:1180px;margin:auto;padding:72px 30px 38px;display:grid;grid-template-columns:1.08fr .92fr;gap:50px;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:#eaf7f0;color:#14824f;border-radius:30px;padding:7px 12px;font-size:11px;font-weight:800;letter-spacing:.3px}
+.hero h1{font-size:48px;line-height:1.04;letter-spacing:-1.5px;margin:17px 0 14px;color:#17324d}
+.hero h1 span{color:#e5242a}
+.hero p{font-size:17px;line-height:1.6;color:#607080;max-width:580px;margin:0 0 24px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.hero-btn{border:0;border-radius:11px;padding:13px 18px;font-weight:800;cursor:pointer;font-size:13px}
+.hero-btn.primary{background:#e5242a;color:#fff;box-shadow:0 10px 22px rgba(229,36,42,.18)}
+.hero-btn.secondary{background:#fff;color:#17324d;border:1px solid #dce5eb}
+.hero-card{background:#fff;border:1px solid #e1e9ee;border-radius:24px;padding:22px;box-shadow:0 20px 50px rgba(23,50,77,.10)}
+.hero-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}
+.hero-card-title{font-weight:850;font-size:15px}.online{font-size:10px;color:#15915a;background:#eaf7f0;padding:6px 9px;border-radius:20px;font-weight:800}
+.login-tabs{display:grid;grid-template-columns:1fr 1fr;background:#f4f7f9;border-radius:10px;padding:4px;margin-bottom:17px}
+.login-tab{border:0;background:transparent;padding:10px;border-radius:8px;font-size:12px;font-weight:750;color:#687887;cursor:pointer}
+.login-tab.active{background:#fff;color:#e5242a;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.login-form label{display:block;font-size:11px;font-weight:800;margin:12px 0 6px;color:#425466}
+.login-form input{width:100%;padding:12px;border:1px solid #dfe7ec;border-radius:9px;outline:none;font-size:13px}
+.login-form input:focus{border-color:#e5242a;box-shadow:0 0 0 3px rgba(229,36,42,.08)}
+.login-submit{width:100%;margin-top:17px;border:0;border-radius:10px;background:#17324d;color:#fff;padding:12px;font-weight:800;cursor:pointer}
+.login-help{text-align:center;font-size:10px;color:#83909c;margin-top:10px}
+.trust{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.trust span{font-size:10px;color:#657585;background:#f5f8fa;border:1px solid #e7edf1;padding:7px 9px;border-radius:8px}
+.metrics{max-width:1180px;margin:10px auto 30px;padding:0 30px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.metric{background:#fff;border:1px solid #e4ebef;border-radius:15px;padding:18px}
+.metric b{display:block;font-size:23px;color:#17324d}.metric span{font-size:11px;color:#7a8996}
+.section-title{text-align:center;max-width:720px;margin:58px auto 24px;padding:0 20px}
+.section-title h2{font-size:28px;margin:0 0 8px;color:#17324d}.section-title p{font-size:13px;color:#71808d;line-height:1.5}
+.how{max-width:1050px;margin:auto;padding:0 30px 30px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.how-card{background:#fff;border:1px solid #e4ebef;border-radius:16px;padding:22px}.how-icon{font-size:25px}.how-card h3{font-size:14px;margin:12px 0 7px}.how-card p{font-size:11px;line-height:1.55;color:#748290}
+.partner-wrap{background:#f7fafb;border-top:1px solid #e9eff2;border-bottom:1px solid #e9eff2;padding:28px 30px 34px}
+.partner-title{text-align:center;font-size:11px;font-weight:800;color:#82909c;letter-spacing:.7px;text-transform:uppercase;margin-bottom:16px}
+.partners{max-width:1000px;margin:auto;display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.partner{background:#fff;border:1px solid #e1e8ed;border-radius:13px;padding:14px 9px;text-align:center;font-size:11px;font-weight:800;color:#415466}
+.partner span{display:block;font-size:18px;margin-bottom:6px}
+.sponsor-note{max-width:1000px;margin:12px auto 0;text-align:center;font-size:9px;color:#9aa5ae}
+.landing-footer{padding:28px 7%;display:flex;justify-content:space-between;gap:20px;font-size:10px;color:#8b98a3}
+@media(max-width:850px){.hero{grid-template-columns:1fr;padding-top:42px}.hero h1{font-size:38px}.metrics{grid-template-columns:1fr 1fr}.how{grid-template-columns:1fr}.partners{grid-template-columns:repeat(3,1fr)}.nav-links{display:none}}
+</style>
+
+</head>
 <body>
-<div class="app">
+
+<div id="landing">
+  <nav class="landing-nav">
+    <div class="brand"><div class="brand-icon">♥</div><div>Saúde Sem Fronteiras<small>Conectando quem precisa com quem pode ajudar.</small></div></div>
+    <div class="nav-links"><a onclick="landingScroll('como')">Como funciona</a><a onclick="landingScroll('parceiros')">Parceiros</a><a onclick="landingScroll('impacto')">Nosso impacto</a></div>
+    <button class="nav-login" onclick="openLandingLogin('profissional')">Entrar</button>
+  </nav>
+
+  <section class="hero">
+    <div>
+      <div class="eyebrow">🌎 VOLUNTARIADO EM SAÚDE</div>
+      <h1>Seu conhecimento pode <span>transformar vidas.</span></h1>
+      <p>Uma plataforma que conecta profissionais da saúde a ONGs e instituições comunitárias que precisam de atendimento, educação e cuidado.</p>
+      <div class="hero-actions">
+        <button class="hero-btn primary" onclick="openLandingLogin('profissional')">Sou profissional</button>
+        <button class="hero-btn secondary" onclick="openLandingLogin('instituicao')">Sou instituição / ONG</button>
+      </div>
+      <div class="trust">
+        <span>✓ Profissionais verificados</span><span>✓ Instituições verificadas</span><span>✓ Impacto regional</span>
+      </div>
+    </div>
+
+    <div class="hero-card" id="landingLoginCard">
+      <div class="hero-card-head"><div class="hero-card-title">Acesse sua conta</div><div class="online">● PLATAFORMA SEGURA</div></div>
+      <div class="login-tabs">
+        <button class="login-tab active" id="tabProf" onclick="setLoginType('profissional')">Profissional</button>
+        <button class="login-tab" id="tabInst" onclick="setLoginType('instituicao')">Instituição / ONG</button>
+      </div>
+      <form class="login-form" onsubmit="landingLogin(event)">
+        <label id="loginIdLabel">Registro profissional</label>
+        <input id="loginId" placeholder="Ex.: CRO-MG 123456" required>
+        <label>Senha</label>
+        <input type="password" placeholder="Digite sua senha" required>
+        <button class="login-submit" type="submit">Entrar na plataforma →</button>
+        <div class="login-help">Ainda não possui cadastro? <b style="color:#e5242a;cursor:pointer" onclick="alert('No protótipo, o cadastro pode ser acessado pelo menu da plataforma.')">Cadastre-se</b></div>
+      </form>
+    </div>
+  </section>
+
+  <section class="metrics" id="impacto">
+    <div class="metric"><b>1.256</b><span>profissionais voluntários</span></div>
+    <div class="metric"><b>482</b><span>instituições cadastradas</span></div>
+    <div class="metric"><b>158</b><span>ações realizadas</span></div>
+    <div class="metric"><b>24.532</b><span>pessoas impactadas</span></div>
+  </section>
+
+  <div id="como" class="section-title"><h2>Uma ponte entre necessidade e cuidado</h2><p>O Saúde Sem Fronteiras organiza a conexão, facilita a participação e mostra o impacto das ações.</p></div>
+  <section class="how">
+    <div class="how-card"><div class="how-icon">🩺</div><h3>1. Profissional</h3><p>Entra com seu registro profissional, cria o perfil e escolhe onde e quando pode atuar.</p></div>
+    <div class="how-card"><div class="how-icon">📍</div><h3>2. Instituição / ONG</h3><p>Entra com CNPJ, cadastra sua necessidade e informa região, público e tipo de ação.</p></div>
+    <div class="how-card"><div class="how-icon">🤝</div><h3>3. Conexão</h3><p>A plataforma aproxima as pessoas certas e acompanha as ações e os resultados gerados.</p></div>
+  </section>
+
+  <section class="partner-wrap" id="parceiros">
+    <div class="partner-title">Marcas e organizações parceiras — espaço demonstrativo</div>
+    <div class="partners">
+      <div class="partner"><span>🦷</span>Colgate</div>
+      <div class="partner"><span>🧴</span>Oral-B</div>
+      <div class="partner"><span>🩺</span>Johnson & Johnson</div>
+      <div class="partner"><span>💚</span>ONG Sorriso do Bem</div>
+      <div class="partner"><span>🌎</span>Instituto Cuidar</div>
+      <div class="partner"><span>🤝</span>Parceiro Saúde</div>
+    </div>
+    <div class="sponsor-note">* Logos e nomes acima são apenas exemplos de como poderia funcionar a área de parceiros/patrocinadores. Não representam parcerias reais.</div>
+  </section>
+
+  <footer class="landing-footer"><span>© 2026 Saúde Sem Fronteiras</span><span>Voluntariado • Saúde • Impacto social</span></footer>
+</div>
+
+<div class="app" id="dashboardApp" style="display:none">
 <aside class="sidebar">
   <div class="logo"><div class="logoMark">❤</div><span>Saúde Sem<br>Fronteiras</span></div>
   <div class="tag">Conectando quem precisa com quem pode ajudar.</div>
@@ -35,6 +180,9 @@ h1{font-size:25px;margin:0}.sub{color:#73777d;margin:6px 0 20px}.cards{display:g
     <button onclick="show('profissionais',this)">♙ <span>Profissionais Disponíveis</span></button>
     <button onclick="show('instituicoes',this)">▤ <span>Instituições Cadastradas</span></button>
     <button onclick="show('relatorios',this)">▥ <span>Relatórios e Dados</span></button>
+    <button onclick="show('depoimentos',this)">★ <span>Depoimentos</span></button>
+    <button onclick="show('feed',this)">▶ <span>Voluntários em Ação</span></button>
+    <button onclick="show('cadastroProfissional',this)">✎ <span>Cadastro de Profissionais</span></button>
   </div>
 </aside>
 
@@ -56,7 +204,25 @@ h1{font-size:25px;margin:0}.sub{color:#73777d;margin:6px 0 20px}.cards{display:g
 <div class="item"><div class="itemTop"><span>Marituba – PA</span><span class="badge">ALTA</span></div><div class="small">Educação em saúde bucal • 45 km</div><div class="small">7.850 pessoas • idade média 24 anos</div></div>
 <div class="item"><div class="itemTop"><span>Benevides – PA</span><span class="badge">MÉDIA</span></div><div class="small">Triagem e diagnóstico • 68 km</div><div class="small">6.120 pessoas • idade média 31 anos</div></div>
 </div></div>
+<div class="panel" style="margin-top:16px"><h2>Quem já participou conta como foi</h2><div class="teaser">
+<div class="testi"><div class="stars">★★★★★</div><div class="testiText">"Levei duas horas do meu sábado e atendi 15 crianças que nunca tinham ido ao dentista. Voltei pra casa com a sensação de que valeu cada minuto."</div><div class="testiFoot"><div class="avatar">RC</div><div><div class="testiName">Dr. Rafael Costa</div><div class="testiRole">Cirurgião-dentista • 3 ações realizadas</div></div></div></div>
+<div class="testi"><div class="stars">★★★★★</div><div class="testiText">"A plataforma facilitou muito encontrar profissionais pra nossa comunidade. Em uma semana já tínhamos uma equipe confirmada."</div><div class="testiFoot"><div class="avatar">IS</div><div><div class="testiName">Instituto Sorriso do Bem</div><div class="testiRole">Instituição parceira</div></div></div></div>
+<div class="testi"><div class="stars">★★★★★</div><div class="testiText">"Nunca imaginei que voluntariado pudesse ser tão simples de organizar. Recomendo pra todo colega que quer usar seu tempo livre com propósito."</div><div class="testiFoot"><div class="avatar">CA</div><div><div class="testiName">Dra. Camila Alves</div><div class="testiRole">Saúde coletiva • 5 ações realizadas</div></div></div></div>
+</div><div class="actions"><button class="btn alt" onclick="show('depoimentos')">Ver todos os depoimentos</button></div></div>
 <div class="panel" style="margin-top:16px"><h2>Pronto para fazer a diferença?</h2><p class="sub">Seu conhecimento pode transformar vidas.</p><button class="btn" onclick="show('oportunidades')">Quero ser voluntário</button> <button class="btn alt" onclick="alert('Formulário de cadastro da instituição aberto!')">Cadastrar minha instituição</button></div>
+
+<div class="panel" style="margin-top:16px">
+  <h2>Parceiros que apoiam o impacto em saúde</h2>
+  <p class="sub">Espaço demonstrativo para marcas, empresas e ONGs que apoiam as ações da plataforma.</p>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+    <div class="item" style="margin:0;text-align:center"><b>🦷 Colgate</b><div class="small">Saúde bucal</div></div>
+    <div class="item" style="margin:0;text-align:center"><b>🧴 Oral-B</b><div class="small">Higiene e prevenção</div></div>
+    <div class="item" style="margin:0;text-align:center"><b>💚 Sorriso do Bem</b><div class="small">ONG parceira</div></div>
+    <div class="item" style="margin:0;text-align:center"><b>🌎 Instituto Cuidar</b><div class="small">Impacto social</div></div>
+  </div>
+  <div class="small" style="margin-top:10px">* Exemplos visuais de parceria — não representam acordos comerciais reais.</div>
+</div>
+
 </section>
 
 <section id="mapa" class="section"><h1>Mapa de Necessidades</h1><p class="sub">Visualize demandas por localização, distância e nível de necessidade.</p><div class="panel"><div class="map" style="height:500px"><div class="mapTitle">Mapa interativo de necessidades</div><div class="pin p1"><i></i></div><div class="pin p2"><i></i></div><div class="pin p3"><i></i></div><div class="pin p4"><i></i></div><div class="pin p5"><i></i></div></div></div></section>
@@ -78,14 +244,155 @@ h1{font-size:25px;margin:0}.sub{color:#73777d;margin:6px 0 20px}.cards{display:g
 <tr><td>Projeto Cuidar+</td><td>34.567.890/0001-12</td><td>Salvador – BA</td><td>15</td><td class="status">Verificada</td></tr></table></div></section>
 
 <section id="relatorios" class="section"><h1>Relatórios e dados</h1><p class="sub">Panorama das necessidades por região e perfil populacional.</p><div class="cards"><div class="card"><div class="label">Necessidades abertas</div><div class="num">482</div></div><div class="card"><div class="label">Alta/muito alta</div><div class="num">60%</div></div><div class="card"><div class="label">Atendimento odontológico</div><div class="num">45%</div></div><div class="card"><div class="label">Faixa 25–39 anos</div><div class="num">28%</div></div></div><div class="panel" style="margin-top:16px"><h2>Principais necessidades</h2><div class="notice">Atendimento odontológico — 45%</div><div class="notice">Educação em saúde — 25%</div><div class="notice">Triagem e diagnóstico — 15%</div><div class="notice">Outros — 15%</div></div></section>
+<section id="depoimentos" class="section"><h1>Depoimentos</h1><p class="sub">Histórias reais de quem já doou seu tempo — e de quem foi impactado por isso.</p>
+<div class="cards">
+<div class="card"><div class="label">Avaliação média</div><div class="num">4.9 ★</div><div class="up">de 312 avaliações</div></div>
+<div class="card"><div class="label">Voluntários que repetiram</div><div class="num">87%</div><div class="up">fizeram mais de 1 ação</div></div>
+<div class="card"><div class="label">Instituições satisfeitas</div><div class="num">96%</div><div class="up">recomendariam a plataforma</div></div>
+<div class="card"><div class="label">Horas doadas</div><div class="num">3.140h</div><div class="up">+210h este mês</div></div>
+</div>
+<div class="panel" style="margin-top:16px"><h2>O que dizem os voluntários</h2><div class="testiGrid">
+<div class="testi"><div class="stars">★★★★★</div><div class="testiText">"Levei duas horas do meu sábado e atendi 15 crianças que nunca tinham ido ao dentista. Voltei pra casa com a sensação de que valeu cada minuto."</div><div class="testiFoot"><div class="avatar">RC</div><div><div class="testiName">Dr. Rafael Costa</div><div class="testiRole">Cirurgia / Implantodontia</div></div></div></div>
+<div class="testi"><div class="stars">★★★★★</div><div class="testiText">"O que mais me marcou foi ver o quanto orientação simples sobre higiene bucal muda a rotina de uma família inteira. Já virou hábito meu, uma ação por mês."</div><div class="testiFoot"><div class="avatar">CA</div><div><div class="testiName">Dra. Camila Alves</div><div class="testiRole">Saúde coletiva</div></div></div></div>
+<div class="testi"><div class="stars">★★★★★</div><div class="testiText">"Sempre quis fazer voluntariado mas não sabia por onde começar. A plataforma me conectou com uma instituição a 12 km de casa em poucos dias."</div><div class="testiFoot"><div class="avatar">JS</div><div><div class="testiName">Dra. Juliana Santos</div><div class="testiRole">Clínico geral</div></div></div></div>
+<div class="testi"><div class="stars">★★★★★</div><div class="testiText">"É gratificante poder unir experiência técnica com impacto social. Cada mutirão renova minha vontade de continuar."</div><div class="testiFoot"><div class="avatar">LM</div><div><div class="testiName">Dr. Lucas Mendes</div><div class="testiRole">Clínica médica</div></div></div></div>
+</div></div>
+<div class="panel" style="margin-top:16px"><h2>O que dizem as instituições</h2><div class="testiGrid">
+<div class="testi"><div class="stars">★★★★★</div><div class="testiText">"A plataforma facilitou muito encontrar profissionais pra nossa comunidade. Em uma semana já tínhamos uma equipe confirmada para o mutirão."</div><div class="testiFoot"><div class="avatar">IS</div><div><div class="testiName">Instituto Sorriso do Bem</div><div class="testiRole">São Paulo – SP</div></div></div></div>
+<div class="testi"><div class="stars">★★★★★</div><div class="testiText">"Conseguimos atender uma demanda represada há meses. O painel de necessidades deixou tudo muito mais organizado para os voluntários."</div><div class="testiFoot"><div class="avatar">VS</div><div><div class="testiName">Associação Vida e Saúde</div><div class="testiRole">Rio de Janeiro – RJ</div></div></div></div>
+<div class="testi"><div class="stars">★★★★★</div><div class="testiText">"O acompanhamento dos dados de impacto nos ajudou até a buscar novos parceiros. Recomendamos para qualquer instituição comunitária."</div><div class="testiFoot"><div class="avatar">PC</div><div><div class="testiName">Projeto Cuidar+</div><div class="testiRole">Salvador – BA</div></div></div></div>
+</div></div>
+<div class="panel" style="margin-top:16px"><h2>Faça parte dessa história</h2><p class="sub">Junte-se a mais de 1.200 profissionais que já estão transformando vidas.</p><button class="btn" onclick="show('oportunidades')">Quero ser voluntário</button></div>
+</section>
+<section id="feed" class="section"><h1>Voluntários em Ação</h1><p class="sub">Vídeos e relatos de quem já viveu a experiência — compartilhe a sua e inspire novos voluntários.</p>
+<div class="newPostBar"><div class="sub" style="margin:0">312 posts • 1.256 voluntários seguindo o feed</div><button class="btn" onclick="openPostModal()">＋ Postar minha experiência</button></div>
+<div class="feedGrid" id="feedGrid">
+<div class="post"><div class="postHead"><div class="avatar">RC</div><div><div class="postName">Dr. Rafael Costa</div><div class="postRole">Cirurgião-dentista • Abaetetuba, PA</div></div></div>
+<div class="postMedia" style="background:linear-gradient(135deg,#e5242a,#ff8a80)"><div class="playBtn">▶</div></div>
+<div class="postBody"><div class="postCaption">Mutirão de atendimento infantil neste sábado — 15 crianças atendidas em um só dia. Vem ser voluntário também! 🦷❤️</div><div class="postStats"><span onclick="toggleLike(this)">♡ 128</span><span>💬 14 comentários</span></div></div></div>
+
+<div class="post"><div class="postHead"><div class="avatar">CA</div><div><div class="postName">Dra. Camila Alves</div><div class="postRole">Saúde coletiva • Marituba, PA</div></div></div>
+<div class="postMedia" style="background:linear-gradient(135deg,#19a463,#8be3b5)"><div class="playBtn">▶</div></div>
+<div class="postBody"><div class="postCaption">Educação em saúde bucal com as famílias da comunidade. O sorriso deles no final da ação não tem preço.</div><div class="postStats"><span onclick="toggleLike(this)">♡ 94</span><span>💬 9 comentários</span></div></div></div>
+
+<div class="post"><div class="postHead"><div class="avatar">IS</div><div><div class="postName">Instituto Sorriso do Bem</div><div class="postRole">Instituição parceira • São Paulo, SP</div></div></div>
+<div class="postMedia" style="background:linear-gradient(135deg,#3b82c4,#a9d4f5)"><div class="playBtn">▶</div></div>
+<div class="postBody"><div class="postCaption">Bastidores do nosso último mutirão! Obrigado a todos os profissionais que doaram seu sábado por essa causa.</div><div class="postStats"><span onclick="toggleLike(this)">♡ 201</span><span>💬 22 comentários</span></div></div></div>
+
+<div class="post"><div class="postHead"><div class="avatar">LM</div><div><div class="postName">Dr. Lucas Mendes</div><div class="postRole">Clínica médica • Benevides, PA</div></div></div>
+<div class="postMedia" style="background:linear-gradient(135deg,#f5a623,#ffd98a)"><div class="playBtn">▶</div></div>
+<div class="postBody"><div class="postCaption">Primeira vez fazendo triagem voluntária. Recomendo demais — a plataforma facilitou tudo, do cadastro ao dia da ação.</div><div class="postStats"><span onclick="toggleLike(this)">♡ 76</span><span>💬 6 comentários</span></div></div></div>
+</div>
+</section>
+
+<section id="cadastroProfissional" class="section"><h1>Cadastro de Profissionais</h1><p class="sub">Preencha seus dados para se tornar um profissional voluntário verificado na plataforma.</p>
+<div class="panel">
+<form onsubmit="submitProfissional(event)">
+<div class="formGrid">
+<div class="field full"><label>Foto de perfil</label><div class="photoUpload"><div class="photoPreview" id="photoPreview">📷</div><input type="file" accept="image/*" onchange="previewPhoto(event)"><small>Usada para verificação e exibição no seu perfil público.</small></div></div>
+<div class="field full"><label>Nome completo</label><input type="text" placeholder="Ex: Juliana Santos" required></div>
+<div class="field"><label>CPF</label><input type="text" placeholder="000.000.000-00" required></div>
+<div class="field"><label>Instituição de formação</label><input type="text" placeholder="Ex: Universidade de São Paulo" required></div>
+<div class="field"><label>Tipo de registro</label><select required><option value="">Selecione</option><option>CRO</option><option>CRM</option><option>COREN</option><option>CREFITO</option><option>Outro</option></select></div>
+<div class="field"><label>Número do registro</label><input type="text" placeholder="Ex: CRO-SP 123456" required></div>
+<div class="field full"><label>Área de especialidade</label><input type="text" placeholder="Ex: Clínico geral, Cirurgia, Saúde coletiva..." required></div>
+<div class="field full"><label>Endereço</label><input type="text" placeholder="Rua, número, bairro, cidade – UF" required></div>
+</div>
+<div class="notice">Seus dados são usados apenas para verificação profissional e não são exibidos publicamente, exceto nome, foto, especialidade e número de registro.</div>
+<div class="actions"><button class="btn" type="submit">Enviar cadastro</button></div>
+</form>
+</div>
+</section>
 </main></div>
+
+<div class="modalBg" id="postModal"><div class="modal">
+<h2>Compartilhar experiência</h2>
+<div class="field"><label>Vídeo ou foto</label><input type="file" accept="video/*,image/*"><small>Aceita vídeos curtos (até 60s) ou fotos da ação.</small></div>
+<div class="field"><label>Legenda</label><textarea placeholder="Conte como foi a experiência e incentive outros voluntários..."></textarea></div>
+<div class="modalActions"><button class="btn alt" onclick="closePostModal()" type="button">Cancelar</button><button class="btn" onclick="addPost()" type="button">Publicar</button></div>
+</div></div>
 <script>
+
+function landingScroll(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+function openLandingLogin(type){
+  document.getElementById('landingLoginCard').scrollIntoView({behavior:'smooth',block:'center'});
+  if(type) setLoginType(type);
+}
+function setLoginType(type){
+  const prof=type==='profissional';
+  document.getElementById('tabProf').classList.toggle('active',prof);
+  document.getElementById('tabInst').classList.toggle('active',!prof);
+  document.getElementById('loginIdLabel').textContent=prof?'Registro profissional':'CNPJ da instituição';
+  document.getElementById('loginId').placeholder=prof?'Ex.: CRO-MG 123456':'Ex.: 12.345.678/0001-90';
+}
+function landingLogin(e){
+  e.preventDefault();
+  const id = document.getElementById('loginId').value.trim();
+  const isInstitution = document.getElementById('tabInst').classList.contains('active');
+
+  document.getElementById('landing').style.display='none';
+  document.getElementById('dashboardApp').style.display='flex';
+
+  // Personaliza o cabeçalho do protótipo conforme o tipo de acesso.
+  const profile = document.querySelector('.profile');
+  if(profile){
+    profile.innerHTML = isInstitution
+      ? '🏢 &nbsp;&nbsp; Instituição parceira<br><small style="color:#777">' + (id || 'CNPJ cadastrado') + '</small>'
+      : '🩺 &nbsp;&nbsp; Profissional voluntário<br><small style="color:#777">' + (id || 'Registro profissional') + '</small>';
+  }
+
+  // Abre diretamente a página inicial da plataforma.
+  document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
+  document.getElementById('inicio').classList.add('active');
+  document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));
+  const homeBtn = document.querySelector('.nav button[onclick*="inicio"]');
+  if(homeBtn) homeBtn.classList.add('active');
+
+  window.scrollTo(0,0);
+}
+
 function show(id,btn){
  document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
  document.getElementById(id).classList.add('active');
  document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));
  if(btn)btn.classList.add('active');
  window.scrollTo(0,0);
+}
+function toggleLike(el){
+ const liked = el.dataset.liked === '1';
+ let n = parseInt(el.textContent.replace(/\D/g,''));
+ n = liked ? n-1 : n+1;
+ el.textContent = (liked ? '♡ ' : '♥ ') + n;
+ el.dataset.liked = liked ? '0' : '1';
+ el.style.color = liked ? '' : 'var(--red)';
+}
+function openPostModal(){ document.getElementById('postModal').classList.add('active'); }
+function closePostModal(){ document.getElementById('postModal').classList.remove('active'); }
+function addPost(){
+ const caption = document.querySelector('#postModal textarea').value.trim();
+ const colors = ['#e5242a,#ff8a80','#19a463,#8be3b5','#3b82c4,#a9d4f5','#f5a623,#ffd98a'];
+ const c = colors[Math.floor(Math.random()*colors.length)];
+ const card = document.createElement('div');
+ card.className = 'post';
+ card.innerHTML = `<div class="postHead"><div class="avatar">EU</div><div><div class="postName">Você</div><div class="postRole">Novo post</div></div></div>
+ <div class="postMedia" style="background:linear-gradient(135deg,${c})"><div class="playBtn">▶</div></div>
+ <div class="postBody"><div class="postCaption">${caption || 'Compartilhando minha experiência como voluntário!'}</div><div class="postStats"><span onclick="toggleLike(this)">♡ 0</span><span>💬 0 comentários</span></div></div>`;
+ document.getElementById('feedGrid').prepend(card);
+ closePostModal();
+ document.querySelector('#postModal textarea').value = '';
+}
+function previewPhoto(e){
+ const file = e.target.files[0];
+ if(!file) return;
+ const reader = new FileReader();
+ reader.onload = ev => { document.getElementById('photoPreview').innerHTML = `<img src="${ev.target.result}">`; };
+ reader.readAsDataURL(file);
+}
+function submitProfissional(e){
+ e.preventDefault();
+ alert('Cadastro enviado! Nossa equipe vai verificar seus dados e registro profissional em até 3 dias úteis.');
+ e.target.reset();
+ document.getElementById('photoPreview').innerHTML = '📷';
 }
 </script>
 </body></html>
